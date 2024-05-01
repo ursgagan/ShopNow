@@ -1,0 +1,91 @@
+﻿@{
+    Layout = "_LayoutAdmin";
+}
+
+<link rel="stylesheet" href="~/admintemplate/css/components.css">
+<link href="~/admintemplate/modules/toastr/build/toastr.min.css" rel="stylesheet" />
+
+<div class="main-content">
+    <section class="section">
+        <div class="section-header">
+            <h1>Table</h1>
+            <div class="section-header-breadcrumb">
+                <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
+                <div class="breadcrumb-item"><a href="#">Components</a></div>
+                <div class="breadcrumb-item">Table</div>
+            </div>
+        </div>
+
+        <div class="section-body">
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Product </h4>
+                            <div class="card-header-action">
+                                <form>
+                                    <div class="input-group">
+                                      
+                                        <input type="text" class="form-control" placeholder="Search">
+                                        <div class="input-group-btn" style="display:flex">
+                                            <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-striped" id="sortable-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-left">
+                                                <i class="fas fa-th"></i>
+                                            </th>
+                                            <th>Product</th>
+                                            <th>Created Date</th>
+                                            <th>Updated Date</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tblProductList">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div class="modal fade show" tabindex="-1" role="dialog" id="Delete-Product-Modal" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Realy?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body"> Do you want to continue?</div>
+            <input id="hdnProductId" type="hidden">
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-shadow" id="" onclick="deleteProduct()">Yes</button>
+
+                <button type="button" class="btn btn-secondary" id="">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <!-- Page Specific JS File -->
+    <script src="~/admintemplate/js/page/components-table.js"></script>
+    <script src="~/admintemplate/custom/js/productlist.js"></script>
+    <script src="~/admintemplate/js/page/bootstrap-modal.js"></script>
+}

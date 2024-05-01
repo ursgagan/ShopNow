@@ -1,0 +1,64 @@
+﻿@{
+    Layout = "_layoutAdmin";
+}
+
+@model ShopNow.DAL.Entities.ProductCategory
+
+<div class="main-content">
+    <section class="section">
+        <div class="section-header">
+            <h1> Product Category</h1>
+            <div class="section-header-breadcrumb">
+                <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
+                <div class="breadcrumb-item"><a href="#">Components</a></div>
+                <div class="breadcrumb-item">Table</div>
+            </div>
+        </div>
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-8 offset-xl-2">
+
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h4>
+                                <div>
+                                    <span> Category</span>
+                                </div>
+                            </h4>
+                        </div>
+
+                        <div class="card-body">
+
+                            <form action="#" id="addProductCategoryForm">
+                                <input id="hdnProductCategoryId" class="form-control" name="Id" value="@Model.Id" type="hidden" autofocus>
+                                <input type="hidden" id="hdnTempData" value="@TempData["SuccessMessage"]" />
+                                <input type="hidden" id="hiddenTempData" value="@TempData["UpdateMessage"]" />
+                                <div class="row">
+                                    <div class="form-group col-6">
+                                        <label for="ProductCategory">Category</label>
+                                        <input id="ProductCategory" type="text" class="form-control" name="ProductCategory" value="@Model.CategoryName" autofocus>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="card">
+                                        <div class="card-body text-center">
+                                            <button type="submit" class="btn btn-primary btn-block" style="width: fit-content;" id="btnSaveCategory">
+                                                Submit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="~/admintemplate/js/jquery-3.6.4.min.js"></script>
+<script src="~/admintemplate/custom/js/addeditproductcategory.js"></script>
