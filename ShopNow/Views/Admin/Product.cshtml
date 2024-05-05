@@ -30,7 +30,7 @@
                         <div class="card-body">
 
                             <form action="#">
-                                <input id="hdnProductId" class="form-control" name="ProductId" value="@Model.ProductId" type="hidden" autofocus>
+                                <input id="hdnProductId" class="form-control" name="ProductId" value="@Model.Id" type="hidden" autofocus>
                                 <input type="hidden" id="hdnTempData" value="@TempData["SuccessMessage"]" />
                                 <input type="hidden" id="hiddenTempData" value="@TempData["UpdateMessage"]" />
                                 <div class="row">
@@ -54,10 +54,10 @@
                                         <input id="Price" type="text" class="form-control" name="Price" value="@Model.Price" autofocus>
                                     </div>
 
-                                    @* <div class="form-group col-6">
-                                        <label for="Supplier">Supplier</label>
-                                        <input id="Supplier" type="text" class="form-control" name="Supplier" autofocus>
-                                    </div> *@
+                                    <div class="form-group col-6">
+                                        <label for="ProductDescription">Product Description</label>
+                                        <input id="ProductDescription" type="text" class="form-control" name="ProductDescription" value="@Model.ProductDescription" autofocus>
+                                    </div>
                                 </div>
 
                                 <div class="row">

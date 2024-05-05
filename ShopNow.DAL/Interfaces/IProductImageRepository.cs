@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace ShopNow.DAL.Interfaces
 {
-    public interface IImageRepository : IRepository<Image>
-    {
-        public Task<List<Image>> AddMultipleImages(List<Image> images);
+    public interface IProductImageRepository : IRepository<ProductImages>
+    {      
+        public Task<List<ProductImages>> AddMultipleProductImages(List<ProductImages> productImage);
     }
 }

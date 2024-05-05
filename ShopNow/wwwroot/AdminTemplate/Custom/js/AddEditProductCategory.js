@@ -1,6 +1,4 @@
-﻿
-
-$("#btnSaveCategory").click(function () {
+﻿$("#btnSaveCategory").click(function () {
     var ProductCategory = $("#ProductCategory").val();
     var isValid = false;
 
@@ -20,6 +18,7 @@ $("#btnSaveCategory").click(function () {
     }
 
     if (isValid) {
+        debugger;
         event.preventDefault();
         var productCategory = {};
 
@@ -38,8 +37,6 @@ $("#btnSaveCategory").click(function () {
                         message: 'Product Category Added Successfully',
                         position: 'topRight'
                     });
-
-
                     setTimeout(function () {
                         window.location.href = "/Admin/ProductCategoryList";
                     }, 4000);

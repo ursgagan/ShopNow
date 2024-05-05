@@ -1,5 +1,6 @@
 ﻿using ShopNow.DAL.Entities;
 using ShopNow.DAL.Interfaces;
+using ShopNow.DAL.Models;
 using ShopNow.DAL.Repositories;
 using System;
 using System.Collections.Generic;
@@ -12,9 +13,12 @@ namespace ShopNow.BAL.Services
     public class ProductServices
     {
         public readonly IRepository<Product> _productRepository;
-        public ProductServices(IRepository<Product> productRepository)
+
+        public readonly IProductRepository _newproductRepository;
+        public ProductServices(IRepository<Product> productRepository, IProductRepository newproductRepository)
         {
             _productRepository = productRepository;
+            _newproductRepository = newproductRepository;
         }
 
         public async Task<Product> AddProduct(Product product)
@@ -27,7 +31,7 @@ namespace ShopNow.BAL.Services
                 }
                 else
                 {
-                    product.IsDeleted = false;
+                    product.IsDeleted = false; 
                     product.CreatedOn = DateTime.Now;
                     product.UpdatedOn = DateTime.Now;
 
@@ -38,7 +42,6 @@ namespace ShopNow.BAL.Services
             {
                 throw;
             }
-
         }
 
         public IEnumerable<Product> GetAllProduct()
@@ -84,9 +87,9 @@ namespace ShopNow.BAL.Services
         {
             try
             {
-                if (product.ProductId != null || product.ProductId != Guid.Empty)
+                if (product.Id != null || product.Id != Guid.Empty)
                 {
-                    var obj = _productRepository.GetAll().Where(x => x.ProductId == product.ProductId).FirstOrDefault();
+                    var obj = _productRepository.GetAll().Where(x => x.Id == product.Id).FirstOrDefault();
                     if (obj != null)
                     {
                         obj.Name = product.Name;
@@ -101,5 +104,16 @@ namespace ShopNow.BAL.Services
             }
         }
 
+        public PaginationModel GetAllByPagination(int pageNumber)
+        {
+            try
+            {
+                return _newproductRepository.GetAllByPagination(pageNumber);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

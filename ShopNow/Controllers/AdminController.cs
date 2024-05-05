@@ -5,6 +5,7 @@ using System.Diagnostics.Metrics;
 using System.Net.Mail;
 using ShopNow.Helpers;
 using System.Collections.Generic;
+using System.Transactions;
 
 namespace ShopNow.Controllers
 {
@@ -13,12 +14,14 @@ namespace ShopNow.Controllers
         private readonly ProductCategoryServices _productCategoryServices;
         private readonly ProductServices _productServices;
         private readonly ImageServices _imageServices;
+        private readonly ProductImageServices _productImageServices;
 
-        public AdminController(ProductCategoryServices productCategoryServices, ProductServices productServices, ImageServices imageServices)
+        public AdminController(ProductCategoryServices productCategoryServices, ProductServices productServices, ImageServices imageServices, ProductImageServices productImageServices)
         {
             _productCategoryServices = productCategoryServices;
             _productServices = productServices;
             _imageServices = imageServices;
+            _productImageServices = productImageServices;
         }
         public IActionResult Index()
         {
@@ -41,19 +44,23 @@ namespace ShopNow.Controllers
         [HttpPost]
         public async Task<IActionResult> AddProductCategory(ProductCategory productCategory)
         {
-            if (productCategory.Id != null && productCategory.Id != Guid.Empty)
+            try
             {
-                _productCategoryServices.UpdateProductCategory(productCategory);
-                TempData["SuccessMessage"] = "Product Category Updated Successfully";
+                if (productCategory.Id != null && productCategory.Id != Guid.Empty)
+                {
+                    _productCategoryServices.UpdateProductCategory(productCategory);
+                }
+                else
+                {
+                    await _productCategoryServices.AddProductCategory(productCategory);
+                }
+                return Json(true);
             }
-            else
+            catch (Exception ex)
             {
-                await _productCategoryServices.AddProductCategory(productCategory);
-                TempData["SuccessMessage"] = "Product Category Added Successfully";
-
+                return Json(false);
             }
-            ProductCategory productCategory1 = new ProductCategory();
-            return View(productCategory1);
+           
         }
 
         public IActionResult ProductCategoryList()
@@ -88,45 +95,57 @@ namespace ShopNow.Controllers
         [HttpPost]
         public async Task<IActionResult> AddProduct(Product product, List<IFormFile> imageFile)
         {
-            var productData = await _productServices.AddProduct(product);
-
-            List<Image> imageList = new List<Image>();
-
-            if (imageFile.Count > 0)
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-
-                foreach (var file in imageFile)
+                try
                 {
-                    if (file != null && file.Length > 0)
+                    var productData = await _productServices.AddProduct(product);
+                    List<Image> addedImages = new List<Image>();
+                    List<Image> imageList = new List<Image>();
+
+                    if (imageFile.Count > 0)
                     {
-                        Image imageData = await Common.SaveImage(file);
-                        imageList.Add(imageData);
+                        foreach (var file in imageFile)
+                        {
+                            if (file != null && file.Length > 0)
+                            {
+                                Image imageData = await Common.SaveImage(file);
+                                imageList.Add(imageData);
+                            }
+                        }
                     }
+
+                    if (imageList.Count > 0)
+                    {
+                        addedImages = await _imageServices.AddMultipleImages(imageList);
+                    }
+
+                    if (addedImages.Count != 0)
+                    {
+                        List<ProductImages> productImagesList = new List<ProductImages>();
+
+                        foreach (var addedProductImages in addedImages)
+                        {
+                            ProductImages productImages = new ProductImages();
+                            productImages.ProductId = productData.Id;
+                            productImages.ImageId = addedProductImages.Id;
+                            productImagesList.Add(productImages);
+                        }
+
+                        _productImageServices.AddMultipleProductImages(productImagesList);
+                    }
+            
+                    scope.Complete();
+                    return Json(true);
+
                 }
+                catch (Exception ex)
+                {            
+                    scope.Dispose();
+                    return Json(false);
+                }              
             }
-            if(imageList.Count > 0)
-            {
-              //  var imagesToAdd = new List<Image>(imageList);
-
-                var addedImages = await _imageServices.AddMultipleImages(imageList);
-
-            }
-
-            //if (product.ProductId != null && product.ProductId != Guid.Empty)
-            //{
-            //   // _productServices.UpdateProduct(product);
-            //    TempData["SuccessMessage"] = "Product Updated Successfully";
-            //}
-            //else
-            //{
-            //    //await _productServices.AddProduct(product);
-            //    TempData["SuccessMessage"] = "Product Added Successfully";
-
-
-
-            return View();
         }
-
         public IActionResult ProductList()
         {
             return View();
@@ -135,8 +154,19 @@ namespace ShopNow.Controllers
         public IActionResult GetProductList()
         {
             var getProductList = _productServices.GetAllProduct().ToList();
+
+
             return Json(getProductList);
         }
+
+        public IActionResult GetProductListByPagination(int pageNumber)
+        {
+            var getProductList = _productServices.GetAllByPagination(pageNumber);
+
+
+            return Json(getProductList);
+        }
+
         public IActionResult DeleteProduct(Guid productId)
         {
             _productServices.DeleteProduct(productId);

@@ -66,8 +66,9 @@ $("#btnSaveProduct").click(function () {
 
         formData.append('Name', $("#ProductName").val());
         formData.append('ProductId', $("#hdnProductId").val());
+        formData.append('ProductDescription', $("#ProductDescription").val());
         formData.append('Price', $("#Price").val());
-
+        formData.append('ProductCategoryId', $("#ddlProductCategory").val())
 
         var fileInput = $('#Image')[0];
         if (fileInput.files.length > 0) {
@@ -85,30 +86,29 @@ $("#btnSaveProduct").click(function () {
         $.ajax({
             url: '/Admin/AddProduct',
             type: 'POST',
-            data: formData, // Send the category data
+            data: formData,
             processData: false,
             contentType: false,
+            async: false,
+            cache: false,
             //datatype: 'json',
+        }).done(function (data) {
+            debugger;
+            if (data === true) {
+                iziToast.success({
+                    title: 'Product',
+                    message: 'Product Added Successfully',
+                    position: 'topRight'
+                });
 
-            success: function (data) {
-               
-                debugger;
-                if (data = true) {
+                setTimeout(function () {
+                    window.location.href = "/Admin/ProductList";
+                }, 4000);
+            }
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            console.error('AJAX Error:', errorThrown);
+        });
 
-
-                    iziToast.success({
-                        title: 'Product',
-                        message: 'Product Added Successfully',
-                        position: 'topRight'
-                    });
-
-
-                    setTimeout(function () {
-                        window.location.href = "/Admin/ProductList";
-                    }, 4000);
-                }
-            },
-        })
     }
 });
 

@@ -9,7 +9,7 @@ namespace ShopNow.DAL.Entities
 {
     public class Product
     {
-        public Guid ProductId { get; set; }        
+        public Guid Id { get; set; }        
         public string? Name { get; set; }
         public Guid? ProductCategoryId { get; set; }
         public decimal? Price { get; set; }
@@ -21,5 +21,6 @@ namespace ShopNow.DAL.Entities
         public Guid? CreatedBy { get; set; }
         public Guid? UpdatedBy { get; set; }
         public Guid? ImageId { get; set; }
+        public string? ProductDescription { get; set; } 
     }
 }

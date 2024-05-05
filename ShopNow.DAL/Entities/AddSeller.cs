@@ -9,7 +9,7 @@ namespace ShopNow.DAL.Entities
     public class AddSeller
     {
         public Guid? SellerId { get; set; } 
-        public string SellerFirstName { get; set;}
+        public string? SellerFirstName { get; set;}
         public string SellerLastName { get; set; }
         public int PhoneNumber { get; set;}
         public string EmailId { get; set;}  

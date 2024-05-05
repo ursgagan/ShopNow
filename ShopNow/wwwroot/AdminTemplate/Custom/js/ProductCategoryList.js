@@ -37,8 +37,11 @@ function getProductCategoryList() {
     $("#tblProductCategoryList").on("click", ".delete-product", function (e) {
         debugger;
         e.preventDefault();
-        let productId = $(this).data("product-id");
-        deleteProduct(productId);
+        let productCategoryId = $(this).data("product-id");
+        $("#hdnProductId").val(productCategoryId);
+
+        jQuery('#Delete-Product-Category-Modal').show();
+        
     });
 
     // Event listener for the "Edit" buttons
@@ -51,17 +54,24 @@ function getProductCategoryList() {
     })
 }
 
-function deleteProduct(productId) {
-
-    $('#Delete-Product-Category-Modal').modal("show");
-
+function deleteProductCategory() {
+    debugger;
+    var productCategoryId = $("#hdnProductId").val();
+   
+    
     debugger;
     $.ajax({
-        type: 'POST',
+        type: 'Get',
         url: '/Admin/DeleteProductCategory',
-        data: { productCategoryId: productId },
+        data: { productCategoryId: productCategoryId },
         success: function (response) {
             debugger;
+            iziToast.success({
+                title: 'Product Category Deleted',
+                message: 'Product Category Deleted Successfully',
+                position: 'topRight'
+            });
+            jQuery('#Delete-Product-Category-Modal').hide();
             getProductCategoryList();
         },
         error: function (xhr, status, error) {

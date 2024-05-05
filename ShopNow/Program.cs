@@ -16,8 +16,14 @@ builder.Services.AddScoped<IRepository<ProductCategory>, ProductCategoryReposito
 builder.Services.AddScoped<ProductServices>();
 builder.Services.AddScoped<IRepository<Product>, ProductRepository>();
 
+builder.Services.AddScoped<IProductRepository, GetProductByPaginationRepository>();
+
 builder.Services.AddScoped<ImageServices>();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
+
+builder.Services.AddScoped<ProductImageServices>();
+builder.Services.AddScoped<IProductImageRepository, ProductImageRepository>();
+
 
 var connectionString = builder.Configuration.GetConnectionString("ConnStr");
 builder.Services.AddDbContext<ShopNowDbContext>(x =>

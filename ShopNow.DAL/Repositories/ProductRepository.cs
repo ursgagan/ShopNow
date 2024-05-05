@@ -1,6 +1,7 @@
 ﻿using ShopNow.DAL.Data;
 using ShopNow.DAL.Entities;
 using ShopNow.DAL.Interfaces;
+using ShopNow.DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
@@ -44,7 +45,11 @@ namespace ShopNow.DAL.Repositories
             try
             {
                 var getProduct = _shopNowDbContext.Product.Where(x => x.IsDeleted == false).ToList();
-                if (getProduct != null) return getProduct;
+
+                if (getProduct != null)
+
+                return getProduct;
+
                 else return null;
             }
             catch (Exception)
@@ -59,7 +64,7 @@ namespace ShopNow.DAL.Repositories
             {
                 if (productId != null)
                 {
-                    var delProduct = _shopNowDbContext.Product.FirstOrDefault(x => x.ProductId == productId);
+                    var delProduct = _shopNowDbContext.Product.FirstOrDefault(x => x.Id == productId);
                     if (delProduct != null) return delProduct;
                     else return null;
                 }
@@ -105,7 +110,8 @@ namespace ShopNow.DAL.Repositories
                 throw;
             }
         }
+
        
-        
+
     }
 }

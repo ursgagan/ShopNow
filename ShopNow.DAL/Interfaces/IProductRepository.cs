@@ -1,4 +1,5 @@
 ﻿using ShopNow.DAL.Entities;
+using ShopNow.DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace ShopNow.DAL.Interfaces
 {
-    public interface IImageRepository : IRepository<Image>
+    public interface IProductRepository 
     {
-        public Task<List<Image>> AddMultipleImages(List<Image> images);
+       public PaginationModel GetAllByPagination(int pageNumber);
     }
 }

@@ -1,34 +1,41 @@
-﻿$(document).ready(function () {
+﻿let pageNumber = 1;
+$(document).ready(function () {
     debugger;
-    getProductList();
+    getProductList(pageNumber);
 });
 
-function getProductList() {
+function getProductList(pageNumber) {
     debugger;
     $.ajax({
         type: 'Get',
-        url: '/Admin/GetProductList',
+        url: '/Admin/GetProductListByPagination?pageNumber=' + pageNumber,
         dataType: 'json',
+
         success: function (response) {
             debugger;
             if (response) {
                 let tblProductData = "";
-                let productCount = 1;
-                $.each(response, function (i, value) {
+              
+                $.each(response.paginationData, function (i, value) {
 
                     tblProductData += `
-                        <tr>
-                        <td> ${productCount++}</td>
-                        <td> ${value.name}</td>
-                        <td>${value.createdOn}</td>
-                        <td>${value.updatedOn}</td>                    
-                        <td><a href="#" class="btn btn-primary edit-product" data-product-id="${value.productId}" > Edit</a>
+                        <tr>       
+                        <td>${value.name != null ? value.name : ' '}</td>               
+                        <td>${value.productDescription != null ? value.productDescription : ' '}</td>
+
+                        <td>${value.createdOn != null ? value.createdOn : ' '}</td>
+                        <td>${value.updatedOn != null ? value.updatedOn : ' '}</td>                    
+                        <td><a href="#" class="btn btn-primary edit-product" data-product-id="${value.id}"> Edit</a>
                         &nbsp &nbsp
-                        <a href="#" class="btn btn-danger delete-product" data-product-id="${value.productId}">Delete</a>
+                        <a href="#" class="btn btn-danger delete-product" data-products-id="${value.id}">Delete</a>
                     </tr> `
                 })
 
                 $("#tblProductList").html(tblProductData);
+
+                if (response.pager != null) {
+                    createPagination(response.pager);
+                }
             }
         },
     });
@@ -47,9 +54,10 @@ function getProductList() {
 $("#tblProductList").on("click", ".delete-product", function (e) {
     debugger;
     e.preventDefault();
-    let productId = $(this).data("product-id");
+    console.log($(this).data("products-id"));
+    var productId = $(this).data("products-id");
     $("#hdnProductId").val(productId);
-   
+
     jQuery('#Delete-Product-Modal').show();
 
 });
@@ -58,24 +66,24 @@ function deleteProduct() {
     debugger;
     var productId = $("#hdnProductId").val();
 
+    debugger;
+    $.ajax({
+        type: 'Get',
+        url: '/Admin/DeleteProduct',
+        data: { productId: productId },
+        success: function (response) {
+            debugger;
+            iziToast.success({
+                title: 'Product Deleted',
+                message: 'Product Deleted Successfully',
+                position: 'topRight'
+            });
 
-        debugger;
-        $.ajax({
-            type: 'Get',
-            url: '/Admin/DeleteProduct',
-            data: { productId: productId },
-            success: function (response) {
-                iziToast.success({
-                    title: 'Product Deleted',
-                    message: 'Product Deleted Successfully',
-                    position: 'topRight'
-                });
+            jQuery('#Delete-Product-Modal').hide();
+            getProductList();
+        },
 
-                jQuery('#Delete-Product-Modal').hide();
-                getProductList();
-            },
-           
-        });
+    });
 
-        
+
 }

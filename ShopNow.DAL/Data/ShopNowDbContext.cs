@@ -24,5 +24,6 @@ namespace ShopNow.DAL.Data
         public DbSet<ProductCategory> ProductCategory { get; set; }
         public DbSet<Product> Product { get; set; }
         public DbSet<Image> Image { get; set; }
+        public DbSet<ProductImages> ProductImages { get; set; }
     }
 }
