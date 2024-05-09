@@ -125,6 +125,17 @@ namespace ShopNow.BAL.Services
             }
         }
 
+        public IEnumerable<Product> GetAllProductWithImage()
+        {
+            try
+            {
+                return _productimageRepository.GetAllProductWithImages().ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }
 

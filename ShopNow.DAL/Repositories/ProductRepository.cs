@@ -1,4 +1,5 @@
-﻿using ShopNow.DAL.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using ShopNow.DAL.Data;
 using ShopNow.DAL.Entities;
 using ShopNow.DAL.Interfaces;
 using ShopNow.DAL.Models;
@@ -57,15 +58,14 @@ namespace ShopNow.DAL.Repositories
                 throw;
             }
         }
-
         public Product GetById(Guid productId)
         {
             try
             {
                 if (productId != null)
                 {
-                    var delProduct = _shopNowDbContext.Product.FirstOrDefault(x => x.Id == productId);
-                    if (delProduct != null) return delProduct;
+                    var productById = _shopNowDbContext.Product.Include(a => a.ProductImages).ThenInclude(a => a.Image).Where(a => a.Id == productId).FirstOrDefault();
+                    if (productById != null) return productById;
                     else return null;
                 }
                 else

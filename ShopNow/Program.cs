@@ -25,6 +25,10 @@ builder.Services.AddScoped<ProductImageServices>();
 builder.Services.AddScoped<IProductImageRepository, ProductImageRepository>();
 
 
+builder.Services.AddScoped<ContactServices>();
+builder.Services.AddScoped<IContactRepository, ContactRepository>();
+
+
 var connectionString = builder.Configuration.GetConnectionString("ConnStr");
 builder.Services.AddDbContext<ShopNowDbContext>(x =>
 {

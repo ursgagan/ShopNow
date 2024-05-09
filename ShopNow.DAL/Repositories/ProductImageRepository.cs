@@ -134,6 +134,25 @@ namespace ShopNow.DAL.Repositories
                 throw new Exception("An error occurred while adding multiple images.", ex);
             }
         }
+
+        public IEnumerable<Product> GetAllProductWithImages()
+        {
+            try
+            {
+                var getProduct = _shopNowDbContext.Product.Include(b => b.ProductImages).ThenInclude(c => c.Image).Where(x => x.IsDeleted == false).ToList();
+
+                if (getProduct != null)
+
+                    return getProduct;
+
+                else return null;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
     }
 }
 

@@ -47,7 +47,10 @@ function getProductList(pageNumber) {
         debugger;
         var productId = $(this).data('product-id');
 
+       
+
         window.location.href = "/Admin/Product?productId=" + productId;
+
     })
 }
 
@@ -59,14 +62,12 @@ $("#tblProductList").on("click", ".delete-product", function (e) {
     $("#hdnProductId").val(productId);
 
     jQuery('#Delete-Product-Modal').show();
-
 });
 
 function deleteProduct() {
-    debugger;
+   
     var productId = $("#hdnProductId").val();
 
-    debugger;
     $.ajax({
         type: 'Get',
         url: '/Admin/DeleteProduct',
@@ -84,6 +85,10 @@ function deleteProduct() {
         },
 
     });
-
-
 }
+    function CloseModal() {
+        debugger;
+        var modal = document.getElementById("Delete-Product-Modal");
+
+        modal.style.display = 'none';
+    }

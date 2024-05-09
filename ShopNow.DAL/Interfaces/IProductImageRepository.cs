@@ -10,5 +10,8 @@ namespace ShopNow.DAL.Interfaces
     public interface IProductImageRepository : IRepository<ProductImages>
     {      
         public Task<List<ProductImages>> AddMultipleProductImages(List<ProductImages> productImage);
+
+        public IEnumerable<Product> GetAllProductWithImages();
+
     }
 }

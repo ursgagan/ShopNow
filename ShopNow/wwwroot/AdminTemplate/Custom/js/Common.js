@@ -36,3 +36,11 @@
     }
     $("#divPagination").html(paginationData);
 }
+
+function showSuccessMessage(title, message) {
+    iziToast.success({
+        title: title,
+        message: message,
+        position: 'topRight'
+    });
+}

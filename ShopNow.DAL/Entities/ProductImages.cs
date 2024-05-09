@@ -16,5 +16,6 @@ namespace ShopNow.DAL.Entities
         public DateTime? UpdatedOn { get; set; }
         public Guid? CreatedBy { get; set; }
         public Guid? UpdatedBy { get; set; }
+        public virtual Image Image { get; set; }    
     }
 }

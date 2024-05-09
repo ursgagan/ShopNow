@@ -6,6 +6,7 @@ using System.Net.Mail;
 using ShopNow.Helpers;
 using System.Collections.Generic;
 using System.Transactions;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace ShopNow.Controllers
 {
@@ -60,7 +61,7 @@ namespace ShopNow.Controllers
             {
                 return Json(false);
             }
-           
+
         }
 
         public IActionResult ProductCategoryList()
@@ -88,6 +89,7 @@ namespace ShopNow.Controllers
             {
                 var pId = new Guid(productId);
                 product = _productServices.GetProductById(pId);
+
             }
             return View(product);
         }
@@ -99,7 +101,15 @@ namespace ShopNow.Controllers
             {
                 try
                 {
-                    var productData = await _productServices.AddProduct(product);
+                    if(product.Id != null && product.Id != Guid.Empty)
+                    {
+                       _productServices.UpdateProduct(product); 
+                    }
+                    else
+                    {
+                        product = await _productServices.AddProduct(product);
+                    }
+
                     List<Image> addedImages = new List<Image>();
                     List<Image> imageList = new List<Image>();
 
@@ -127,23 +137,20 @@ namespace ShopNow.Controllers
                         foreach (var addedProductImages in addedImages)
                         {
                             ProductImages productImages = new ProductImages();
-                            productImages.ProductId = productData.Id;
+                            productImages.ProductId = product.Id;
                             productImages.ImageId = addedProductImages.Id;
                             productImagesList.Add(productImages);
                         }
-
                         _productImageServices.AddMultipleProductImages(productImagesList);
                     }
-            
                     scope.Complete();
                     return Json(true);
-
                 }
                 catch (Exception ex)
-                {            
+                {
                     scope.Dispose();
                     return Json(false);
-                }              
+                }
             }
         }
         public IActionResult ProductList()
@@ -215,7 +222,78 @@ namespace ShopNow.Controllers
         //        }
         //    }
 
+        //public async Task<IActionResult> ÜpdateProduct(Product product, List<IFormFile> imageFile)
+        //{
+        //    using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+        //    {
+        //        try
+        //        {
+        //            if (product.Id != Guid.Empty)
+        //            {
+        //                _productServices.UpdateProduct(product);
+        //            }
+
+        //            List<Image> addedImages = new List<Image>();
+        //            List<Image> imageList = new List<Image>();
+
+        //            if (imageFile.Count > 0)
+        //            {
+        //                foreach (var file in imageFile)
+        //                {
+        //                    if (file != null && file.Length > 0)
+        //                    {
+        //                        Image imageData = await Common.SaveImage(file);
+        //                        imageList.Add(imageData);
+        //                    }
+        //                }
+        //            }
+
+        //            if (imageList.Count > 0)
+        //            {
+        //                addedImages = await _imageServices.AddMultipleImages(imageList);
+        //            }
+
+        //            if (addedImages.Count != 0)
+        //            {
+        //                List<ProductImages> productImagesList = new List<ProductImages>();
+
+        //                foreach (var addedProductImages in addedImages)
+        //                {
+        //                    ProductImages productImages = new ProductImages();
+        //                    productImages.ProductId = product.Id;
+        //                    productImages.ImageId = addedProductImages.Id;
+        //                    productImagesList.Add(productImages);
+        //                }
+
+        //                _productImageServices.AddMultipleProductImages(productImagesList);
+        //            }
+
+        //            scope.Complete();
+        //            return Json(true);
+
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            scope.Dispose();
+        //            return Json(false);
+        //        }
+        //        return Json(true);
+        //    }
+        //}
+
+        public IActionResult DeleteProductImage(Guid productImageId)
+        {
+            _productImageServices.DeleteProductImage(productImageId);
+
+            return Json(true);
+        }
+
+        public IActionResult GetProductWithImageList()
+        {
+            var getProductWithImageList = _productImageServices.GetAllProductWithImage().ToList();
 
 
+            return Json(getProductWithImageList);
+        }
     }
 }

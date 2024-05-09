@@ -31,6 +31,7 @@
 
                             <form action="#">
                                 <input id="hdnProductId" class="form-control" name="ProductId" value="@Model.Id" type="hidden" autofocus>
+                                <input id="hdnProductCategoryId" class="form-control" name="ProductCategoryId" value="@Model.ProductCategoryId" type="hidden" autofocus>
                                 <input type="hidden" id="hdnTempData" value="@TempData["SuccessMessage"]" />
                                 <input type="hidden" id="hiddenTempData" value="@TempData["UpdateMessage"]" />
                                 <div class="row">
@@ -60,16 +61,32 @@
                                     </div>
                                 </div>
 
-                                <div class="row">
-                                    <div class="form-group col-6">
-                                        <label for="Image">Choose Image</label>
-                                        <input id="Image" type="file" class="form-control" name="Image" accept="image/*" multiple>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="form-group col-4">
+                                            <label for="Image">Choose Image</label>
+                                            <input id="Image" type="file" class="form-control" name="Image" accept="image/*" multiple>
+                                        </div>
+
+                                        <div class="form-group col-8">
+                                           
+                                            <div class="gallery gallery-fw" style="display: flex; flex-wrap: nowrap;" data-item-height="100">
+                                                @foreach (var productImageData in Model.ProductImages)
+                                                {
+                                                    <div class="gallery-item-wrapper">
+                                                        <a href="#" id="@productImageData.Id" class="btn btn-icon btn-danger remove-photo" onclick="showDeleteProductImageModal(this.id)"><i class="fas fa-times"></i></a>
+
+                                                        <img class="gallery-item" id="productImage-@productImageData.Id" src="data:image/png;base64,@productImageData.Image.ImageData" alt="Product Image" style="width: 170px; height: 170px; padding-left:50px;">
+                                                    </div>                                                  
+                                                }
+                                            </div>
+                                        </div>
                                     </div>
 
-                                    <div class="form-group col-6">
-                                        
-                                    </div>
                                 </div>
+
+
+
 
                                 <div class="form-group">
                                     <div class="card">
@@ -88,6 +105,25 @@
             </div>
         </div>
     </section>
+</div>
+
+<div class="modal fade show" tabindex="-1" role="dialog" id="Delete-ProductImage-Modal" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Are you sure?</h5>
+                
+            </div>
+            <div class="modal-body"> Do you want to Delete this Product Image?</div>
+            <input id="hdnProductImageId" type="hidden">
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-shadow" id="" onclick="DeleteProductImage()">Yes</button>
+
+                <button type="button" class="btn btn-secondary" id="" onclick="CloseModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

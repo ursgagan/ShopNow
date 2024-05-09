@@ -7,21 +7,20 @@ using System.Threading.Tasks;
 
 namespace ShopNow.DAL.Entities
 {
-    public class Product
+    public class Contact
     {
-        public Guid Id { get; set; }        
-        public string? Name { get; set; }
-        public Guid? ProductCategoryId { get; set; }
-        public decimal? Price { get; set; }
-        public Guid? SupplierId { get; set; }
+        public Guid Id { get; set; }
+        
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public string? EmailId { get; set; }
+        public string? Message { get; set; }
         //public string? Gender { get; set; }
+        public string? PhoneNumber { get; set; }
         public bool? IsDeleted { get; set; }
         public DateTime? CreatedOn { get; set; }
         public DateTime? UpdatedOn { get; set; }
         public Guid? CreatedBy { get; set; }
         public Guid? UpdatedBy { get; set; }
-        public string? ProductDescription { get; set; }
-        public virtual List<ProductImages> ProductImages { get; set; }
-
     }
 }

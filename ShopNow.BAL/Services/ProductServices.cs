@@ -94,7 +94,9 @@ namespace ShopNow.BAL.Services
                     {
                         obj.Name = product.Name;
                         obj.UpdatedOn = DateTime.Now;
-                        _productRepository.Update(obj);
+                        obj.ProductDescription = product.ProductDescription;
+                        obj.Price = product.Price;
+                       _productRepository.Update(obj);
                     }
                 }
             }
