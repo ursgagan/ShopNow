@@ -36,6 +36,7 @@ function bindProductCategoriesDropdown() {
 $("#btnSaveProduct").click(function () {
     debugger;
     var Product = $("#ProductName").val();
+    
     var isValid = false;
 
     if (Product == "") {

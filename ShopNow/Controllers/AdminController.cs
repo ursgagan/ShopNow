@@ -292,7 +292,6 @@ namespace ShopNow.Controllers
         {
             var getProductWithImageList = _productImageServices.GetAllProductWithImage().ToList();
 
-
             return Json(getProductWithImageList);
         }
     }

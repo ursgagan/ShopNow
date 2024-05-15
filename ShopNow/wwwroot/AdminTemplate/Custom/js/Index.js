@@ -10,7 +10,7 @@ function getProductList() {
         dataType: 'json',
 
         success: function (response) {
-       
+            debugger;
             if (response) {
                 let tblProductData = "";
 
@@ -19,9 +19,10 @@ function getProductList() {
                         tblProductData += `
             <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
                 <div class="product-item bg-light mb-4">
-                    <div class="product-img position-relative overflow-hidden">
+                   <div class="product-img position-relative overflow-hidden" style="cursor: pointer;">
+                    
                             <img class="img-fluid w-100 product-image" style="width: 150px; height: 200px;" src="data:image/png;base64,${value.productImages[0].image.imageData}">
-                        <div class="product-action" href="/Home/ProductDetails?id=${value.id}">
+                        <div class="product-action" onclick="ProductDetail('${value.id}')">
                             <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
                             <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
                             <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
@@ -54,20 +55,20 @@ function getProductList() {
     });
 }
 
-//function ProductDetail(productId)
-//{
-//    debugger;
-//    var productDetailsUrl = "/Home/ProductDetails?id=" + productId;
-//    // Redirect the page to the product details URL
-//    window.location.href = productDetailsUrl;
-//}
+function ProductDetail(productId) {
+    debugger;
+  
+    var productDetailsUrl = "/Home/ProductDetails?productId=" + productId;
+    // Redirect the page to the product details URL
+    window.location.href = productDetailsUrl;
+}
 //$(document).on('click', '.product-img img', function () {
 //    debugger;
 //    var productId = $(this).data('product-id');
 //    ProductDetail(productId);
 //});
 
-$(document).on('click', '.product-image', function () {
-    var productId = $(this).closest('.product-img').find('a').attr('href');
-    window.location.href = productId;
-});
+//$(document).on('click', '.product-image', function () {
+//    var productId = $(this).closest('.product-img').find('a').attr('href');
+//    window.location.href = productId;
+//});

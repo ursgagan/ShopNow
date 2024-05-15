@@ -10,13 +10,15 @@ namespace ShopNow.Controllers
     {
         private readonly ProductServices _productServices;
         private readonly ContactServices _contactServices;
+        private readonly CustomerServices _customerServices;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger, ProductServices productServices, ContactServices contactServices)
+        public HomeController(ILogger<HomeController> logger, ProductServices productServices, ContactServices contactServices, CustomerServices customerServices)
         {
             _logger = logger;
             _productServices = productServices;
             _contactServices = contactServices;
+            _customerServices = customerServices;   
         }
 
         public IActionResult Index()
@@ -70,5 +72,6 @@ namespace ShopNow.Controllers
 
             return View();
         }
+       
     }
 }

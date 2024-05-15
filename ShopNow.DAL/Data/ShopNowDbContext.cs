@@ -26,5 +26,7 @@ namespace ShopNow.DAL.Data
         public DbSet<Image> Image { get; set; }
         public DbSet<ProductImages> ProductImages { get; set; }
         public DbSet<Contact> Contact { get; set; }
+        public DbSet<Customer> Customer { get; set; }
+        public DbSet<Address> Address { get; set; }
     }
 }

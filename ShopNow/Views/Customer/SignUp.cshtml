@@ -1,0 +1,85 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+@model ShopNow.DAL.Entities.Customer
+
+<!-- Checkout Start -->
+<div class="container-fluid">
+    <input id="hdnCustomerId" class="form-control" name="CustomerId" value="@Model.Id" type="hidden" autofocus>
+    <input id="hdnAddressId" class="form-control" name="AddressId" value="@Model.AddressId" type="hidden" autofocus>
+
+    <div class="row px-xl-5">
+        <div class="col-lg-8">
+            <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Customer Login</span></h5>
+            <div class="bg-light p-30 mb-5">
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label>First Name</label>
+                        <input class="form-control" type="text" placeholder="First Name" id="FirstName" name="FirstName" value="@Model.FirstName">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Last Name</label>
+                        <input class="form-control" type="text" placeholder="Last Name" id="LastName" value="@Model.LastName">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>E-mail</label>
+                        <input class="form-control" type="text" placeholder="Your Email" id="EmailId" value="@Model.EmailId">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Mobile No</label>
+                        <input class="form-control" type="text" placeholder="Phone Number" id="PhoneNumber" >
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Address Line 1</label>
+                        <input class="form-control" type="text" placeholder="123 Street" id="Address1" >
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Address Line 2</label>
+                        <input class="form-control" type="text" placeholder="123 Street" id="Address2">
+                    </div>
+                   @*  <div class="col-md-6 form-group">
+                        <label>Country</label>
+                        <select class="custom-select" id="Country">
+                            <option selected>United States</option>
+                            <option>Afghanistan</option>
+                            <option>Albania</option>
+                            <option>Algeria</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>City</label>
+                        <input class="form-control" type="text" placeholder="New York" id="City">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>State</label>
+                        <input class="form-control" type="text" placeholder="New York" id="State">
+                    </div> *@
+                    <div class="col-md-6 form-group">
+                        <label>ZIP Code</label>
+                        <input class="form-control" type="text" placeholder="123" id="ZipCode">
+                    </div>
+                    <div class="col-md-12 form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="newaccount">
+                            <label class="custom-control-label" for="newaccount">Create an account</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="shipto">
+                            <label class="custom-control-label" for="shipto" data-toggle="collapse" data-target="#shipping-address">Ship to different address</label>
+                        </div>
+                    </div>
+                    <button class="btn btn-block btn-primary font-weight-bold py-3" id="btnSaveCustomer">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Checkout End -->
+</html>
+
+<script src="~/admintemplate/js/jquery-3.6.4.min.js"></script>
+<script src="~/admintemplate/custom/js/customersignup.js"></script>
+<script src="~/admintemplate/custom/js/common.js"></script>

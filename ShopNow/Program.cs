@@ -29,6 +29,13 @@ builder.Services.AddScoped<ContactServices>();
 builder.Services.AddScoped<IContactRepository, ContactRepository>();
 
 
+builder.Services.AddScoped<CustomerServices>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+
+builder.Services.AddScoped<AddressServices>();
+builder.Services.AddScoped<IAddressRepository, AddressRepository>();
+
+
 var connectionString = builder.Configuration.GetConnectionString("ConnStr");
 builder.Services.AddDbContext<ShopNowDbContext>(x =>
 {
