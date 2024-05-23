@@ -110,8 +110,5 @@ namespace ShopNow.DAL.Repositories
                 throw;
             }
         }
-
-       
-
     }
 }

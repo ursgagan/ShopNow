@@ -18,5 +18,6 @@ namespace ShopNow.DAL.Entities
         public DateTime? UpdatedOn { get; set; }
         public string? Password { get; set; }
         public string? ResetCode { get; set; }
+        public virtual Address Address { get; set; }
     }
 }

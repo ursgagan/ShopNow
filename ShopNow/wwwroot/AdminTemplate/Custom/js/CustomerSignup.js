@@ -6,6 +6,7 @@
     var Address1 = $("#Address1").val();
     var Address2 = $("#Address2").val();
     var ZipCode = $("#ZipCode").val();
+    var PhoneNumber = $("#PhoneNumber").val();
     var isValid = true;
 
     // Validation checks
@@ -49,6 +50,15 @@
         isValid = false; 
     }
 
+    if (PhoneNumber.trim() === "") {
+        iziToast.error({
+            title: 'Invalid PhoneNumber',
+            message: 'Please fill in the PhoneNumber',
+            position: 'topRight'
+        });
+        $("#PhoneNumber").focus();
+        isValid = false;
+    }
   
     if (isValid) {
          $.ajax({

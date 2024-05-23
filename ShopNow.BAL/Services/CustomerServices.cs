@@ -38,5 +38,62 @@ namespace ShopNow.BAL.Services
             }
         }
 
+        public Customer isUserExist(string email)
+        {
+            return _customerRepository.GetUserByEmail(email);
+        }
+
+        public Customer GetCustomerById(Guid user)
+        {
+            try
+            {
+                return _customerRepository.GetById(user);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public void UpdateCustomer(Customer customer)
+        {
+            try
+            {
+                if (customer.Id != null || customer.Id != Guid.Empty)
+                {
+                    var obj = _customerRepository.GetById(customer.Id);
+                    if (obj != null)
+                    {
+                        obj.FirstName = customer.FirstName;
+                        obj.LastName = customer.LastName;           
+                        obj.UpdatedOn = DateTime.Now;
+                        obj.ResetCode = customer.ResetCode;
+                        obj.Password = customer.Password;
+                        obj.Address.Address1 = customer.Address.Address1;
+                        obj.Address.Address2 = customer.Address.Address2;
+                        obj.Address.PhoneNumber = customer.Address.PhoneNumber;
+                        obj.Address.ZipCode = customer.Address.ZipCode;
+                        obj.Address.UpdatedOn = customer.Address.UpdatedOn;
+
+                        _customerRepository.Update(obj);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public Customer GetUserByResetCode(string resetCode)
+        {
+            try
+            {
+                return _customerRepository.GetCustomerByResetCode(resetCode);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
     }
 }

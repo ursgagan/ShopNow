@@ -3,6 +3,12 @@ using ShopNow.BAL.Services;
 using ShopNow.DAL.Entities;
 using System.Net.Mail;
 using System.Net;
+using Microsoft.AspNetCore.Identity;
+using ShopNow.Helpers;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ShopNow.Controllers
 {
@@ -39,7 +45,7 @@ namespace ShopNow.Controllers
                     customer.AddressId = address.Id;
                     await _customerServices.AddCustomer(customer);
 
-                    await SendLoginEmail(customer.EmailId, customer.FirstName);
+                    await SendLoginEmail(customer.EmailId, customer.FirstName, generateOTP);
                     return Json(true);
                 }
             }
@@ -66,12 +72,11 @@ namespace ShopNow.Controllers
             return sOTP;
         }
 
-        private async Task SendLoginEmail(string userEmail, string userName)
+        private async Task SendLoginEmail(string userEmail, string userName, string generatedOTP)
         {
             try
             {
-               
-                //string emailBody = System.IO.File.ReadAllText(Path.Combine(folderPath, fileName));
+                var forgotPasswordURL = "https://localhost:44377/Customer/ForgotPassword?resetCode=" + generatedOTP;
 
                 string folderPath = @"wwwroot\EmailTemplate\";
 
@@ -84,13 +89,13 @@ namespace ShopNow.Controllers
                 string emailBody = System.IO.File.ReadAllText(Path.Combine(folderPath, fileName));
 
                 emailBody = emailBody.Replace("[UserName]", userName);
-               // emailBody = emailBody.Replace("[ForgotPasswordURL]", forgotPasswordURL);
+                emailBody = emailBody.Replace("[ForgotPasswordURL]", forgotPasswordURL);
 
                 using (var client = new SmtpClient("smtp.gmail.com"))
                 {
                     client.UseDefaultCredentials = false;
                     // client.Credentials = new NetworkCredential("deepsinghh46@gmail.com", "@bc12345@");
-                    client.Credentials = new NetworkCredential("deepsinghh46@gmail.com", "rstz jvja wqgd mvef");                
+                    client.Credentials = new NetworkCredential("deepsinghh46@gmail.com", "iztv umyi eruq qbqc");                
                     client.EnableSsl = true;
                     client.Port = 587;
 
@@ -107,7 +112,6 @@ namespace ShopNow.Controllers
                     message.To.Add("deepsinghh46@gmail.com");
 
                     await client.SendMailAsync(message);
-
                 }
             }
             catch (Exception ex)
@@ -117,5 +121,143 @@ namespace ShopNow.Controllers
             }
         }
 
+        public IActionResult ResetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(string emailId)
+        {
+            try
+            {
+                string folderPath = @"wwwroot\EmailTemplate\";
+
+                // Specify the name of the HTML file
+                string fileName = "ResetPassword.html";
+
+                var existingCustomer = _customerServices.isUserExist(emailId);
+
+                if (existingCustomer != null)
+                {
+                    var generatedOTP = GenerateOTP();
+                    existingCustomer.ResetCode = generatedOTP;
+
+                    _customerServices.UpdateCustomer(existingCustomer);
+
+                   string firstName = existingCustomer.FirstName;
+                   
+                    var forgotPasswordURL = "https://localhost:44377/Customer/ForgotPassword?resetCode=" + generatedOTP;
+
+                    string emailBody = System.IO.File.ReadAllText(Path.Combine(folderPath, fileName));
+
+                    emailBody = emailBody.Replace("[UserName]", firstName).Replace("[ForgotPasswordURL]", forgotPasswordURL);
+
+
+                    using (var client = new SmtpClient("smtp.gmail.com"))
+                    {
+                        client.UseDefaultCredentials = false;
+                        client.Credentials = new NetworkCredential("deepsinghh46@gmail.com", "iztv umyi eruq qbqc");
+                        client.EnableSsl = true;
+                        client.Port = 587;
+
+                        var message = new MailMessage
+                        {
+                            From = new MailAddress("deepsinghh46@gmail.com"),
+
+                            Subject = "Forgotten Password",
+                            Body = emailBody,
+                            IsBodyHtml = true,
+                        };
+
+                        message.To.Add(emailId);
+                       
+                        await client.SendMailAsync(message);
+                        return Json(true);
+                    }
+                }
+                return Json(false);
+            }
+            catch (Exception ex)
+            {
+                return Json(false);
+            }
+
+        }
+
+        [HttpGet]
+        public IActionResult ForgotPassword(string resetCode)
+        {
+            ViewBag.ResetCode = resetCode;
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult ForgotPassword(string password, string resetCodeId)
+        {
+            var getCustomerByResetCode = _customerServices.GetUserByResetCode(resetCodeId);
+            if (getCustomerByResetCode != null)
+            {
+                getCustomerByResetCode.ResetCode = null;
+                getCustomerByResetCode.Password = PasswordHasher.HashPassword(password);
+                _customerServices.UpdateCustomer(getCustomerByResetCode);
+
+                TempData["PasswordResetMessage"] = "Login Successfully";
+                return Json(true);
+            }
+            return Json(false);
+        }
+
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CustomerLogin(Customer customer)
+        {
+            {
+                var user = _customerServices.isUserExist(customer.EmailId);
+
+                if (user != null)
+                {
+                    if (PasswordHasher.VerifyPassword(customer.Password, user.Password))
+                    {
+                        var claims = new List<Claim>
+                        {
+                            new Claim(ClaimTypes.Name, user.FirstName),
+                            new Claim(ClaimTypes.Email, user.EmailId),
+                        };
+
+                        var userIdentity = new ClaimsIdentity("Custom");
+                        userIdentity.AddClaims(claims);
+
+                        var principal = new ClaimsPrincipal(userIdentity);
+                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(userIdentity), new AuthenticationProperties() { IsPersistent = true });
+
+                        TempData["SuccessMessage"] = "Login Successfully";
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        TempData["PasswordIncorrectMessage"] = "Login Failed";
+                        return View();
+
+                    }
+                }
+                else
+                {
+                    return View();
+                }
+            }
+            return View();
+        }
+
+        [Authorize]
+        public async Task<IActionResult> UserLogout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login", "Customer");
+        }
     }
 }

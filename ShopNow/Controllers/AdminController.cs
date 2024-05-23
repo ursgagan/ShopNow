@@ -161,15 +161,12 @@ namespace ShopNow.Controllers
         public IActionResult GetProductList()
         {
             var getProductList = _productServices.GetAllProduct().ToList();
-
-
             return Json(getProductList);
         }
 
         public IActionResult GetProductListByPagination(int pageNumber)
         {
             var getProductList = _productServices.GetAllByPagination(pageNumber);
-
 
             return Json(getProductList);
         }

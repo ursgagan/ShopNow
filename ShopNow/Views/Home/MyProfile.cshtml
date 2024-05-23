@@ -1,0 +1,150 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" name="viewport">
+    <title>Dashboard &mdash; Stisla</title>
+
+</head>
+
+<body>
+
+    <div id="app">
+        <div class="container-wrapper">
+            <div class="row px-xl-5">
+                <div class="col-lg-12">
+                    <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">My Profile</span></h5>
+                    <div class="bg-light p-30 mb-5">
+                        <h2>Personal Information</h2>
+                        <div class="row">
+                            <input id="hdnCustomerId" class="form-control" name="CustomerId" value="@Model.Id" type="hidden" autofocus>
+
+                            <div class="col-md-6 form-group">
+                                <label>First Name</label>
+                                <input class="form-control" type="text" id="FirstName" name="FirstName" value="@Model.FirstName">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Last Name</label>
+                                <input class="form-control" type="text" id="LastName" value="@Model.LastName">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>E-mail</label>
+                                <input class="form-control" type="text" id="EmailId" value="@Model.EmailId" disabled>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Mobile No</label>
+                                <input class="form-control" type="text" id="PhoneNumber" value="@Model.Address.PhoneNumber">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Address Line 1</label>
+                                <input class="form-control" type="text" id="Address1" value="@Model.Address.Address1">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Address Line 2</label>
+                                <input class="form-control" type="text" id="Address2" value="@Model.Address.Address2">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>ZIP Code</label>
+                                <input class="form-control" type="text" id="ZipCode" value="@Model.Address.ZipCode">
+                            </div>
+                            
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <button class="btn btn-primary" style="width:30% !important; height;margin-left: -15px;" id="btnUpdateCustomer">Submit</button>
+                          </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="container-fluid pt-5">
+                <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">My Account </span></h2>
+                <div class="row px-xl-5 pb-3">
+                    <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+                        <a class="text-decoration-none" href="">
+                            <div class="cat-item d-flex align-items-center mb-4">
+                                <div class="overflow-hidden" style="width: 100px; height: 100px;">
+                                    <img class="img-fluid" src="~/maintemplate/img/cat-1.jpg" alt="">
+                                </div>
+                                <div class="flex-fill pl-3">
+                                    <h6>My Orders</h6>
+                                    <small class="text-body">Orders</small>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+                        <a class="text-decoration-none" href="">
+                            <div class="cat-item img-zoom d-flex align-items-center mb-4">
+                                <div class="overflow-hidden" style="width: 100px; height: 100px;">
+                                    <img class="img-fluid" src="~/maintemplate/img/cat-2.jpg" alt="">
+                                </div>
+                                <div class="flex-fill pl-3">
+                                    <h6>Security & Login</h6>
+                                    <small class="text-body">Security</small>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+                        <a class="text-decoration-none" href="">
+                            <div class="cat-item img-zoom d-flex align-items-center mb-4">
+                                <div class="overflow-hidden" style="width: 100px; height: 100px;">
+                                    <img class="img-fluid" src="~/maintemplate/img/cat-3.jpg" alt="">
+                                </div>
+                                <div class="flex-fill pl-3">
+                                    <h6>Your Addresses</h6>
+                                    <small class="text-body">Address</small>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+                        <a class="text-decoration-none" href="">
+                            <div class="cat-item img-zoom d-flex align-items-center mb-4">
+                                <div class="overflow-hidden" style="width: 100px; height: 100px;">
+                                    <img class="img-fluid" src="~/maintemplate/img/cat-4.jpg" alt="">
+                                </div>
+                                <div class="flex-fill pl-3">
+                                    <h6>Contact Us</h6>
+                                    <small class="text-body">Contact</small>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+                        <a class="text-decoration-none" href="">
+                            <div class="cat-item img-zoom d-flex align-items-center mb-4">
+                                <div class="overflow-hidden" style="width: 100px; height: 100px;">
+                                    <img class="img-fluid" src="~/maintemplate/img/cat-4.jpg" alt="">
+                                </div>
+                                <div class="flex-fill pl-3">
+                                    <h6>My WishList</h6>
+                                    <small class="text-body">Wishlist</small>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+                        <a class="text-decoration-none" href="">
+                            <div class="cat-item img-zoom d-flex align-items-center mb-4">
+                                <div class="overflow-hidden" style="width: 100px; height: 100px;">
+                                    <img class="img-fluid" src="~/maintemplate/img/cat-3.jpg" alt="">
+                                </div>
+                                <div class="flex-fill pl-3">
+                                    <h6>Category Name</h6>
+                                    <small class="text-body">100 Products</small>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="~/admintemplate/js/jquery-3.6.4.min.js"></script>
+<script src="~/admintemplate/custom/js/common.js"></script>
+<script src="~/admintemplate/custom/js/updatecustomerprofile.js"></script>
+

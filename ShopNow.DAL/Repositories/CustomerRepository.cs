@@ -1,4 +1,5 @@
-﻿using ShopNow.DAL.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using ShopNow.DAL.Data;
 using ShopNow.DAL.Entities;
 using ShopNow.DAL.Interfaces;
 using System;
@@ -38,5 +39,82 @@ namespace ShopNow.DAL.Repositories
             }
         }
 
+        public Customer GetUserByEmail(string email)
+        {
+            try
+            {
+                if (email != null)
+                {
+                    var customer = _shopNowDbContext.Customer.FirstOrDefault(x => x.EmailId == email);
+                    if (customer != null) return customer;
+                    else return null;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public Customer GetById(Guid customerId)
+        {
+            try
+            {
+                if (customerId != null)
+                {
+                    var customer = _shopNowDbContext.Customer.Include(a => a.Address).Where(a => a.Id == customerId).FirstOrDefault();
+                    if (customer != null) return customer;
+                    else return null;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public void Update(Customer customer)
+        {
+            try
+            {
+                if (customer != null)
+                {
+                    var obj = _shopNowDbContext.Update(customer);
+                    if (obj != null) _shopNowDbContext.SaveChanges();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public Customer GetCustomerByResetCode(string resetCode)
+        {
+            try
+            {
+                if (resetCode != null)
+                {
+                    var user = _shopNowDbContext.Customer.FirstOrDefault(x => x.ResetCode == resetCode);
+                    if (user != null) return user;
+                    else return null;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

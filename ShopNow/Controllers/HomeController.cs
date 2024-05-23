@@ -72,6 +72,37 @@ namespace ShopNow.Controllers
 
             return View();
         }
-       
+
+        public IActionResult MyProfile(string customerId)
+        {
+            Customer customer = new Customer();
+
+            if (customerId != null)
+            {
+                var customerDetailId = new Guid(customerId);
+                customer = _customerServices.GetCustomerById(customerDetailId);
+            }
+            return View(customer);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateCustomerProfile(Customer customer)
+        {
+            try
+            {
+                if (customer.Id != null && customer.Id != Guid.Empty)
+                {
+                    _customerServices.UpdateCustomer(customer);
+                    return Json(true);
+                }
+
+                return Json(false);
+            }
+            catch (Exception ex)
+            {
+                return Json(false);
+            }
+
+        }
     }
 }
