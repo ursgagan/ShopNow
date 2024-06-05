@@ -68,12 +68,16 @@ namespace ShopNow.BAL.Services
                         obj.UpdatedOn = DateTime.Now;
                         obj.ResetCode = customer.ResetCode;
                         obj.Password = customer.Password;
-                        obj.Address.Address1 = customer.Address.Address1;
+                        if(customer.Address != null)
+                        {
+
+                            obj.Address.Address1 = customer.Address.Address1;
                         obj.Address.Address2 = customer.Address.Address2;
                         obj.Address.PhoneNumber = customer.Address.PhoneNumber;
                         obj.Address.ZipCode = customer.Address.ZipCode;
                         obj.Address.UpdatedOn = customer.Address.UpdatedOn;
-
+                                 
+                        }
                         _customerRepository.Update(obj);
                     }
                 }

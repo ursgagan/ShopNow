@@ -40,14 +40,10 @@ function getProductList(pageNumber) {
         },
     });
 
-
-
     $(document).on('click', '.edit-product', function (e) {
         e.preventDefault();
         debugger;
         var productId = $(this).data('product-id');
-
-       
 
         window.location.href = "/Admin/Product?productId=" + productId;
 

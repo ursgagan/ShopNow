@@ -64,7 +64,8 @@ namespace ShopNow.DAL.Repositories
             {
                 if (productId != null)
                 {
-                    var productById = _shopNowDbContext.Product.Include(a => a.ProductImages).ThenInclude(a => a.Image).Where(a => a.Id == productId).FirstOrDefault();
+                    var productById = _shopNowDbContext.Product.Include(a => a.ProductImages).ThenInclude(a => a.Image)
+                        .Where(a => a.Id == productId).FirstOrDefault();
                     if (productById != null) return productById;
                     else return null;
                 }

@@ -89,7 +89,7 @@ namespace ShopNow.BAL.Services
             {
                 if (product.Id != null || product.Id != Guid.Empty)
                 {
-                    var obj = _productRepository.GetAll().Where(x => x.Id == product.Id).FirstOrDefault();
+                    var obj = _productRepository.GetById(product.Id);
                     if (obj != null)
                     {
                         obj.Name = product.Name;

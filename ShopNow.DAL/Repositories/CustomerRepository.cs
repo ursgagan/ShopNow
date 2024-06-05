@@ -45,7 +45,7 @@ namespace ShopNow.DAL.Repositories
             {
                 if (email != null)
                 {
-                    var customer = _shopNowDbContext.Customer.FirstOrDefault(x => x.EmailId == email);
+                    var customer = _shopNowDbContext.Customer.Include(a => a.Address).Where(x => x.EmailId == email).FirstOrDefault();
                     if (customer != null) return customer;
                     else return null;
                 }

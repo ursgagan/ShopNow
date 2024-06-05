@@ -81,7 +81,7 @@
                     showSuccessMessage("Customer Added", "Customer Added Successfully");
                     setTimeout(function () {
                         window.location.href = "/Customer/SignUp";
-                    }, 7000);
+                    }, 4000);
                 } else {
                     iziToast.error({
                         title: 'Error',

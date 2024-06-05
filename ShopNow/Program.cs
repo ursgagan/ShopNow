@@ -36,6 +36,10 @@ builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<AddressServices>();
 builder.Services.AddScoped<IAddressRepository, AddressRepository>();
 
+
+builder.Services.AddScoped<ShoppingCartServices>();
+builder.Services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;

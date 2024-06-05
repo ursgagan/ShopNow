@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShopNow.BAL.Services;
 using ShopNow.DAL.Entities;
 using ShopNow.Models;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace ShopNow.Controllers
 {
@@ -11,14 +13,16 @@ namespace ShopNow.Controllers
         private readonly ProductServices _productServices;
         private readonly ContactServices _contactServices;
         private readonly CustomerServices _customerServices;
+        private readonly ShoppingCartServices _shoppingCartServices;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger, ProductServices productServices, ContactServices contactServices, CustomerServices customerServices)
+        public HomeController(ILogger<HomeController> logger, ProductServices productServices, ContactServices contactServices, CustomerServices customerServices, ShoppingCartServices shoppingCartServices)
         {
             _logger = logger;
             _productServices = productServices;
             _contactServices = contactServices;
-            _customerServices = customerServices;   
+            _customerServices = customerServices;
+            _shoppingCartServices = shoppingCartServices;
         }
 
         public IActionResult Index()
@@ -44,7 +48,7 @@ namespace ShopNow.Controllers
             if (productId != null)
             {
                 var productDetailId = new Guid(productId);
-                 product = _productServices.GetProductById(productDetailId);
+                product = _productServices.GetProductById(productDetailId);
             }
             return View(product);
         }
@@ -73,16 +77,20 @@ namespace ShopNow.Controllers
             return View();
         }
 
-        public IActionResult MyProfile(string customerId)
+        public IActionResult MyProfile()
         {
-            Customer customer = new Customer();
+            var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.Name);
 
-            if (customerId != null)
+            if (userIdClaim != null)
             {
-                var customerDetailId = new Guid(customerId);
-                customer = _customerServices.GetCustomerById(customerDetailId);
+                var userId = userIdClaim.Value;
+                Guid customerId = new Guid(userId);
+
+                var customer = _customerServices.GetCustomerById(customerId);
+
+                return View(customer);
             }
-            return View(customer);
+            return View();
         }
 
         [HttpPost]
@@ -102,7 +110,78 @@ namespace ShopNow.Controllers
             {
                 return Json(false);
             }
-
         }
+
+        public IActionResult ShoppingCart()
+        {
+            return View();
+        }
+
+        public IActionResult GetShoppingCartByCustomerId()
+        {
+
+            var customerIdClaim = HttpContext.User.FindFirst(ClaimTypes.Name);
+
+            if (customerIdClaim != null)
+            {          
+                Guid customerId = new Guid(customerIdClaim.Value);
+
+                var getProductDataByCustomerId = _shoppingCartServices.GetAllProductByCustomerId(customerId).ToList();
+                //bool isAdded = _shoppingCartServices.AddProductToShoppingCart(shoppingCart).Result;
+                return Json(getProductDataByCustomerId);
+            }
+            return Json(false);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddProductToShoppingCart(ShoppingCart shoppingCart)
+        {
+            var productId = shoppingCart.ProductId;
+
+            var getProduct = _productServices.GetProductById(productId);
+            if (getProduct != null)
+            {
+                shoppingCart.TotalPrice = getProduct.Price * shoppingCart.Quantity;
+            }
+
+            var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.Name);
+
+            if (userIdClaim != null)
+            {
+                var userId = userIdClaim.Value;
+                Guid customerId = new Guid(userId);
+
+                shoppingCart.CustomerId = customerId;
+                bool isAdded = _shoppingCartServices.AddProductToShoppingCart(shoppingCart).Result;
+                return Json(isAdded);
+            }
+
+            return Json(false);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateProductToShoppingCart(ShoppingCart shoppingCart)
+        {
+            if (shoppingCart.Id != null)
+            {
+
+                var getProduct = _productServices.GetProductById(shoppingCart.ProductId);
+                if (getProduct != null)
+                {
+                    shoppingCart.TotalPrice = getProduct.Price * shoppingCart.Quantity;
+                }
+                bool isUpdated = _shoppingCartServices.UpdateShoppingCart(shoppingCart);
+                return Json(isUpdated);
+            }
+            return Json(false);
+        }
+
+        public IActionResult DeleteProductFromShoppingCart(Guid shoppingCartId)
+        {
+          bool isDeleted = _shoppingCartServices.DeleteProductFromShoppingCart(shoppingCartId);
+
+            return Json(isDeleted);
+        }
+
     }
 }

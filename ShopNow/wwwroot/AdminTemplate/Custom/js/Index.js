@@ -23,7 +23,7 @@ function getProductList() {
                     
                             <img class="img-fluid w-100 product-image" style="width: 150px; height: 200px;" src="data:image/png;base64,${value.productImages[0].image.imageData}">
                         <div class="product-action" onclick="ProductDetail('${value.id}')">
-                            <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
+                            <a class="btn btn-outline-dark btn-square"><i class="fa fa-shopping-cart"></i></a>
                             <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
                             <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
                             <a class="btn btn-outline-dark btn-square view-product-link" href="/Home/ProductDetails?productId=${value.id}"><i class="fa fa-folder"></i></a>
@@ -72,3 +72,23 @@ function ProductDetail(productId) {
 //    var productId = $(this).closest('.product-img').find('a').attr('href');
 //    window.location.href = productId;
 //});
+
+function addToCart(productId) {
+    debugger;
+    $.ajax({
+        type: 'Get',
+        url: '/Home/AddProductToShoppingCart',
+        data : { productId: productId },
+
+        success: function (response) {
+            debugger;
+            if (response) {
+                debugger;
+
+                var productDetailsUrl = "/Home/AddProductToShoppingCart";
+                // Redirect the page to the product details URL
+                window.location.href = productDetailsUrl;
+            }
+        }
+    });
+}

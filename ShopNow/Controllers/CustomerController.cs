@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using System.Text;
+using ShopNow.DAL.Models;
 
 namespace ShopNow.Controllers
 {
@@ -225,7 +227,7 @@ namespace ShopNow.Controllers
                     {
                         var claims = new List<Claim>
                         {
-                            new Claim(ClaimTypes.Name, user.FirstName),
+                            new Claim(ClaimTypes.Name, (user.Id.ToString())),
                             new Claim(ClaimTypes.Email, user.EmailId),
                         };
 
@@ -242,7 +244,6 @@ namespace ShopNow.Controllers
                     {
                         TempData["PasswordIncorrectMessage"] = "Login Failed";
                         return View();
-
                     }
                 }
                 else
@@ -252,6 +253,51 @@ namespace ShopNow.Controllers
             }
             return View();
         }
+
+        private CustomerModel GetLoggedUser()
+        {
+           CustomerModel customerModel = new CustomerModel();
+            Customer customer = new Customer();
+            var userClaims = ((ClaimsIdentity)User.Identity).Claims;
+
+            // Find the claim with the email address
+            var emailClaim = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.Email || c.Type == "email");
+
+            if (emailClaim != null)
+            {
+                var emailAddress = emailClaim.Value;
+
+                customer = _customerServices.isUserExist(emailAddress);
+
+                if (customer != null)
+                {
+
+                    customerModel.Id = customer.Id;
+                    customerModel.FirstName = customer.FirstName;
+                    customerModel.LastName = customer.LastName;
+                    customerModel.EmailId = customer.EmailId;
+                    customerModel.Address.PhoneNumber = customer.Address.PhoneNumber;
+                    customerModel.IsDeleted = customer.IsDeleted;
+                    customerModel.CreatedOn = customer.CreatedOn;
+                    customerModel.UpdatedOn = customer.UpdatedOn;
+                    customerModel.ResetCode = customer.ResetCode;
+
+                    customerModel.Password = customer.Password;
+
+
+                    return customerModel;
+                }
+            }
+            return customerModel;
+        }
+
+        public IActionResult GetCustomerData()
+        {
+            var getCustomerData = GetLoggedUser();
+
+            return Json(getCustomerData);
+        }
+
 
         [Authorize]
         public async Task<IActionResult> UserLogout()

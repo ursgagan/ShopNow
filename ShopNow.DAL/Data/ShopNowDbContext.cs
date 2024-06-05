@@ -28,5 +28,6 @@ namespace ShopNow.DAL.Data
         public DbSet<Contact> Contact { get; set; }
         public DbSet<Customer> Customer { get; set; }
         public DbSet<Address> Address { get; set; }
+        public DbSet<ShoppingCart> ShoppingCart { get; set; }
     }
 }

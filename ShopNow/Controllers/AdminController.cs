@@ -32,7 +32,7 @@ namespace ShopNow.Controllers
         public IActionResult AddProductCategory(string productCategoryId)
         {
             ProductCategory productType = new ProductCategory();
-
+      
             if (productCategoryId != null)
             {
                 var pId = new Guid(productCategoryId);
@@ -100,7 +100,7 @@ namespace ShopNow.Controllers
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 try
-                {
+                {                 
                     if(product.Id != null && product.Id != Guid.Empty)
                     {
                        _productServices.UpdateProduct(product); 

@@ -35,11 +35,11 @@ function bindProductCategoriesDropdown() {
 
 $("#btnSaveProduct").click(function () {
     debugger;
-    var Product = $("#ProductName").val();
+    var productName = $("#ProductName").val();
     
     var isValid = false;
 
-    if (Product == "") {
+    if (productName == "") {
         iziToast.error({
             title: 'Invalid Product Name',
             message: 'Please fill Product Name',
@@ -89,7 +89,7 @@ $("#btnSaveProduct").click(function () {
             cache: false,
             //datatype: 'json',
         }).done(function (data) {
-            debugger;
+         
             if (data === true) {
                 if ($("#hdnProductId").val() != null && $("#hdnProductId").val() != "") {
                     showSuccessMessage("Product Updated", "Product Updated Successfully");

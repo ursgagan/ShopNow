@@ -21,7 +21,7 @@
             data: { password: newPassword, resetCodeId: resetCodeId }, // Pass the emailId as data to the server
             dataType: 'json',
             success: function (data) {
-
+                debugger;
                 if (data) {
                     debugger;
                     window.location.href = '/Customer/Login';

@@ -104,18 +104,18 @@
                 <div class="d-flex align-items-center mb-4 pt-2">
                     <div class="input-group quantity mr-3" style="width: 130px;">
                         <div class="input-group-btn">
-                            <button class="btn btn-primary btn-minus">
+                            <button class="btn btn-primary btn-minus" onclick="DecreaseProductQuantity()"  >
                                 <i class="fa fa-minus"></i>
                             </button>
                         </div>
-                        <input type="text" class="form-control bg-secondary border-0 text-center" value="1">
+                        <input id="quantityInput" type="text" class="form-control bg-secondary border-0 text-center" value="1">
                         <div class="input-group-btn">
-                            <button class="btn btn-primary btn-plus">
+                            <button class="btn btn-primary btn-plus" onclick="IncreaseProductQuantity()">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
                     </div>
-                    <button class="btn btn-primary px-3">
+                    <button class="btn btn-primary px-3" type="button" onclick="addToCart(this.id)">
                         <i class="fa fa-shopping-cart mr-1"></i> Add To
                         Cart
                     </button>
@@ -248,6 +248,11 @@
         </div>
     </div>
 </div>
+
+
+
+<script src="~/admintemplate/js/jquery-3.6.4.min.js"></script>
+<script src="~/admintemplate/custom/js/productdetail.js"></script>
 <!-- Shop Detail End -->
 <!-- Products Start -->
 @* <div class="container-fluid py-5">
@@ -385,3 +390,4 @@
     </div>
 </div> *@
 <!-- Products End -->
+

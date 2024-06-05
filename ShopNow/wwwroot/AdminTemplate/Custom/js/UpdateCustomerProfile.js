@@ -19,23 +19,20 @@
             url: '/Home/UpdateCustomerProfile',
             type: 'POST',
             data: { customer : customer
-                //debugger
                 
-                //FirstName: FirstName,
-                //LastName: $("#LastName").val(),
-                //EmailId: $("#EmailId").val(),
-                //PhoneNumber: $("#PhoneNumber").val(),
-                //AddressId: AddressId,
-                //Address1: Address1,
-                //Address2: Address2,
-                //ZipCode: ZipCode
             },
             success: function (data) {
                 debugger;
-                if (data === true) {
-                    showSuccessMessage("Customer Profile Updated", "Customer Profile Updated Successfully");
+                if (data == true) {
+                    debugger;
+                    iziToast.success({
+                        title: "Customer Profile Updated",
+                        message: "Customer Profile Updated Successfully",
+                        position: 'topRight'
+                    });
+                    /*showSuccessMessage("Customer Profile Updated", "Customer Profile Updated Successfully");*/
                     setTimeout(function () {
-                        window.location.href = "/Home/Index";
+                        window.location.href = "/Home/MyProfile";
                     }, 7000);
                 } else {
                     iziToast.error({

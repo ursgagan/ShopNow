@@ -2,6 +2,7 @@
     debugger;
     $('#btnResetPassword').click(function () {
         event.preventDefault();
+        debugger;
         var emailId = $('#Email').val();
         if (emailId != null) {
             debugger

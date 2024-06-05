@@ -14,7 +14,6 @@ namespace ShopNow.DAL.Entities
         public Guid? ProductCategoryId { get; set; }
         public decimal? Price { get; set; }
         public Guid? SupplierId { get; set; }
-        //public string? Gender { get; set; }
         public bool? IsDeleted { get; set; }
         public DateTime? CreatedOn { get; set; }
         public DateTime? UpdatedOn { get; set; }
@@ -22,6 +21,5 @@ namespace ShopNow.DAL.Entities
         public Guid? UpdatedBy { get; set; }
         public string? ProductDescription { get; set; }
         public virtual List<ProductImages> ProductImages { get; set; }
-
     }
 }
