@@ -1,6 +1,10 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 
+@using Microsoft.AspNetCore.Http
+@{
+    var isAuthenticated = Context.User.Identity.IsAuthenticated;
+}
 <head>
     <meta charset="utf-8">
     <title>MultiShop - Online Shop Website Template</title>
@@ -21,6 +25,7 @@
     <!-- Libraries Stylesheet -->
     <link href="~/maintemplate/lib/animate/animate.min.css" rel="stylesheet">
     <link href="~/maintemplate/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="~/admintemplate/modules/izitoast/css/izitoast.min.css" rel="stylesheet" />
     <!-- Customized Bootstrap Stylesheet -->
     <link href="~/maintemplate/css/style.css" rel="stylesheet">
 </head>
@@ -42,8 +47,17 @@
                     <div class="btn-group">
                         <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">My Account</button>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <button class="dropdown-item" type="button">My Profile</button>
-                            <button class="dropdown-item" onclick="window.location.href = '/Customer/UserLogout'" type="button">Logout</button>
+                            @if (isAuthenticated)
+                            {
+                                <button class="dropdown-item" type="button" onclick="RedirectToMyProfilePage()">My Profile</button>
+                                <button class="dropdown-item" onclick="window.location.href = '/Customer/UserLogout'" type="button">Logout</button>
+                            }
+                            else
+                            {
+                                <button class="dropdown-item" type="button" onclick="RedirectToLoginPage()">Sign in</button>
+                                <button class="dropdown-item" type="button" onclick="RedirectToSignUpPage()">Sign up</button>
+                            }
+                            
                         </div>
                     </div>
                     <div class="btn-group mx-2" hidden>
@@ -161,7 +175,7 @@
                             </a>
                             <a href="" class="btn px-0 ml-3">
                                 <i class="fas fa-shopping-cart text-primary"></i>
-                                <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">0</span>
+                                <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;" id="ShoppingCartCount"></span>
                             </a>
                         </div>
                     </div>
@@ -244,20 +258,53 @@
     <!-- Back to Top -->
     <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
+    <script>
 
-    <!-- JavaScript Libraries -->
+            $(document).ready(function () {
+                debugger;
+                $.ajax({
+                    url: '/Customer/GetShoppingCartCount', // Replace this with your actual endpoint to retrieve user profile data
+                    type: 'GET',
+                    success: function (response) {
+                        debugger;
+                        if (response) {
+                            var shoppingCartCount = $('#ShoppingCartCount').text(response.shoppingCartCount);
+                        }
+                    },
+                });
+            });
+
+      
+
+        function RedirectToMyProfilePage() {
+            
+            window.location.href = "/Home/MyProfile";
+        }
+
+        function RedirectToLoginPage() {
+
+            window.location.href = "/Customer/Login";
+        }
+
+        function RedirectToSignUpPage() {
+
+            window.location.href = "/Customer/SignUp";
+        }
+
+
+    </script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script src="~/maintemplate/lib/easing/easing.min.js"></script>
     <script src="~/maintemplate/lib/owlcarousel/owl.carousel.min.js"></script>
     <script src="~/admintemplate/modules/izitoast/js/izitoast.min.js"></script>
-
+ 
     <!-- Contact Javascript File -->
 
     <script src="~/maintemplate/mail/jqBootstrapValidation.min.js"></script>
     <script src="~/maintemplate/mail/contact.js"></script>
-    <script src="~/admintemplate/js/jquery-3.6.4.min.js"></script>
-    <script src="~/admintemplate/custom/js/common.js"></script>
+    <script src="~/admintemplate/js/jquery-3.6.4.min.js"></script> 
+<script src="~/admintemplate/custom/js/common.js"></script>
 
     <!-- Template Javascript -->
     <script src="~/maintemplate/js/main.js"></script>

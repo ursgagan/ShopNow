@@ -16,7 +16,7 @@
     customer.Address = Address; 
     
         $.ajax({
-            url: '/Home/UpdateCustomerProfile',
+            url: '/Customer/UpdateCustomerProfile',
             type: 'POST',
             data: { customer : customer
                 
@@ -30,9 +30,9 @@
                         message: "Customer Profile Updated Successfully",
                         position: 'topRight'
                     });
-                    /*showSuccessMessage("Customer Profile Updated", "Customer Profile Updated Successfully");*/
+                   
                     setTimeout(function () {
-                        window.location.href = "/Home/MyProfile";
+                        window.location.href = "/Customer/MyProfile";
                     }, 7000);
                 } else {
                     iziToast.error({

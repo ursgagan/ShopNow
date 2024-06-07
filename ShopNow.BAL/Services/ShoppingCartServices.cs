@@ -40,7 +40,7 @@ namespace ShopNow.BAL.Services
             }
         }
 
-        public IEnumerable<ShoppingCart> GetAllProductByCustomerId(Guid customerId)
+        public IEnumerable<ShoppingCart> GetShoppingCartByCustomerId(Guid customerId)
         {
             try
             {

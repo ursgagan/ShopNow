@@ -29,5 +29,6 @@ namespace ShopNow.DAL.Data
         public DbSet<Customer> Customer { get; set; }
         public DbSet<Address> Address { get; set; }
         public DbSet<ShoppingCart> ShoppingCart { get; set; }
+        public DbSet<Wishlist> WishList { get; set; }
     }
 }

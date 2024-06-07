@@ -6,7 +6,7 @@ function bindShoppingCartByCustomerId() {
 
     $.ajax({
         type: 'Get',
-        url: '/Home/GetShoppingCartByCustomerId',
+        url: '/Customer/GetShoppingCartByCustomerId',
         dataType: 'json',
         success: function (response) {
             debugger;
@@ -60,9 +60,6 @@ function bindShoppingCartByCustomerId() {
     
 }
 
-
-
-
 function DecreaseProductQuantity(id) {
     debugger;
     var currentQuantity = $("#quantityInput_" + id).val();
@@ -87,7 +84,7 @@ function updateShoppingCart(quantity, id, productId) {
     };
 
     $.ajax({
-        url: '/Home/UpdateProductToShoppingCart',
+        url: '/Customer/UpdateProductToShoppingCart',
         type: 'POST',
         dataType: 'json',
         data: { shoppingCart: shoppingCart },
@@ -116,7 +113,7 @@ function deleteShoppingCart() {
 
     $.ajax({
         type: 'Get',
-        url: '/Home/DeleteProductFromShoppingCart',
+        url: '/Customer/DeleteProductFromShoppingCart',
         data: { shoppingCartId: shoppingCartId },
         async: true,
         success: function (response) {

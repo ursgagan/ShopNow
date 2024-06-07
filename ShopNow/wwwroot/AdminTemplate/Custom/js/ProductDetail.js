@@ -22,7 +22,7 @@ function addToCart() {
 
     $.ajax({
         type: 'Post',
-        url: '/Home/AddProductToShoppingCart',
+        url: '/Customer/AddProductToShoppingCart',
         data: shoppingCart,
         dataType: 'json',
         success: function (response) {
@@ -30,7 +30,7 @@ function addToCart() {
             if (response) {
                 debugger;
 
-                var productDetailsUrl = "/Home/ShoppingCart";
+                var productDetailsUrl = "/Customer/ShoppingCart";
                 // Redirect the page to the product details URL
                 window.location.href = productDetailsUrl;
             }

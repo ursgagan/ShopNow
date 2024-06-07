@@ -18,10 +18,16 @@ namespace ShopNow.Controllers
     {
         private readonly CustomerServices _customerServices;
         private readonly AddressServices _addressServices;
-        public CustomerController(CustomerServices customerServices, AddressServices addressServices)
+        private readonly ShoppingCartServices _shoppingCartServices;
+        private readonly ProductServices _productServices;
+        private readonly WishListServices _wishListServices;
+        public CustomerController(CustomerServices customerServices, AddressServices addressServices, ShoppingCartServices shoppingCartServices, ProductServices productServices, WishListServices wishListServices)
         {
             _customerServices = customerServices;
             _addressServices = addressServices;
+            _shoppingCartServices = shoppingCartServices;
+            _productServices = productServices;
+            _wishListServices = wishListServices;
         }
         public IActionResult SignUp(string customerId)
         {
@@ -40,7 +46,7 @@ namespace ShopNow.Controllers
             {
                 await _addressServices.AddAddress(address);
 
-                if(address.Id != null || address.Id == Guid.Empty)
+                if (address.Id != null || address.Id == Guid.Empty)
                 {
                     var generateOTP = GenerateOTP();
                     customer.ResetCode = generateOTP;
@@ -56,7 +62,7 @@ namespace ShopNow.Controllers
                 return Json(false);
                 throw ex;
             }
-           return Json(false);
+            return Json(false);
         }
 
         private string GenerateOTP()
@@ -97,7 +103,7 @@ namespace ShopNow.Controllers
                 {
                     client.UseDefaultCredentials = false;
                     // client.Credentials = new NetworkCredential("deepsinghh46@gmail.com", "@bc12345@");
-                    client.Credentials = new NetworkCredential("deepsinghh46@gmail.com", "iztv umyi eruq qbqc");                
+                    client.Credentials = new NetworkCredential("deepsinghh46@gmail.com", "iztv umyi eruq qbqc");
                     client.EnableSsl = true;
                     client.Port = 587;
 
@@ -147,8 +153,8 @@ namespace ShopNow.Controllers
 
                     _customerServices.UpdateCustomer(existingCustomer);
 
-                   string firstName = existingCustomer.FirstName;
-                   
+                    string firstName = existingCustomer.FirstName;
+
                     var forgotPasswordURL = "https://localhost:44377/Customer/ForgotPassword?resetCode=" + generatedOTP;
 
                     string emailBody = System.IO.File.ReadAllText(Path.Combine(folderPath, fileName));
@@ -173,7 +179,7 @@ namespace ShopNow.Controllers
                         };
 
                         message.To.Add(emailId);
-                       
+
                         await client.SendMailAsync(message);
                         return Json(true);
                     }
@@ -256,7 +262,7 @@ namespace ShopNow.Controllers
 
         private CustomerModel GetLoggedUser()
         {
-           CustomerModel customerModel = new CustomerModel();
+            CustomerModel customerModel = new CustomerModel();
             Customer customer = new Customer();
             var userClaims = ((ClaimsIdentity)User.Identity).Claims;
 
@@ -304,6 +310,200 @@ namespace ShopNow.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login", "Customer");
+        }
+
+        public IActionResult MyProfile()
+        {
+            var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.Name);
+
+            if (userIdClaim != null)
+            {
+                var userId = userIdClaim.Value;
+                Guid customerId = new Guid(userId);
+
+                var customer = _customerServices.GetCustomerById(customerId);
+
+                return View(customer);
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateCustomerProfile(Customer customer)
+        {
+            try
+            {
+                if (customer.Id != null && customer.Id != Guid.Empty)
+                {
+                    _customerServices.UpdateCustomer(customer);
+                    return Json(true);
+                }
+
+                return Json(false);
+            }
+            catch (Exception ex)
+            {
+                return Json(false);
+            }
+        }
+
+        public IActionResult ShoppingCart()
+        {
+            return View();
+        }
+
+        public IActionResult GetShoppingCartByCustomerId()
+        {
+            var customerIdClaim = HttpContext.User.FindFirst(ClaimTypes.Name);
+
+            if (customerIdClaim != null)
+            {
+                Guid customerId = new Guid(customerIdClaim.Value);
+      
+                var getProductDataByCustomerId = _shoppingCartServices.GetShoppingCartByCustomerId(customerId).ToList();
+                //bool isAdded = _shoppingCartServices.AddProductToShoppingCart(shoppingCart).Result;
+                return Json(getProductDataByCustomerId);
+            }
+            return Json(false);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddProductToShoppingCart(ShoppingCart shoppingCart)
+        {
+            var productId = shoppingCart.ProductId;
+
+            var getProduct = _productServices.GetProductById(productId);
+            if (getProduct != null)
+            {
+                shoppingCart.TotalPrice = getProduct.Price * shoppingCart.Quantity;
+            }
+
+            var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.Name);
+
+            if (userIdClaim != null)
+            {
+                var userId = userIdClaim.Value;
+                Guid customerId = new Guid(userId);
+
+                shoppingCart.CustomerId = customerId;
+                bool isAdded = _shoppingCartServices.AddProductToShoppingCart(shoppingCart).Result;
+                return Json(isAdded);
+            }
+            return Json(false);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateProductToShoppingCart(ShoppingCart shoppingCart)
+        {
+            if (shoppingCart.Id != null)
+            {
+                var getProduct = _productServices.GetProductById(shoppingCart.ProductId);
+                if (getProduct != null)
+                {
+                    shoppingCart.TotalPrice = getProduct.Price * shoppingCart.Quantity;
+                }
+                bool isUpdated = _shoppingCartServices.UpdateShoppingCart(shoppingCart);
+                return Json(isUpdated);
+            }
+            return Json(false);
+        }
+
+        public IActionResult DeleteProductFromShoppingCart(Guid shoppingCartId)
+        {
+            bool isDeleted = _shoppingCartServices.DeleteProductFromShoppingCart(shoppingCartId);
+
+            return Json(isDeleted);
+        }
+
+        public IActionResult CheckOut()
+        {
+            var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.Name);
+
+            if (userIdClaim != null)
+            {
+                var userId = userIdClaim.Value;
+                Guid customerId = new Guid(userId);
+
+                var customer = _customerServices.GetCustomerById(customerId);
+
+                ViewBag.getProductDataByCustomerId = _shoppingCartServices.GetShoppingCartByCustomerId(customerId).ToList();
+
+
+                return View(customer);
+            }
+            return View();
+        }
+
+        public IActionResult GetShoppingCartCount()
+        {
+            var customerIdClaim = HttpContext.User.FindFirst(ClaimTypes.Name);
+
+            if (customerIdClaim != null)
+            {
+                Guid customerId = new Guid(customerIdClaim.Value);
+
+                var getProductCountByCustomerId = _shoppingCartServices.GetShoppingCartByCustomerId(customerId).Count();
+
+                var count = new
+                {
+                    shoppingCartCount = getProductCountByCustomerId,
+
+                };
+                return Json(count);
+            }
+            return Json(false);
+        }
+
+        public IActionResult WishList()
+        {
+            return View();
+        }
+
+        public IActionResult GetWishListByCustomerId()
+        {
+            var customerIdClaim = HttpContext.User.FindFirst(ClaimTypes.Name);
+
+            if (customerIdClaim != null)
+            {
+                Guid customerId = new Guid(customerIdClaim.Value);
+
+                var getProductDataByCustomerId = _wishListServices.GetWishListByCustomerId(customerId).ToList();
+                //bool isAdded = _shoppingCartServices.AddProductToShoppingCart(shoppingCart).Result;
+                return Json(getProductDataByCustomerId);
+            }
+            return Json(false);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddProductToWishList(Wishlist wishlist)
+        {
+            var productId = wishlist.ProductId;
+
+            var getProduct = _productServices.GetProductById(productId);
+            if (getProduct != null)
+            {
+                wishlist.Price = getProduct.Price;
+            }
+
+            var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.Name);
+
+            if (userIdClaim != null)
+            {
+                var userId = userIdClaim.Value;
+                Guid customerId = new Guid(userId);
+
+                wishlist.CustomerId = customerId;
+                bool isAdded = _wishListServices.AddProductToWishList(wishlist).Result;
+                return Json(isAdded);
+            }
+            return Json(false);
+        }
+
+        public IActionResult DeleteProductFromWishlist(Guid wishListId)
+        {
+            bool isDeleted = _wishListServices.DeleteProductFromWishList(wishListId);
+
+            return Json(isDeleted);
         }
     }
 }

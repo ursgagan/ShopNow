@@ -24,9 +24,9 @@ function getProductList() {
                             <img class="img-fluid w-100 product-image" style="width: 150px; height: 200px;" src="data:image/png;base64,${value.productImages[0].image.imageData}">
                         <div class="product-action" onclick="ProductDetail('${value.id}')">
                             <a class="btn btn-outline-dark btn-square"><i class="fa fa-shopping-cart"></i></a>
-                            <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
+                            <a class="btn btn-outline-dark btn-square" onclick="addToWishlist('${value.id}')"><i class="far fa-heart"></i></a>
                             <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
-                            <a class="btn btn-outline-dark btn-square view-product-link" href="/Home/ProductDetails?productId=${value.id}"><i class="fa fa-folder"></i></a>
+                            <a class="btn btn-outline-dark btn-square view-product-link"><i class="fa fa-folder"></i></a>
                         </div>
                     </div>  
                     <div class="text-center py-4">
@@ -55,30 +55,34 @@ function getProductList() {
     });
 }
 
-function ProductDetail(productId) {
+function addToWishlist(productId) {
     debugger;
-  
-    var productDetailsUrl = "/Home/ProductDetails?productId=" + productId;
-    // Redirect the page to the product details URL
-    window.location.href = productDetailsUrl;
-}
-//$(document).on('click', '.product-img img', function () {
-//    debugger;
-//    var productId = $(this).data('product-id');
-//    ProductDetail(productId);
-//});
+    $.ajax({
+        url: '/Customer/AddProductToWishList',
+        type: 'POST',
+        data: { productId: productId },
+        success: function (response) {
+            if (response) {
+                debugger;
+                showSuccessMessage("Product Added", "Product Added To WishList")
 
-//$(document).on('click', '.product-image', function () {
-//    var productId = $(this).closest('.product-img').find('a').attr('href');
-//    window.location.href = productId;
-//});
+            } else {
+                iziToast.error({
+                    title: 'Error',
+                    message: 'Product Failed to Removed from Cart',
+                    position: 'topRight'
+                });
+            }
+        },
+    });
+}
 
 function addToCart(productId) {
     debugger;
     $.ajax({
         type: 'Get',
         url: '/Home/AddProductToShoppingCart',
-        data : { productId: productId },
+        data: { productId: productId },
 
         success: function (response) {
             debugger;

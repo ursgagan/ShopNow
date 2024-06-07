@@ -1,0 +1,48 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+@model ShopNow.DAL.Entities.Product
+
+<!-- Cart Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-lg-8 table-responsive mb-5">
+            <table class="table table-light table-borderless table-hover text-center mb-0">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Products</th>
+                        <th>Product Description</th>
+                        <th>Price</th>
+                        <th>Remove</th>
+                    </tr>
+                </thead>
+                <tbody class="align-middle" id="tblWishListByCustomerId">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade show" tabindex="-1" role="dialog" id="Delete-WishList-Modal" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Sure?</h5>
+            </div>
+            <div class="modal-body"> Do you want to Remove this Product from Wishlist?</div>
+            <input id="hdnWishListId" type="hidden">
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-shadow" id="" onclick="deleteWishList()">Yes</button>
+
+                <button type="button" class="btn btn-secondary" id="" onclick="CloseModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/admintemplate/js/jquery-3.6.4.min.js"></script>
+<script src="~/admintemplate/custom/js/wishlist.js"></script>
+<script src="~/admintemplate/custom/js/common.js"></script>
