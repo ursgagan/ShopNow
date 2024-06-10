@@ -45,3 +45,20 @@ function showSuccessMessage(title, message) {
         position: 'topRight'
     });
 }
+
+function GetAllCount() {
+    debugger;
+    $.ajax({
+        url: '/Customer/GetAllCount',
+        type: 'GET',
+        async: true,
+        success: function (response) {
+            debugger;
+            if (response) {
+                debugger;
+                var shoppingCartCount = $('#ShoppingCartCount').text(response.shoppingCartCount);
+                var wishListCount = $('#WishListCount').text(response.wishListCount);
+            }
+        },
+    });
+}

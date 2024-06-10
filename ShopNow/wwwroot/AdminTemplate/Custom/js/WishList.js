@@ -59,6 +59,7 @@ function deleteWishList()
                 debugger;
                 showSuccessMessage("Product Removed", "Product Removed From WishList")
                 bindWishListByCustomerId();
+                GetAllCount();
 
             } else {
                 iziToast.error({

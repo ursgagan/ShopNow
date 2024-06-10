@@ -29,10 +29,11 @@ function addToCart() {
             debugger;
             if (response) {
                 debugger;
-
+               
                 var productDetailsUrl = "/Customer/ShoppingCart";
                 // Redirect the page to the product details URL
                 window.location.href = productDetailsUrl;
+                GetAllCount();
             }
         }
     });

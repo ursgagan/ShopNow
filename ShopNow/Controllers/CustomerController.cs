@@ -434,7 +434,7 @@ namespace ShopNow.Controllers
             return View();
         }
 
-        public IActionResult GetShoppingCartCount()
+        public IActionResult GetAllCount()
         {
             var customerIdClaim = HttpContext.User.FindFirst(ClaimTypes.Name);
 
@@ -443,11 +443,11 @@ namespace ShopNow.Controllers
                 Guid customerId = new Guid(customerIdClaim.Value);
 
                 var getProductCountByCustomerId = _shoppingCartServices.GetShoppingCartByCustomerId(customerId).Count();
-
+                var getProductCountInWishListByCustomerId = _wishListServices.GetWishListByCustomerId(customerId).Count();
                 var count = new
                 {
                     shoppingCartCount = getProductCountByCustomerId,
-
+                    wishListCount = getProductCountInWishListByCustomerId,
                 };
                 return Json(count);
             }
@@ -505,5 +505,11 @@ namespace ShopNow.Controllers
 
             return Json(isDeleted);
         }
+
+        public IActionResult PlaceOrder()
+        {
+            return View();
+        }
+
     }
 }

@@ -57,7 +57,7 @@
                                 <button class="dropdown-item" type="button" onclick="RedirectToLoginPage()">Sign in</button>
                                 <button class="dropdown-item" type="button" onclick="RedirectToSignUpPage()">Sign up</button>
                             }
-                            
+
                         </div>
                     </div>
                     <div class="btn-group mx-2" hidden>
@@ -156,22 +156,22 @@
                     </button>
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto py-0">
-                            <a href="index.html" class="nav-item nav-link active">Home</a>
+                            <a href="/Home/Index" class="nav-item nav-link active">Home</a>
                             <a href="shop.html" class="nav-item nav-link">Shop</a>
                             <a href="detail.html" class="nav-item nav-link">Shop Detail</a>
                             <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages <i class="fa fa-angle-down mt-1"></i></a>
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Your Orders <i class="fa fa-angle-down mt-1"></i></a>
                                 <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
-                                    <a href="cart.html" class="dropdown-item">Shopping Cart</a>
-                                    <a href="checkout.html" class="dropdown-item">Checkout</a>
+                                    <a href="/Customer/ShoppingCart" class="dropdown-item">Shopping Cart</a>
+                                    <a href="/Customer/CheckOut" class="dropdown-item">Checkout</a>
                                 </div>
                             </div>
-                            <a href="contact.html" class="nav-item nav-link">Contact</a>
+                            <a href="/Home/Contact" class="nav-item nav-link">Contact</a>
                         </div>
                         <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
                             <a href="" class="btn px-0">
                                 <i class="fas fa-heart text-primary"></i>
-                                <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">0</span>
+                                <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;" id="WishListCount"></span>
                             </a>
                             <a href="" class="btn px-0 ml-3">
                                 <i class="fas fa-shopping-cart text-primary"></i>
@@ -184,7 +184,7 @@
         </div>
     </div>
     <!-- Navbar End -->
-   @RenderBody()
+    @RenderBody()
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-secondary mt-5 pt-5">
         <div class="row px-xl-5 pt-5">
@@ -200,23 +200,23 @@
                     <div class="col-md-4 mb-5">
                         <h5 class="text-secondary text-uppercase mb-4">Quick Shop</h5>
                         <div class="d-flex flex-column justify-content-start">
-                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
+                            <a class="text-secondary mb-2" href="/Home/Index"><i class="fa fa-angle-right mr-2"></i>Home</a>
                             <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
                             <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
-                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
-                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
-                            <a class="text-secondary" href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+                            <a class="text-secondary mb-2" href="/Customer/ShoppingCart"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
+                            <a class="text-secondary mb-2" href="/Customer/CheckOut"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
+                            <a class="text-secondary" href="/Home/Contact"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
                         </div>
                     </div>
                     <div class="col-md-4 mb-5">
                         <h5 class="text-secondary text-uppercase mb-4">My Account</h5>
                         <div class="d-flex flex-column justify-content-start">
-                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
+                            <a class="text-secondary mb-2" href="/Home/Index"><i class="fa fa-angle-right mr-2"></i>Home</a>
                             <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
                             <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
-                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
-                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
-                            <a class="text-secondary" href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+                            <a class="text-secondary mb-2" href="/Customer/ShoppingCart"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
+                            <a class="text-secondary mb-2" href="/Customer/CheckOut"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
+                            <a class="text-secondary" href="/Home/Contact"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
                         </div>
                     </div>
                     <div class="col-md-4 mb-5">
@@ -258,26 +258,32 @@
     <!-- Back to Top -->
     <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
+  
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="~/maintemplate/lib/easing/easing.min.js"></script>
+    <script src="~/maintemplate/lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="~/admintemplate/modules/izitoast/js/izitoast.min.js"></script>
+
+    <!-- Contact Javascript File -->
+
+    <script src="~/maintemplate/mail/jqBootstrapValidation.min.js"></script>
+    <script src="~/maintemplate/mail/contact.js"></script>
+    <script src="~/admintemplate/js/jquery-3.6.4.min.js"></script>
+    <script src="~/admintemplate/custom/js/common.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="~/maintemplate/js/main.js"></script>
+
     <script>
 
-            $(document).ready(function () {
-                debugger;
-                $.ajax({
-                    url: '/Customer/GetShoppingCartCount', // Replace this with your actual endpoint to retrieve user profile data
-                    type: 'GET',
-                    success: function (response) {
-                        debugger;
-                        if (response) {
-                            var shoppingCartCount = $('#ShoppingCartCount').text(response.shoppingCartCount);
-                        }
-                    },
-                });
-            });
-
-      
+        $(document).ready(function () {
+            debugger;
+            GetAllCount();
+        });
 
         function RedirectToMyProfilePage() {
-            
+
             window.location.href = "/Home/MyProfile";
         }
 
@@ -293,21 +299,6 @@
 
 
     </script>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-    <script src="~/maintemplate/lib/easing/easing.min.js"></script>
-    <script src="~/maintemplate/lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="~/admintemplate/modules/izitoast/js/izitoast.min.js"></script>
- 
-    <!-- Contact Javascript File -->
-
-    <script src="~/maintemplate/mail/jqBootstrapValidation.min.js"></script>
-    <script src="~/maintemplate/mail/contact.js"></script>
-    <script src="~/admintemplate/js/jquery-3.6.4.min.js"></script> 
-<script src="~/admintemplate/custom/js/common.js"></script>
-
-    <!-- Template Javascript -->
-    <script src="~/maintemplate/js/main.js"></script>
 </body>
 
 </html>

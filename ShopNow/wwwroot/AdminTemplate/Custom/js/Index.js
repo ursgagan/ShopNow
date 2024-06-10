@@ -13,7 +13,6 @@ function getProductList() {
             debugger;
             if (response) {
                 let tblProductData = "";
-
                 $.each(response, function (i, value) {
                     if (value.productImages != null && value.productImages.length > 0) {
                         tblProductData += `
@@ -65,7 +64,7 @@ function addToWishlist(productId) {
             if (response) {
                 debugger;
                 showSuccessMessage("Product Added", "Product Added To WishList")
-
+                GetAllCount();
             } else {
                 iziToast.error({
                     title: 'Error',
@@ -95,4 +94,12 @@ function addToCart(productId) {
             }
         }
     });
+}
+
+function ProductDetail(productId) {
+    debugger;
+
+    var productDetailsUrl = "/Home/ProductDetails?productId=" + productId;
+    // Redirect the page to the product details URL
+    window.location.href = productDetailsUrl;
 }

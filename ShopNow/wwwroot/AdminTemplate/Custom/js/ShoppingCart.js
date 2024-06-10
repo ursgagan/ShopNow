@@ -3,11 +3,12 @@ $(document).ready(function () {
     bindShoppingCartByCustomerId();
 });
 function bindShoppingCartByCustomerId() {
-
+    debugger;
     $.ajax({
         type: 'Get',
         url: '/Customer/GetShoppingCartByCustomerId',
         dataType: 'json',
+        async: true,
         success: function (response) {
             debugger;
             if (response) {
@@ -122,8 +123,9 @@ function deleteShoppingCart() {
             if (response) {
                 debugger;
                 showSuccessMessage("Product Removed", "Product Removed From Cart")
+                GetAllCount();
                 bindShoppingCartByCustomerId();
-              
+          
             } else {
                 iziToast.error({
                     title: 'Error',
