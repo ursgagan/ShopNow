@@ -1,18 +1,18 @@
 ﻿
 $(document).ready(function () {
-    bindShoppingCartByCustomerId();
+    bindProductOrderByCustomerId();
 });
-function bindShoppingCartByCustomerId() {
+function bindProductOrderByCustomerId() {
     debugger;
     $.ajax({
         type: 'Get',
-        url: '/Customer/GetShoppingCartByCustomerId',
+        url: '/Customer/GetProductOrderByCustomerId',
         dataType: 'json',
         async: true,
         success: function (response) {
             debugger;
             if (response) {
-                let tblShoppingCartDataByCustomerId = "";
+                let tblProductOrderDataByCustomerId = "";
                 let subTotal = 0;
                 let total = 0;
                 $.each(response, function (i, value) {
@@ -21,7 +21,7 @@ function bindShoppingCartByCustomerId() {
                     subTotal = subTotal + totalPriceForProduct;
                     total = subTotal + 10;
 
-                    tblShoppingCartDataByCustomerId += `
+                    tblProductOrderDataByCustomerId += `
 
                     <input type="hidden" id="hdnProductId_${value.id}" class="form-control form-control-sm bg-secondary border-0 text-center" value="${value.productId}">
                                
@@ -50,11 +50,11 @@ function bindShoppingCartByCustomerId() {
                     </tr>`
                 })
 
-                $("#tblShoppingCartListByCustomerId").html(tblShoppingCartDataByCustomerId);
+                $("#tblProductOrderListByCustomerId").html(tblProductOrderDataByCustomerId);
 
-                $("#tblShoppingCartSubTotalId").html(subTotal);
+                $("#tblProductOrderSubTotalId").html(subTotal);
 
-                $("#tblShoppingCartTotalId").html(total);
+                $("#tblProductOrderTotalId").html(total);
             }
         }
     });

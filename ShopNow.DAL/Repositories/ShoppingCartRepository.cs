@@ -58,6 +58,32 @@ namespace ShopNow.DAL.Repositories
             }
         }
 
+        public bool DeleteShoppingCartByCustomerId(Guid customerId)
+        {
+            try
+            {
+                var getShoppingCartDataByCustomerId = _shopNowDbContext.ShoppingCart.Where(x => x.CustomerId == customerId && x.IsDeleted == false);
+
+                if (getShoppingCartDataByCustomerId != null)
+                {
+                    foreach (var shoppingcartData in getShoppingCartDataByCustomerId)
+                    {
+                        shoppingcartData.IsDeleted = true;
+                        var obj = _shopNowDbContext.Update(shoppingcartData);
+                        
+                    }
+                    _shopNowDbContext.SaveChangesAsync();
+                    return true;
+                }
+     
+                else return false;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public ShoppingCart GetById(Guid shoppingCartId)
         {
             try
@@ -112,7 +138,7 @@ namespace ShopNow.DAL.Repositories
                 }
                 return false;
             }
-            
+
             catch (Exception)
             {
                 return false;

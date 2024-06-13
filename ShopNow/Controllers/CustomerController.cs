@@ -21,13 +21,15 @@ namespace ShopNow.Controllers
         private readonly ShoppingCartServices _shoppingCartServices;
         private readonly ProductServices _productServices;
         private readonly WishListServices _wishListServices;
-        public CustomerController(CustomerServices customerServices, AddressServices addressServices, ShoppingCartServices shoppingCartServices, ProductServices productServices, WishListServices wishListServices)
+        private readonly ProductOrderServices _productOrderServices;
+        public CustomerController(CustomerServices customerServices, AddressServices addressServices, ShoppingCartServices shoppingCartServices, ProductServices productServices, WishListServices wishListServices, ProductOrderServices productOrderServices)
         {
             _customerServices = customerServices;
             _addressServices = addressServices;
             _shoppingCartServices = shoppingCartServices;
             _productServices = productServices;
             _wishListServices = wishListServices;
+            _productOrderServices = productOrderServices;
         }
         public IActionResult SignUp(string customerId)
         {
@@ -361,7 +363,6 @@ namespace ShopNow.Controllers
                 Guid customerId = new Guid(customerIdClaim.Value);
       
                 var getProductDataByCustomerId = _shoppingCartServices.GetShoppingCartByCustomerId(customerId).ToList();
-                //bool isAdded = _shoppingCartServices.AddProductToShoppingCart(shoppingCart).Result;
                 return Json(getProductDataByCustomerId);
             }
             return Json(false);
@@ -433,7 +434,34 @@ namespace ShopNow.Controllers
             }
             return View();
         }
+            
+        [HttpPost]
+        public async Task<IActionResult> PlaceOrder(List<ProductOrder> productOrderList)
+        {
+            var customerIdClaim = HttpContext.User.FindFirst(ClaimTypes.Name);
 
+            if (customerIdClaim != null)
+            {
+                Guid customerId = new Guid(customerIdClaim.Value);
+
+                foreach (var productOrder in productOrderList)
+                {
+                    productOrder.CustomerId = customerId;
+                    productOrder.IsDeleted = false;
+                    productOrder.CreatedOn = DateTime.Now;
+                    productOrder.UpdatedOn = DateTime.Now;
+                }
+
+                bool isAdded = _productOrderServices.AddProductOrder(productOrderList).Result;
+                if (isAdded)
+                {
+                    _shoppingCartServices.DeleteShoppingCartByCustomerId(customerId);
+                    return Json(isAdded);
+                }
+                return Json(false);
+            }
+            return Json(false);
+        }
         public IActionResult GetAllCount()
         {
             var customerIdClaim = HttpContext.User.FindFirst(ClaimTypes.Name);
@@ -509,6 +537,52 @@ namespace ShopNow.Controllers
         public IActionResult PlaceOrder()
         {
             return View();
+        }
+
+        public IActionResult MyOrders()
+        {
+            return View();
+        }
+        public IActionResult GetMyOrders()
+        {
+            var customerIdClaim = HttpContext.User.FindFirst(ClaimTypes.Name);
+
+            if (customerIdClaim != null)
+            {
+                Guid customerId = new Guid(customerIdClaim.Value);
+
+                var getProductDataByCustomerId = _productOrderServices.GetMyOrdersByCustomerId(customerId).ToList();
+                return Json(getProductDataByCustomerId);
+            }
+            return Json(false);
+        }
+
+        public IActionResult RateAndReviewProduct(string productId)
+        {
+            Product product = new Product();
+
+            if (productId != null)
+            {
+                var productDetailId = new Guid(productId);
+                product = _productServices.GetProductById(productDetailId);
+            }
+
+            return View(product);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddReview(Review reviewText)
+        {
+            
+            var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.Name);
+
+            if (userIdClaim != null)
+            {       
+                Guid customerId = new Guid(userIdClaim.Value);
+               
+                return Json(true);
+            }
+            return Json(false);
         }
 
     }

@@ -14,5 +14,6 @@ namespace ShopNow.DAL.Interfaces
         public ShoppingCart GetById(Guid Id);
         public Task<bool> Update(ShoppingCart shoppingCart);
         public bool Delete(ShoppingCart shoppingCart);
+        public bool DeleteShoppingCartByCustomerId(Guid customerId);
     }
 }

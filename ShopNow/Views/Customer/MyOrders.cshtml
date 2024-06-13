@@ -1,0 +1,30 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+@model ShopNow.DAL.Entities.Product
+
+<!-- Cart Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-lg-8 table-responsive mb-5">
+            <table class="table table-light table-borderless table-hover text-center mb-0">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Rate</th>
+                        <th>Re Order</th>
+                    </tr>
+                </thead>
+                <tbody class="align-middle" id="tblMyOrderListByCustomerId">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="~/admintemplate/js/jquery-3.6.4.min.js"></script>
+<script src="~/admintemplate/custom/js/myorders.js"></script>
+<script src="~/admintemplate/custom/js/common.js"></script>

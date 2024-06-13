@@ -43,6 +43,10 @@ builder.Services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
 builder.Services.AddScoped<WishListServices>();
 builder.Services.AddScoped<IWishListRepository, WishListRepository>();
 
+builder.Services.AddScoped<ProductOrderServices>();
+builder.Services.AddScoped<IProductOrderRepository, ProductOrderRepository>();
+
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;

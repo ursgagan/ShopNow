@@ -52,6 +52,18 @@ namespace ShopNow.BAL.Services
             }
         }
 
+        public bool DeleteShoppingCartByCustomerId(Guid customerId)
+        {
+            try
+            {
+                return _shoppingCartRepository.DeleteShoppingCartByCustomerId(customerId);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public bool UpdateShoppingCart(ShoppingCart shoppingCart)
         {
             try
