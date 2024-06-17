@@ -49,5 +49,28 @@ namespace ShopNow.BAL.Services
             }
         }
 
+        public ProductOrder GetProductOrderByProductId(Guid productId)
+        {
+            try
+            {
+                return _productOrderRepository.GetProductOrderByProductId(productId);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public IEnumerable<ProductOrder> GetAllMyOrders()
+        {
+            try
+            {
+                return _productOrderRepository.GetAll();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

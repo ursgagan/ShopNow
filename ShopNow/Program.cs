@@ -46,6 +46,12 @@ builder.Services.AddScoped<IWishListRepository, WishListRepository>();
 builder.Services.AddScoped<ProductOrderServices>();
 builder.Services.AddScoped<IProductOrderRepository, ProductOrderRepository>();
 
+builder.Services.AddScoped<ReviewServices>();
+builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+
+builder.Services.AddScoped<RatingServices>();
+builder.Services.AddScoped<IRatingRepository, RatingRepository>();
+
 
 builder.Services.AddAuthentication(options =>
 {

@@ -57,5 +57,45 @@ namespace ShopNow.DAL.Repositories
             }
         }
 
+        public ProductOrder GetProductOrderByProductId(Guid productId)
+        {
+            try
+            {
+                if (productId != null)
+                {
+                    var productOrderByProductId = _shopNowDbContext.ProductOrder.Include(a => a.Product).ThenInclude(a => a.ProductImages).ThenInclude(a => a.Image)
+                    .Where(a => a.ProductId == productId).FirstOrDefault();
+
+                    if (productOrderByProductId != null) return productOrderByProductId;
+                    else return null;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public IEnumerable<ProductOrder> GetAll()
+        {
+            try
+            {
+                var getProductOrder = _shopNowDbContext.ProductOrder.Where(x => x.IsDeleted == false).ToList();
+
+                if (getProductOrder != null)
+
+                    return getProductOrder;
+
+                else return null;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

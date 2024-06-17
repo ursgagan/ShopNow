@@ -11,5 +11,7 @@ namespace ShopNow.DAL.Interfaces
     {
         public Task<bool> Create(List<ProductOrder> productOrderList);
         public IEnumerable<ProductOrder> GetAll(Guid customerId);
+        public ProductOrder GetProductOrderByProductId(Guid productId);
+        public IEnumerable<ProductOrder> GetAll();
     }
 }

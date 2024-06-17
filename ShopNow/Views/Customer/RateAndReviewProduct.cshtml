@@ -2,7 +2,7 @@
     Layout = "_Layout";
 }
 
-@model ShopNow.DAL.Entities.Product;
+@model ShopNow.DAL.Entities.ProductOrder;
 
 
 <html lang="en">
@@ -20,6 +20,9 @@
             color: yellow;
         }
 
+        .filled-star {
+            color: yellow; 
+        }
         .chosen-star {
             color: yellow;
         }
@@ -34,40 +37,40 @@
                 <div class="mb-5">
                     <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Rate & Review Product</span></h5>
                     <div class="bg-light p-30 mb-5">
-
+                        <input id="hdnOrderId" class="form-control" name="OrderId" value="@Model.Id" type="hidden" autofocus>
                         <div id="product-carousel" class="carousel slide" data-ride="carousel">
                             <div class="carousel-inner bg-light">
                                 <div class="d-flex align-items-center">
-                                    <img class="w-500 h-500" src="data:image/png;base64,@Model.ProductImages[0].Image.ImageData" style="width:75px; height:75px;" alt="Image">
+                                    <img class="w-500 h-500" src="data:image/png;base64,@Model.Product.ProductImages[0].Image.ImageData" style="width:75px; height:75px;" alt="Image">
                                  &nbsp;
-                                    <p><b>@Model.Name</b></p>
-                                   
+                                    <div>
+                                        <p><b>@Model.Product.Name</b></p>
+                                        <p style="margin-top: -5px;">@Model.Product.ProductDescription</p>
+                                    </div>
                                 </div>
                             </div>
-
                         </div>
-
                     </div>
                 </div>
                 <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Rate this Product</span></h5>
                 <div class="bg-light p-30 mb-5">
-                    <div class="d-flex align-items-center">
+                    <div class="d-flex align-items-center"> 
                         <div id="myRatingCustomFeedbackStart" class="text-body-secondary me-3">
                             <span class="far fa-star" data-rating="1"></span>
                             <span class="far fa-star" data-rating="2"></span>
                             <span class="far fa-star" data-rating="3"></span>
                             <span class="far fa-star" data-rating="4"></span>
                             <span class="far fa-star" data-rating="5"></span>
-                        </div>
-                        <div id="myRatingCustomFeedback"></div>
-                        <div id="myRatingCustomFeedbackEnd" class="badge text-bg-dark ms-3"></div>
+                        </div> 
+                        <div id="myratingcustomfeedback"></div>
+                        <div id="myratingcustomfeedbackend" class="badge text-bg-dark ms-3"></div>
                     </div>
                 </div>
                 <div class="mb-5">
-                    <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Add a Review</span></h5>
+                    <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">add a review</span></h5>
                     <div class="bg-light p-30 mb-5">
-                        <textarea id="reviewDescription" class="form-control" rows="5" placeholder="Write your review here..."></textarea>
-                        <button id="submitReviewBtn" class="btn btn-primary mt-3">Submit Review</button>
+                        <textarea id="reviewdescription" class="form-control" rows="5" placeholder="write your review here..."></textarea>
+                        <button id="submitReviewBtn" class="btn btn-primary mt-3">submit review</button>
                     </div>
                 </div>
             </div>

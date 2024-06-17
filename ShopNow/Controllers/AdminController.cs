@@ -16,13 +16,15 @@ namespace ShopNow.Controllers
         private readonly ProductServices _productServices;
         private readonly ImageServices _imageServices;
         private readonly ProductImageServices _productImageServices;
+        private readonly ProductOrderServices _productOrderServices;
 
-        public AdminController(ProductCategoryServices productCategoryServices, ProductServices productServices, ImageServices imageServices, ProductImageServices productImageServices)
+        public AdminController(ProductCategoryServices productCategoryServices, ProductServices productServices, ImageServices imageServices, ProductImageServices productImageServices, ProductOrderServices productOrderServices)
         {
             _productCategoryServices = productCategoryServices;
             _productServices = productServices;
             _imageServices = imageServices;
             _productImageServices = productImageServices;
+            _productOrderServices = productOrderServices;
         }
         public IActionResult Index()
         {
@@ -290,6 +292,13 @@ namespace ShopNow.Controllers
             var getProductWithImageList = _productImageServices.GetAllProductWithImage().ToList();
 
             return Json(getProductWithImageList);
+        }
+
+        public IActionResult MyOrderList()
+        {
+            var getMyOrderList = _productOrderServices.GetAllMyOrders().ToList();
+
+            return View(getMyOrderList);
         }
     }
 }

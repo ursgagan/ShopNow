@@ -31,5 +31,7 @@ namespace ShopNow.DAL.Data
         public DbSet<ShoppingCart> ShoppingCart { get; set; }
         public DbSet<Wishlist> WishList { get; set; }
         public DbSet<ProductOrder> ProductOrder { get; set; }
+        public DbSet<Review> Review { get; set; }
+        public DbSet<Rating> Rating { get; set; }
     }
 }

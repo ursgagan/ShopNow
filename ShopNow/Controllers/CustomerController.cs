@@ -22,7 +22,8 @@ namespace ShopNow.Controllers
         private readonly ProductServices _productServices;
         private readonly WishListServices _wishListServices;
         private readonly ProductOrderServices _productOrderServices;
-        public CustomerController(CustomerServices customerServices, AddressServices addressServices, ShoppingCartServices shoppingCartServices, ProductServices productServices, WishListServices wishListServices, ProductOrderServices productOrderServices)
+        private readonly ReviewServices _reviewServices;
+        public CustomerController(CustomerServices customerServices, AddressServices addressServices, ShoppingCartServices shoppingCartServices, ProductServices productServices, WishListServices wishListServices, ProductOrderServices productOrderServices, ReviewServices reviewServices)
         {
             _customerServices = customerServices;
             _addressServices = addressServices;
@@ -30,6 +31,7 @@ namespace ShopNow.Controllers
             _productServices = productServices;
             _wishListServices = wishListServices;
             _productOrderServices = productOrderServices;
+            _reviewServices = reviewServices;
         }
         public IActionResult SignUp(string customerId)
         {
@@ -559,28 +561,27 @@ namespace ShopNow.Controllers
 
         public IActionResult RateAndReviewProduct(string productId)
         {
-            Product product = new Product();
+            ProductOrder productOrder = new ProductOrder();
 
             if (productId != null)
             {
                 var productDetailId = new Guid(productId);
-                product = _productServices.GetProductById(productDetailId);
+                productOrder = _productOrderServices.GetProductOrderByProductId(productDetailId);
             }
-
-            return View(product);
+            return View(productOrder);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddReview(Review reviewText)
+        public async Task<IActionResult> AddReview(ReviewModel reviewModel)
         {
-            
+
             var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.Name);
 
             if (userIdClaim != null)
-            {       
-                Guid customerId = new Guid(userIdClaim.Value);
-               
-                return Json(true);
+            {
+                bool isAdded = await _reviewServices.AddReview(reviewModel);
+
+                return Json(isAdded);
             }
             return Json(false);
         }
