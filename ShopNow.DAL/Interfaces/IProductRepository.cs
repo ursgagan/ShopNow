@@ -11,5 +11,8 @@ namespace ShopNow.DAL.Interfaces
     public interface IProductRepository 
     {
        public PaginationModel GetAllByPagination(int pageNumber);
+       public List<RatingModel> GetRatingsByProductId(Guid Id);
+
+       // public List<RatingModel> GetProductsByRating(int rating);
     }
 }

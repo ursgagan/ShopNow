@@ -1,5 +1,6 @@
 ﻿using ShopNow.DAL.Entities;
 using ShopNow.DAL.Interfaces;
+using ShopNow.DAL.Models;
 using ShopNow.DAL.Repositories;
 using System;
 using System.Collections.Generic;
@@ -130,6 +131,18 @@ namespace ShopNow.BAL.Services
             try
             {
                 return _productimageRepository.GetAllProductWithImages().ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public IEnumerable<Product> GetProductByFilters(FilterProductModel filterProductModel)
+        {
+            try
+            {   
+                    return _productimageRepository.GetProductByFilters(filterProductModel).ToList();
             }
             catch (Exception)
             {

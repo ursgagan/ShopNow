@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,6 @@ namespace ShopNow.DAL.Entities
         public DateTime? UpdatedOn { get; set; }
         public Guid? CreatedBy { get; set; }
         public Guid? UpdatedBy { get; set; }
-        public virtual Image Image { get; set; }    
+        public virtual Image Image { get; set; }
     }
 }

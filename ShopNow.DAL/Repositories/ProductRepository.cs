@@ -49,7 +49,7 @@ namespace ShopNow.DAL.Repositories
 
                 if (getProduct != null)
 
-                return getProduct;
+                    return getProduct;
 
                 else return null;
             }
@@ -111,5 +111,6 @@ namespace ShopNow.DAL.Repositories
                 throw;
             }
         }
+
     }
 }

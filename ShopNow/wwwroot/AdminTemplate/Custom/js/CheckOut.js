@@ -4,7 +4,6 @@
     window.location.href = placeOrdersUrl;
 }
 
-
 function addProductToPlaceOrder() {
    
     var productOrderList = [];

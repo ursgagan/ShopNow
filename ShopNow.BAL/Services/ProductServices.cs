@@ -96,6 +96,7 @@ namespace ShopNow.BAL.Services
                         obj.UpdatedOn = DateTime.Now;
                         obj.ProductDescription = product.ProductDescription;
                         obj.Price = product.Price;
+                        obj.Color = product.Color;
                        _productRepository.Update(obj);
                     }
                 }
@@ -117,5 +118,29 @@ namespace ShopNow.BAL.Services
                 throw;
             }
         }
+
+        public List<RatingModel> GetRatingsByProductId(Guid Id)
+        {
+            try
+            {
+                return _newproductRepository.GetRatingsByProductId(Id);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        //public List<RatingModel> GetProductsByRating(int rating)
+        //{
+        //    try
+        //    {
+        //        return _newproductRepository.GetProductsByRating(rating);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //}
     }
 }

@@ -420,6 +420,8 @@ namespace ShopNow.Controllers
 
         public IActionResult CheckOut()
         {
+            Customer customer1 = new Customer();
+
             var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.Name);
 
             if (userIdClaim != null)
@@ -434,7 +436,7 @@ namespace ShopNow.Controllers
 
                 return View(customer);
             }
-            return View();
+            return View(customer1);
         }
             
         [HttpPost]
@@ -574,7 +576,6 @@ namespace ShopNow.Controllers
         [HttpPost]
         public async Task<IActionResult> AddReview(ReviewModel reviewModel)
         {
-
             var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.Name);
 
             if (userIdClaim != null)

@@ -1,12 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ShopNow.DAL.Entities;
 using ShopNow.BAL.Services;
-using System.Diagnostics.Metrics;
-using System.Net.Mail;
+using ShopNow.DAL.Entities;
 using ShopNow.Helpers;
-using System.Collections.Generic;
 using System.Transactions;
-using static System.Formats.Asn1.AsnWriter;
 
 namespace ShopNow.Controllers
 {
@@ -17,14 +13,16 @@ namespace ShopNow.Controllers
         private readonly ImageServices _imageServices;
         private readonly ProductImageServices _productImageServices;
         private readonly ProductOrderServices _productOrderServices;
+        private readonly ReviewServices _reviewServices;
 
-        public AdminController(ProductCategoryServices productCategoryServices, ProductServices productServices, ImageServices imageServices, ProductImageServices productImageServices, ProductOrderServices productOrderServices)
+        public AdminController(ProductCategoryServices productCategoryServices, ProductServices productServices, ImageServices imageServices, ProductImageServices productImageServices, ProductOrderServices productOrderServices, ReviewServices reviewServices)
         {
             _productCategoryServices = productCategoryServices;
             _productServices = productServices;
             _imageServices = imageServices;
             _productImageServices = productImageServices;
             _productOrderServices = productOrderServices;
+            _reviewServices = reviewServices;
         }
         public IActionResult Index()
         {
@@ -34,7 +32,7 @@ namespace ShopNow.Controllers
         public IActionResult AddProductCategory(string productCategoryId)
         {
             ProductCategory productType = new ProductCategory();
-      
+
             if (productCategoryId != null)
             {
                 var pId = new Guid(productCategoryId);
@@ -102,10 +100,10 @@ namespace ShopNow.Controllers
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 try
-                {                 
-                    if(product.Id != null && product.Id != Guid.Empty)
+                {
+                    if (product.Id != null && product.Id != Guid.Empty)
                     {
-                       _productServices.UpdateProduct(product); 
+                        _productServices.UpdateProduct(product);
                     }
                     else
                     {
@@ -283,7 +281,6 @@ namespace ShopNow.Controllers
         public IActionResult DeleteProductImage(Guid productImageId)
         {
             _productImageServices.DeleteProductImage(productImageId);
-
             return Json(true);
         }
 
@@ -294,11 +291,37 @@ namespace ShopNow.Controllers
             return Json(getProductWithImageList);
         }
 
-        public IActionResult MyOrderList()
+        public IActionResult OrderList()
+        {
+            return View();
+        }
+        public IActionResult getOrderList()
         {
             var getMyOrderList = _productOrderServices.GetAllMyOrders().ToList();
 
-            return View(getMyOrderList);
+            return Json(getMyOrderList);
+        }
+        
+        public async Task<IActionResult> UpdateProductOrderStatus(string orderId, string orderStatus)
+        {
+            var updateProductOrderStatus = _productOrderServices.updateProductOrderStatus(orderId, orderStatus);
+
+            return Json(updateProductOrderStatus);
+        }
+
+        public IActionResult AllProductReviews()
+        {
+            return View();
+        }
+        public IActionResult getProductReviews()
+        {
+            var getProductReviewList = _reviewServices.GetAllProductReviews().ToList();
+
+            foreach(var productReview in getProductReviewList)
+            {
+                productReview.Ratings = _productServices.GetRatingsByProductId(productReview.Id);
+            }
+            return Json(getProductReviewList);
         }
     }
 }

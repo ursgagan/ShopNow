@@ -1,5 +1,5 @@
 ﻿function createPagination(pagination) {
-    debugger;
+  
     var paginationData = `  <li class="page-item"><a class="page-link" onclick="getProductList(1)" href="#">First Page</a></li>`
 
     if (pagination.currentPage <= pagination.totalPages) {
@@ -38,7 +38,6 @@
 }
 
 function showSuccessMessage(title, message) {
-    debugger;
     iziToast.success({
         title: title,
         message: message,
@@ -47,15 +46,12 @@ function showSuccessMessage(title, message) {
 }
 
 function GetAllCount() {
-    debugger;
     $.ajax({
         url: '/Customer/GetAllCount',
         type: 'GET',
         async: true,
         success: function (response) {
-            debugger;
             if (response) {
-                debugger;
                 var shoppingCartCount = $('#ShoppingCartCount').text(response.shoppingCartCount);
                 var wishListCount = $('#WishListCount').text(response.wishListCount);
             }

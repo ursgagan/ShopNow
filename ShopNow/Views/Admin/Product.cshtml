@@ -60,6 +60,15 @@
                                     </div>
                                 </div>
 
+                                <div class="row">
+                                    <div class="form-group col-6">
+                                        <label for="Color">Color</label>
+                                        <input id="Color" type="text" class="form-control" name="Color" value="@Model.Color" autofocus>
+                                    </div>
+
+                                    
+                                </div>
+
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="form-group col-4">
@@ -68,24 +77,22 @@
                                         </div>
 
                                         <div class="form-group col-8">
-                                           
                                             <div class="gallery gallery-fw" style="display: flex; flex-wrap: nowrap;" data-item-height="100">
-                                                @foreach (var productImageData in Model.ProductImages)
+                                                @if (Model.ProductImages != null)
                                                 {
-                                                    <div class="gallery-item-wrapper">
-                                                        <a href="#" id="@productImageData.Id" class="btn btn-icon btn-danger remove-photo" onclick="showDeleteProductImageModal(this.id)"><i class="fas fa-times"></i></a>
+                                                    @foreach (var productImageData in Model.ProductImages)
+                                                    {
+                                                        <div class="gallery-item-wrapper">
+                                                            <a href="#" id="@productImageData?.Id" class="btn btn-icon btn-danger remove-photo" onclick="showDeleteProductImageModal(this.id)"><i class="fas fa-times"></i></a>
 
-                                                        <img class="gallery-item" id="productImage-@productImageData.Id" src="data:image/png;base64,@productImageData.Image.ImageData" alt="Product Image" style="width: 170px; height: 170px; padding-left:50px;">
-                                                    </div>                                                  
+                                                            <img class="gallery-item" id="productImage-@productImageData?.Id" src="data:image/png;base64,@productImageData?.Image.ImageData" alt="Product Image" style="width: 170px; height: 170px; padding-left:50px;">
+                                                        </div>
+                                                    }
                                                 }
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
-
-
-
 
                                 <div class="form-group">
                                     <div class="card">

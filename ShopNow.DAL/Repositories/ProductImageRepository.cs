@@ -2,11 +2,13 @@
 using ShopNow.DAL.Data;
 using ShopNow.DAL.Entities;
 using ShopNow.DAL.Interfaces;
+using ShopNow.DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ShopNow.DAL.Repositories
 {
@@ -17,7 +19,6 @@ namespace ShopNow.DAL.Repositories
         {
             _shopNowDbContext = shopNowDbContext;
         }
-
         public async Task<ProductImages> Create(ProductImages productImage)
         {
             try
@@ -123,14 +124,10 @@ namespace ShopNow.DAL.Repositories
             }
             catch (DbUpdateException ex)
             {
-                // Handle specific database update exceptions
-                // Log or handle the exception appropriately
                 throw new Exception("Error saving changes to the database.", ex);
             }
             catch (Exception ex)
             {
-                // Handle other exceptions
-                // Log or handle the exception appropriately
                 throw new Exception("An error occurred while adding multiple images.", ex);
             }
         }
@@ -148,6 +145,87 @@ namespace ShopNow.DAL.Repositories
                 else return null;
             }
             catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        //public IEnumerable<Product> GetProductByFilters()
+        //{
+        //    try
+        //    {
+        //        var query = _shopNowDbContext.Product
+        //            .Include(b => b.ProductImages)
+        //            .ThenInclude(c => c.Image)
+        //            .Where(x => x.IsDeleted == false);
+
+        //        foreach (var item in query)
+        //        {
+        //            if (item.Price != null)
+        //            {
+        //                query = query.Where(x => x.Price >= query.ElementAt(0).Price);
+        //            }
+
+        //            if (item.Price != null)
+        //            {
+        //                query = query.Where(x => x.Price <= query.ElementAt(0).Price);
+        //            }
+        //        }
+
+        //        var products = query.ToList();
+
+        //        return products;
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //}
+
+
+        public IEnumerable<Product> GetProductByFilters(FilterProductModel filterProductModel)
+        {
+            try
+            {
+
+                var query = _shopNowDbContext.Product
+                .Include(b => b.ProductImages)
+                .ThenInclude(c => c.Image)
+                .Where(x => x.IsDeleted == false && (filterProductModel.ProductCategoryId == Guid.Empty || x.ProductCategoryId == filterProductModel.ProductCategoryId));
+
+                if (filterProductModel.PriceFiltervalue != null)
+                {
+                    if (filterProductModel.PriceFiltervalue.ContainsKey("minValue") && filterProductModel.PriceFiltervalue["minValue"] != null)
+                    {
+                        decimal filterPriceValue = filterProductModel.PriceFiltervalue["minValue"].Value;
+                        query = query.Where(x => x.Price >= filterPriceValue);
+                    }
+                    if (filterProductModel.PriceFiltervalue.ContainsKey("maxValue") && filterProductModel.PriceFiltervalue["maxValue"] != null)
+                    {
+                        decimal filterPriceValue = filterProductModel.PriceFiltervalue["maxValue"].Value;
+                        query = query.Where(x => x.Price <= filterPriceValue);
+                    }
+                }
+               
+                if (filterProductModel.Rating.HasValue)
+                {
+                    var products = query.ToList();
+
+                    return products;
+                }
+
+                if (filterProductModel.Color != null && filterProductModel.Color.Any())
+                {
+                    query = query.Where(p => filterProductModel.Color.Contains(p.Color));  
+                }
+
+
+                var filteredProducts = query.ToList();
+
+                return filteredProducts;
+
+            }
+            catch (Exception ex)
             {
                 throw;
             }

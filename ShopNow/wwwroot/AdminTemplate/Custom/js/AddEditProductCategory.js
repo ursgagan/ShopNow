@@ -28,7 +28,7 @@
         $.ajax({
             url: '/Admin/AddProductCategory',
             type: 'POST',
-            data: productCategory, // Send the category data
+            data: productCategory, 
             success: function (data) {
                 debugger;
                 if (data = true) {

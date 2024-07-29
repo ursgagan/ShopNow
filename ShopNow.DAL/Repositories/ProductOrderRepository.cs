@@ -2,8 +2,10 @@
 using ShopNow.DAL.Data;
 using ShopNow.DAL.Entities;
 using ShopNow.DAL.Interfaces;
+using ShopNow.DAL.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,8 +27,8 @@ namespace ShopNow.DAL.Repositories
                 if (productOrderList != null)
                 {
                     _shopNowDbContext.ProductOrder.AddRange(productOrderList);
-                     await _shopNowDbContext.SaveChangesAsync();
-                     return true;
+                    await _shopNowDbContext.SaveChangesAsync();
+                    return true;
                 }
                 else
                 {
@@ -39,22 +41,75 @@ namespace ShopNow.DAL.Repositories
             }
         }
 
-        public IEnumerable<ProductOrder> GetAll(Guid customerId)
+        public IEnumerable<ProductOrderModel> GetMyOrdersByCustomerId(Guid customerId)
         {
             try
             {
-                var getMyOrdersDataByCustomerId = _shopNowDbContext.ProductOrder.Include(a => a.Product).Where(x => x.CustomerId == customerId && x.IsDeleted == false);
+                if (customerId != Guid.Empty)
+                {
+                    var getMyOrdersDataByCustomerId = (from r in _shopNowDbContext.ProductOrder
+                                                       where r.IsDeleted == false && r.CustomerId == customerId
+                                                       join p in _shopNowDbContext.Product on r.ProductId equals p.Id into productJoin
+                                                       from product in productJoin.DefaultIfEmpty()
 
-                if (getMyOrdersDataByCustomerId != null)
+                                                       select new ProductOrderModel
+                                                       {
+                                                           Id = r.Id,
+                                                           CustomerId = r.CustomerId,
+                                                           ProductId = r.ProductId,
+                                                           Quantity = r.Quantity,
+                                                           TotalPrice = r.TotalPrice,
+                                                           IsDeleted = r.IsDeleted,
+                                                           UpdatedBy = r.UpdatedBy,
+                                                           CreatedBy = r.CreatedBy,
+                                                           UpdatedOn = r.UpdatedOn,
+                                                           CreatedOn = r.CreatedOn,
 
-                    return getMyOrdersDataByCustomerId;
+                                                           Product = product != null ? new Product
+                                                           {
+                                                               Id = product.Id,
+                                                               Name = product.Name,
+                                                               ProductCategoryId = product.ProductCategoryId,
+                                                               Price = product.Price,
+                                                               SupplierId = product.SupplierId,
+                                                               IsDeleted = product.IsDeleted,
+                                                               UpdatedBy = product.UpdatedBy,
+                                                               CreatedBy = product.CreatedBy,
+                                                               UpdatedOn = product.UpdatedOn,
+                                                               CreatedOn = product.CreatedOn,
+                                                               ProductDescription = product.ProductDescription,
+                                                           } : null,
 
-                else return null;
+                                                           Customer = _shopNowDbContext.Customer.FirstOrDefault(c => c.Id == r.CustomerId)
+
+                                                       });
+
+                    return getMyOrdersDataByCustomerId.ToList();
+                }
+                else
+                {
+                    return new List<ProductOrderModel>();
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+
                 throw;
             }
+            //try
+            //{
+            //    var getMyOrdersDataByCustomerId = _shopNowDbContext.ProductOrder.Include(a => a.Product).Where(x => x.CustomerId == customerId && x.IsDeleted == false);
+
+            //    if (getMyOrdersDataByCustomerId != null)
+
+            //        return getMyOrdersDataByCustomerId;
+
+            //    else return null;
+            //}
+            //catch (Exception)
+            //{
+            //    throw;
+            //}
         }
 
         public ProductOrder GetProductOrderByProductId(Guid productId)
@@ -84,7 +139,7 @@ namespace ShopNow.DAL.Repositories
         {
             try
             {
-                var getProductOrder = _shopNowDbContext.ProductOrder.Where(x => x.IsDeleted == false).ToList();
+                var getProductOrder = _shopNowDbContext.ProductOrder.Include(a => a.Product).Where(x => x.IsDeleted == false).ToList();
 
                 if (getProductOrder != null)
 
@@ -97,5 +152,44 @@ namespace ShopNow.DAL.Repositories
                 throw;
             }
         }
+        public ProductOrder GetById(Guid orderId)
+        {
+            try
+            {
+                if (orderId != null)
+                {
+                    var getOrderProductById = _shopNowDbContext.ProductOrder.Where(a => a.Id == orderId).FirstOrDefault();
+                    if (getOrderProductById != null) return getOrderProductById;
+                    else return null;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public bool UpdateProductOrderStatus(ProductOrder productOrder)
+        {
+            try
+            {
+                if (productOrder.Id != null)
+                {
+                    var productOrderData = _shopNowDbContext.Update(productOrder);
+                    if (productOrderData != null) _shopNowDbContext.SaveChanges();
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+           
+        }
+
     }
 }

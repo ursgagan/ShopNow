@@ -24,19 +24,19 @@ namespace ShopNow.DAL.Repositories
             {
                 if (reviewModel != null)
                 {
-                    var order = _shopNowDbContext.ProductOrder.Include(o => o.Product).FirstOrDefault(o => o.Id == reviewModel.OrderId);
+                    var order = _shopNowDbContext.ProductOrder.Include(o => o.Product).FirstOrDefault(o => o.Id == reviewModel.ProductOrderId);
 
                     if (order != null)
                     {
                         Review review = new Review();
                         review.ReviewText = reviewModel.ReviewText;
-                        review.OrderId = reviewModel.OrderId;
+                        review.ProductOrderId = reviewModel.ProductOrderId;
                         review.IsDeleted = false;
                         review.CreatedOn = DateTime.Now;
                         review.UpdatedOn = DateTime.Now;
 
                         Rating rating = new Rating();
-                        rating.OrderId = reviewModel.OrderId;
+                        rating.ProductOrderId = reviewModel.ProductOrderId;
                         rating.Rate = reviewModel.Rating?.Rate;
                         rating.IsDeleted = false;
                         rating.CreatedOn = DateTime.Now;
@@ -62,6 +62,24 @@ namespace ShopNow.DAL.Repositories
             catch (Exception)
             {
                 return false;
+            }
+        }
+
+        public IEnumerable<Review> GetAll()
+        {
+            try
+            {
+                var getProductReviews = _shopNowDbContext.Review.Include(a => a.ProductOrder).ThenInclude(b => b.Product).Where(x => x.IsDeleted == false).ToList();
+
+                if (getProductReviews != null)
+
+                    return getProductReviews;
+
+                else return null;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 

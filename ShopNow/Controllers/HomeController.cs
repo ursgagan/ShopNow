@@ -2,9 +2,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShopNow.BAL.Services;
 using ShopNow.DAL.Entities;
+using ShopNow.DAL.Models;
 using ShopNow.Models;
 using System.Diagnostics;
 using System.Security.Claims;
+using System.Security.Cryptography;
 
 namespace ShopNow.Controllers
 {
@@ -15,14 +17,18 @@ namespace ShopNow.Controllers
         private readonly CustomerServices _customerServices;
         private readonly ShoppingCartServices _shoppingCartServices;
         private readonly ILogger<HomeController> _logger;
+        private readonly ProductImageServices _productImageServices;
+        private readonly ProductCategoryServices _productCategoryServices;
 
-        public HomeController(ILogger<HomeController> logger, ProductServices productServices, ContactServices contactServices, CustomerServices customerServices, ShoppingCartServices shoppingCartServices)
+        public HomeController(ILogger<HomeController> logger, ProductServices productServices, ContactServices contactServices, CustomerServices customerServices, ShoppingCartServices shoppingCartServices, ProductImageServices productImageServices, ProductCategoryServices productCategoryServices)
         {
             _logger = logger;
             _productServices = productServices;
             _contactServices = contactServices;
             _customerServices = customerServices;
             _shoppingCartServices = shoppingCartServices;
+            _productImageServices = productImageServices;
+            _productCategoryServices = productCategoryServices;
         }
 
         public IActionResult Index()
@@ -75,5 +81,47 @@ namespace ShopNow.Controllers
 
             return View();
         }
+        public IActionResult Shop(Guid productCategoryId)
+        {
+            ViewBag.ProductCategoryId = productCategoryId;
+            return View();
+        }
+
+        public IActionResult GetProductByFilters(FilterProductModel filterProductModel)
+        {
+
+            var getProductWithImageList = _productImageServices.GetProductByFilters(filterProductModel).ToList();
+
+            foreach(var product in getProductWithImageList)
+            {
+                product.Ratings = _productServices.GetRatingsByProductId(product.Id);
+            }
+
+            if(filterProductModel.Rating != 0 && filterProductModel.Rating != null)
+            {
+                getProductWithImageList = getProductWithImageList.Where(p => p.Ratings.Count != 0 &&
+                ((p.Ratings.Select(a => a.Rate).Sum() / p.Ratings.Count()) == filterProductModel.Rating)).ToList();
+
+            }
+            
+            return Json(getProductWithImageList);
+        }
+
+        public IActionResult GetRatingsByProductId(string productId)
+        {
+            List<RatingModel> rating = new List<RatingModel>();
+
+            if (productId != null)
+            {
+                var productDetailId = new Guid(productId);
+                rating = _productServices.GetRatingsByProductId(productDetailId);
+            }
+            return Json(rating);
+        }
+        public IActionResult AddComplaint()
+        {
+            return View();
+        }
     }
 }
+

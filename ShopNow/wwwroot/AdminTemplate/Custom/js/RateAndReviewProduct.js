@@ -1,7 +1,9 @@
-﻿document.addEventListener("DOMContentLoaded", function () {
-    const stars = document.querySelectorAll(".fa-star");
-    let currentRating = 0; // Variable to store the current rating
+﻿$(document).ready(function () {
 
+});
+document.addEventListener("DOMContentLoaded", function () {
+    const stars = document.querySelectorAll(".fa-star");
+    let currentRating = 0; 
     stars.forEach(function (star, index) {
         star.addEventListener("click", function () {
             const rating = parseInt(this.getAttribute("data-rating"));
@@ -50,16 +52,15 @@
 function submitReview(rating, reviewText) {
     debugger;
 
-    var orderId = document.getElementById("hdnOrderId").value; // Using vanilla JavaScript to get the value
+    var orderId = document.getElementById("hdnOrderId").value; 
     var reviewModel = {
         Rating: {
             Rate: rating
         },
         ReviewText: reviewText,
-        OrderId: orderId
+        ProductOrderId: orderId
     };
 
-    // Assuming jQuery is included before this script
     $.ajax({
         type: 'Post',
         url: '/Customer/AddReview',

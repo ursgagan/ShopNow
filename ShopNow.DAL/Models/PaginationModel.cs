@@ -15,7 +15,7 @@ namespace ShopNow.DAL.Models
         public PaginationModel(Type entityType)
         {
             PaginationData = new List<Product>();
-            // Initialize other properties as needed
+            
         }
     }
 }

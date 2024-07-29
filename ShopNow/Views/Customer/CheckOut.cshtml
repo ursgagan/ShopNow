@@ -25,15 +25,15 @@
                     </div>
                     <div class="col-md-6 form-group">
                         <label>Mobile No</label>
-                        <input class="form-control" type="text" value="@Model.Address.PhoneNumber">
+                        <input class="form-control" type="text" value="@Model.Address?.PhoneNumber">
                     </div>
                     <div class="col-md-6 form-group">
                         <label>Address Line 1</label>
-                        <input class="form-control" type="text" value="@Model.Address.Address1">
+                        <input class="form-control" type="text" value="@Model.Address?.Address1">
                     </div>
                     <div class="col-md-6 form-group">
                         <label>Address Line 2</label>
-                        <input class="form-control" type="text" value="@Model.Address.Address2">
+                        <input class="form-control" type="text" value="@Model.Address?.Address2">
                     </div>
                     <div class="col-md-6 form-group">
                         <label>Country</label>
@@ -46,15 +46,21 @@
                     </div>
                     <div class="col-md-6 form-group">
                         <label>City</label>
-                        <input class="form-control" type="text" value="@Model.Address.City">
+
+                        <input class="form-control" type="text" value="@Model.Address?.City">
+
                     </div>
                     <div class="col-md-6 form-group">
                         <label>State</label>
-                        <input class="form-control" type="text" value="@Model.Address.State">
+
+                        <input class="form-control" type="text" value="@Model.Address?.State">
+
                     </div>
                     <div class="col-md-6 form-group">
                         <label>ZIP Code</label>
-                        <input class="form-control" type="text" value="@Model.Address.ZipCode">
+
+                        <input class="form-control" type="text" value="@Model.Address?.ZipCode">
+
                     </div>
                 </div>
             </div>
@@ -116,21 +122,23 @@
             <div class="bg-light p-30 mb-5">
                 <div class="border-bottom">
                     <h6 class="mb-3">Products</h6>
-                    <input type="hidden" id="hdnProductCount" value="@ViewBag.getProductDataByCustomerId.Count">
-                    @{ 
+                    <input type="hidden" id="hdnProductCount" value="@ViewBag.getProductDataByCustomerId?.Count">
+                    @{
                         int counter = 1;
+                        if (ViewBag.getProductDataByCustomerId != null)
+                        {
+                            foreach (var checkOutProduct in ViewBag.getProductDataByCustomerId)
+                            {
+                                <input type="hidden" id="hdnProductId_@counter" value="@checkOutProduct.Product.Id">
+                                <input type="hidden" id="hdnQuantity_@counter" value="@checkOutProduct.Quantity">
+                                <input type="hidden" id="hdnPrice_@counter" value="@checkOutProduct.Product.Price">
 
-                    foreach (var checkOutProduct in ViewBag.getProductDataByCustomerId)
-                    {
-                        <input type="hidden" id="hdnProductId_@counter" value="@checkOutProduct.Product.Id">
-                        <input type="hidden" id="hdnQuantity_@counter" value="@checkOutProduct.Quantity">
-                        <input type="hidden" id="hdnPrice_@counter" value="@checkOutProduct.Product.Price">
-
-                        <div class="d-flex justify-content-between">
-                            <p>@checkOutProduct.Product.Name</p>
-                            <p>@checkOutProduct.Product.Price</p>
-                            </div>
-                            counter++;
+                                <div class="d-flex justify-content-between">
+                                    <p>@checkOutProduct.Product.Name</p>
+                                    <p>@checkOutProduct.Product.Price</p>
+                                </div>
+                                counter++;
+                            }
                         }
                     }
                 </div>
@@ -139,9 +147,12 @@
                         <h6>Subtotal</h6>
                         @{
                             decimal subtotal = 0;
-                            foreach (var checkOutProduct in ViewBag.getProductDataByCustomerId)
+                            if (ViewBag.getProductDataByCustomerId != null)
                             {
-                                subtotal += checkOutProduct.Product.Price;
+                                foreach (var checkOutProduct in ViewBag.getProductDataByCustomerId)
+                                {
+                                    subtotal += checkOutProduct.Product.Price;
+                                }
                             }
                         }
                         <h6>@subtotal</h6>

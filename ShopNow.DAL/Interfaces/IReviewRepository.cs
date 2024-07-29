@@ -11,5 +11,6 @@ namespace ShopNow.DAL.Interfaces
     public interface IReviewRepository
     {
         public Task<bool> Create(ReviewModel reviewModel);
+        public IEnumerable<Review> GetAll();
     }
 }

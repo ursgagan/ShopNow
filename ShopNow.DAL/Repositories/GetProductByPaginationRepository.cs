@@ -1,4 +1,5 @@
-﻿using ShopNow.DAL.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using ShopNow.DAL.Data;
 using ShopNow.DAL.Entities;
 using ShopNow.DAL.Interfaces;
 using ShopNow.DAL.Models;
@@ -55,6 +56,64 @@ namespace ShopNow.DAL.Repositories
                 throw;
             }
         }
+
+        public List<RatingModel> GetRatingsByProductId(Guid productId)
+        {
+            try
+            {
+                if (productId != Guid.Empty)
+                {
+                    var ratingList = (from r in _shopNowDbContext.Rating
+                                      where r.IsDeleted == false
+                                      join p in _shopNowDbContext.ProductOrder on r.ProductOrderId equals p.Id into p2
+                                      from p in p2.DefaultIfEmpty()
+                                      where p.ProductId == productId
+                                      select new RatingModel
+                                      {
+                                          Id = r.Id,
+                                          Rate = r.Rate,
+                                          ProductOrderId = r.ProductOrderId,
+                                          IsDeleted = r.IsDeleted,
+                                          UpdatedBy = r.UpdatedBy,
+                                          CreatedBy = r.CreatedBy,
+                                          UpdatedOn = r.UpdatedOn,
+                                          CreatedOn = r.CreatedOn,
+                                      });
+
+                    return ratingList.ToList(); 
+                }
+                else
+                {
+                    return new List<RatingModel>(); 
+                }
+            }
+            catch (Exception ex)
+            {
+                
+                throw;
+            }
+        }
+
+        //public List<RatingModel> GetProductsByRating(int rating)
+        //{
+        //    try
+        //    {
+        //        //if (rating != null)
+        //        //{
+        //        //    var getProductByRating = 
+        //        //}
+                
+        //        else
+        //        {
+        //            return new List<RatingModel>();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //        throw;
+        //    }
+        //}
 
     }
 }

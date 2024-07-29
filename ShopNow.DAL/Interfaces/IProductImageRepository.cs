@@ -1,4 +1,5 @@
 ﻿using ShopNow.DAL.Entities;
+using ShopNow.DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,6 @@ namespace ShopNow.DAL.Interfaces
 
         public IEnumerable<Product> GetAllProductWithImages();
 
+        public IEnumerable<Product> GetProductByFilters(FilterProductModel filterProductModel);
     }
 }

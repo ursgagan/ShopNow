@@ -38,5 +38,16 @@ namespace ShopNow.BAL.Services
             }
         }
 
+        public IEnumerable<Review> GetAllProductReviews()
+        {
+            try
+            {
+                return _reviewRepository.GetAll();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

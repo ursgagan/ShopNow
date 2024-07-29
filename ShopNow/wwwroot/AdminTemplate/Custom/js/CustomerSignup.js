@@ -64,7 +64,8 @@
          $.ajax({
             url: '/Customer/SignUp',
             type: 'POST',
-            data: {
+             data:
+             {
                 Id: $("#hdnCustomerId").val(),
                 FirstName: FirstName,
                 LastName: $("#LastName").val(),

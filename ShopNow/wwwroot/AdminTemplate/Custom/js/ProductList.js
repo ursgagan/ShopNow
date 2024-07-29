@@ -32,7 +32,7 @@ function getProductList(pageNumber) {
                 })
 
                 $("#tblProductList").html(tblProductData);
-
+                debugger;
                 if (response.pager != null) {
                     createPagination(response.pager);
                 }

@@ -4,17 +4,18 @@
 });
 
 function getProductCategoryList() {
+    debugger;
     $.ajax({
         type: 'Get',
         url: '/Admin/GetProductCategoryList',
         dataType: 'json',
         success: function (response) {
-
+            debugger;
             if (response) {
                 let tblProductCategoryData = "";
                 let productCount = 1;
                 $.each(response, function (i, value) {
-
+                    debugger;
                     tblProductCategoryData += `
                         <tr>
                         <td> ${productCount++}</td>

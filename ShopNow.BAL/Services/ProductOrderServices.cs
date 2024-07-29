@@ -1,5 +1,6 @@
 ﻿using ShopNow.DAL.Entities;
 using ShopNow.DAL.Interfaces;
+using ShopNow.DAL.Models;
 using ShopNow.DAL.Repositories;
 using System;
 using System.Collections.Generic;
@@ -37,11 +38,11 @@ namespace ShopNow.BAL.Services
             }
         }
 
-        public IEnumerable<ProductOrder> GetMyOrdersByCustomerId(Guid customerId)
+        public IEnumerable<ProductOrderModel> GetMyOrdersByCustomerId(Guid customerId)
         {
             try
             {
-                return _productOrderRepository.GetAll(customerId);
+                return (IEnumerable<ProductOrderModel>)_productOrderRepository.GetMyOrdersByCustomerId(customerId);
             }
             catch (Exception)
             {
@@ -72,5 +73,64 @@ namespace ShopNow.BAL.Services
                 throw;
             }
         }
+
+        public ProductOrder GetProductOrderById(Guid orderId)
+        {
+            try
+            {
+                return _productOrderRepository.GetById(orderId);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public bool updateProductOrderStatus(string orderId, string orderStatus)
+        {
+            try
+            {
+                if (orderId != null)
+                {
+                    var productOrderData = _productOrderRepository.GetById(new Guid(orderId));
+                    if (productOrderData != null)
+                    {
+                        productOrderData.Status = orderStatus;
+                        
+                        _productOrderRepository.UpdateProductOrderStatus(productOrderData);
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return false;
+
+        }
+        //public void UpdateOrderStatus()
+        //{
+        //    try
+        //    {
+        //        if (product.Id != null || product.Id != Guid.Empty)
+        //        {
+        //            var obj = _productRepository.GetById(product.Id);
+        //            if (obj != null)
+        //            {
+        //                obj.Name = product.Name;
+        //                obj.UpdatedOn = DateTime.Now;
+        //                obj.ProductDescription = product.ProductDescription;
+        //                obj.Price = product.Price;
+        //                obj.Color = product.Color;
+        //                _productRepository.Update(obj);
+        //            }
+        //        }
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //}
     }
 }

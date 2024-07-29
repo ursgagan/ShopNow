@@ -10,7 +10,7 @@ namespace ShopNow.DAL.Models
     public class ReviewModel
     {
         public Guid Id { get; set; }      
-        public Guid? OrderId { get; set; }
+        public Guid? ProductOrderId { get; set; }
         public string? ReviewText { get; set; }
         public bool? IsDeleted { get; set; }
         public DateTime? CreatedOn { get; set; }
