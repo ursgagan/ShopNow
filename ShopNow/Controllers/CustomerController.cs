@@ -128,7 +128,6 @@ namespace ShopNow.Controllers
             }
             catch (Exception ex)
             {
-                // Handle the exception, log it, or take appropriate action
                 Console.WriteLine($"Error sending email: {ex.Message}");
             }
         }

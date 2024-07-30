@@ -32,7 +32,7 @@ function bindMyOrderByCustomerId() {
                         </td>
                          <td class="align-middle"><button class="btn btn-sm btn-success" onClick="rateAndReviewProduct('${value.productId}')"> Rate & Review Product </button></td>
                         <td class="align-middle"><button class="btn btn-sm btn-success" onClick="addToCart('${value.id}')"> Order Again</button></td>
-                        <td class="align-middle"><button class="btn btn-sm btn-danger" onClick="AddProductComplaint()">Add a Complaint</button></td>
+                        <td class="align-middle"><button class="btn btn-sm btn-danger" onClick="AddProductComplaint('${value.productId}')">Add a Complaint</button></td>
                
                         </tr>`
                 })
@@ -76,18 +76,8 @@ function rateAndReviewProduct(productId)
     window.location.href = rateAndReviewProductUrl;
 }
 
-function addToCart(AddProductComplaint) {
-   
-    $.ajax({
-        type: 'Post',
-        url: '/Customer/AddProductToShoppingCart',
-        data: shoppingCart,
-        dataType: 'json',
-        success: function (response) {
-            debugger;
-            if (response) {
-            
-            }
-        }
-    });
+function AddProductComplaint(productId) {
+    debugger;
+    var addProductComplaintUrl = "/Home/AddComplaint?productId=" + productId;
+    window.location.href = addProductComplaintUrl;
 }

@@ -14,5 +14,7 @@ namespace ShopNow.DAL.Interfaces
         public Customer GetById(Guid Id);
         public void Update(Customer customer);
         public Customer GetCustomerByResetCode(string resetCode);
+        public IEnumerable<Customer> GetAll();
+        //public List<Customer> GetCustomerByProductOrderId(Guid Id);
     }
 }

@@ -94,6 +94,8 @@ namespace ShopNow.DAL.Repositories
             }
         }
 
+       
+
         //public List<RatingModel> GetProductsByRating(int rating)
         //{
         //    try
@@ -102,7 +104,7 @@ namespace ShopNow.DAL.Repositories
         //        //{
         //        //    var getProductByRating = 
         //        //}
-                
+
         //        else
         //        {
         //            return new List<RatingModel>();

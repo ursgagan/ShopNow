@@ -19,8 +19,10 @@ namespace ShopNow.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly ProductImageServices _productImageServices;
         private readonly ProductCategoryServices _productCategoryServices;
+        private readonly ProductOrderServices _productOrderServices;
+        private readonly ComplaintServices _complaintServices;
 
-        public HomeController(ILogger<HomeController> logger, ProductServices productServices, ContactServices contactServices, CustomerServices customerServices, ShoppingCartServices shoppingCartServices, ProductImageServices productImageServices, ProductCategoryServices productCategoryServices)
+        public HomeController(ILogger<HomeController> logger, ProductServices productServices, ContactServices contactServices, CustomerServices customerServices, ShoppingCartServices shoppingCartServices, ProductImageServices productImageServices, ProductCategoryServices productCategoryServices, ProductOrderServices productOrderServices, ComplaintServices complaintServices)
         {
             _logger = logger;
             _productServices = productServices;
@@ -29,6 +31,8 @@ namespace ShopNow.Controllers
             _shoppingCartServices = shoppingCartServices;
             _productImageServices = productImageServices;
             _productCategoryServices = productCategoryServices;
+            _productOrderServices = productOrderServices;
+            _complaintServices = complaintServices;
         }
 
         public IActionResult Index()
@@ -118,9 +122,30 @@ namespace ShopNow.Controllers
             }
             return Json(rating);
         }
-        public IActionResult AddComplaint()
+        public IActionResult AddComplaint(string productId)
         {
-            return View();
+            ProductOrder productOrder = new ProductOrder();
+
+            if (productId != null)
+            {
+                var productDetailId = new Guid(productId);
+                productOrder = _productOrderServices.GetProductOrderByProductId(productDetailId);
+            }
+            return View(productOrder);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddComplaint(Complaint productComplaint)
+        {
+            var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.Name);
+
+            if (userIdClaim != null)
+            {
+                var isAdded = await _complaintServices.AddComplaint(productComplaint);
+
+                return Json(isAdded);
+            }
+            return 0.(false);
         }
     }
 }

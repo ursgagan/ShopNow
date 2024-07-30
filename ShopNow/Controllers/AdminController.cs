@@ -14,8 +14,10 @@ namespace ShopNow.Controllers
         private readonly ProductImageServices _productImageServices;
         private readonly ProductOrderServices _productOrderServices;
         private readonly ReviewServices _reviewServices;
+        private readonly ComplaintServices _complaintServices;
+        private readonly CustomerServices _customerServices;
 
-        public AdminController(ProductCategoryServices productCategoryServices, ProductServices productServices, ImageServices imageServices, ProductImageServices productImageServices, ProductOrderServices productOrderServices, ReviewServices reviewServices)
+        public AdminController(ProductCategoryServices productCategoryServices, ProductServices productServices, ImageServices imageServices, ProductImageServices productImageServices, ProductOrderServices productOrderServices, ReviewServices reviewServices, ComplaintServices complaintServices, CustomerServices customerServices)
         {
             _productCategoryServices = productCategoryServices;
             _productServices = productServices;
@@ -23,6 +25,8 @@ namespace ShopNow.Controllers
             _productImageServices = productImageServices;
             _productOrderServices = productOrderServices;
             _reviewServices = reviewServices;
+            _complaintServices = complaintServices;
+            _customerServices = customerServices;
         }
         public IActionResult Index()
         {
@@ -323,5 +327,22 @@ namespace ShopNow.Controllers
             }
             return Json(getProductReviewList);
         }
+
+        public IActionResult AllProductComplaints()
+        {
+            return View();
+        }
+
+        public IActionResult getProductComplaints()
+         {
+            var getProductComplaintList = _complaintServices.GetAllProductComplaints().ToList();
+
+            foreach(var productComplaint in getProductComplaintList)
+            {
+              //  productComplaint.ProductOrder.Customer = 
+            }
+            return Json(getProductComplaintList);
+        }
+
     }
 }

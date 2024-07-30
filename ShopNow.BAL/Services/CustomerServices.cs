@@ -1,5 +1,6 @@
 ﻿using ShopNow.DAL.Entities;
 using ShopNow.DAL.Interfaces;
+using ShopNow.DAL.Models;
 using ShopNow.DAL.Repositories;
 using System;
 using System.Collections.Generic;
@@ -99,5 +100,28 @@ namespace ShopNow.BAL.Services
             }
         }
 
+        public IEnumerable<Customer> GetAllCustomers()
+        {
+            try
+            {
+                return _customerRepository.GetAll();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        //public List<Customer> GetCustomerByProductOrderId(Guid Id)
+        //{
+        //    try
+        //    {
+        //        return _customerRepository.GetCustomerByProductOrderId(Id);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //}
     }
 }

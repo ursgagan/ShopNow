@@ -2,6 +2,7 @@
 using ShopNow.DAL.Data;
 using ShopNow.DAL.Entities;
 using ShopNow.DAL.Interfaces;
+using ShopNow.DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -116,5 +117,44 @@ namespace ShopNow.DAL.Repositories
                 throw;
             }
         }
+
+        public IEnumerable<Customer>GetAll()
+        {
+            try
+            {
+                var getAllCustomers = _shopNowDbContext.Customer.Where(x => x.IsDeleted == false).ToList();
+
+                if (getAllCustomers != null)
+
+                    return getAllCustomers;
+
+                else return null;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        //public List<Customer> GetCustomerByProductOrderId(Guid productOrderId)
+        //{
+        //    try
+        //    {
+        //        if (productOrderId != Guid.Empty)
+        //        {
+
+        //        }
+        //        else
+        //        {
+        //            return new List<RatingModel>();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //        throw;
+        //    }
+        //}
+
     }
 }
