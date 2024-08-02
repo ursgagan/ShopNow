@@ -67,23 +67,24 @@ namespace ShopNow.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpPost] 
         public async Task<IActionResult> Contact(Contact contact)
         {
             try
             {
-                if (contact.Id == null || contact.Id == Guid.Empty)
-                {
-                    await _contactServices.AddContact(contact);
-                    TempData["SuccessMessage"] = "Contacts Added Successfully";
-                }
+                    if (contact.Id == null || contact.Id == Guid.Empty)
+                    {
+                        await _contactServices.AddContact(contact);
+                        return Json(true);
+                    }
+                
             }
             catch (Exception ex)
             {
                 throw ex;
             }
 
-            return View();
+            return Json(false);
         }
         public IActionResult Shop(Guid productCategoryId)
         {
@@ -145,7 +146,12 @@ namespace ShopNow.Controllers
 
                 return Json(isAdded);
             }
-            return 0.(false);
+            return Json(false);
+        }
+
+        public IActionResult Help()
+        {
+            return View();
         }
     }
 }

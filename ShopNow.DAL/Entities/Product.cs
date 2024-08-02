@@ -22,10 +22,12 @@ namespace ShopNow.DAL.Entities
         public Guid? CreatedBy { get; set; }
         public Guid? UpdatedBy { get; set; }
         public string? ProductDescription { get; set; }
-
+         
         [NotMapped]
         public virtual List<RatingModel> Ratings { get; set; }
         public virtual List<ProductImages> ProductImages { get; set; }
         public string? Color { get; set; }
+
+        
     }
 }

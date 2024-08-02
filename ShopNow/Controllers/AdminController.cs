@@ -92,7 +92,7 @@ namespace ShopNow.Controllers
             if (productId != null)
             {
                 var pId = new Guid(productId);
-                product = _productServices.GetProductById(pId);
+                product = _productServices.GetProductById(pId); 
 
             }
             return View(product);
@@ -323,7 +323,7 @@ namespace ShopNow.Controllers
 
             foreach(var productReview in getProductReviewList)
             {
-                productReview.Ratings = _productServices.GetRatingsByProductId(productReview.Id);
+                productReview.Ratings = _productServices.GetRatingsByProductOrderId(productReview.ProductOrderId);
             }
             return Json(getProductReviewList);
         }
@@ -339,10 +339,16 @@ namespace ShopNow.Controllers
 
             foreach(var productComplaint in getProductComplaintList)
             {
-              //  productComplaint.ProductOrder.Customer = 
+                  //productComplaint.ProductOrder.Customer = _customerServices.GetCustomerDataByProductComplaint(productComplaint.Id);
             }
             return Json(getProductComplaintList);
         }
 
+        public async Task<IActionResult> UpdateComplaintStatus(string complaintId, string complaintStatus)
+        {
+            var updateComplaintStatus = _complaintServices.UpdateComplaintStatus(complaintId, complaintStatus);
+
+            return Json(updateComplaintStatus);
+        }
     }
 }

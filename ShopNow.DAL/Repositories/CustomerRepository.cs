@@ -135,19 +135,17 @@ namespace ShopNow.DAL.Repositories
                 throw;
             }
         }
-
-        //public List<Customer> GetCustomerByProductOrderId(Guid productOrderId)
+        //public Customer GetCustomerDataByProductComplaint(Guid complaintId)
         //{
         //    try
         //    {
-        //        if (productOrderId != Guid.Empty)
-        //        {
+        //        var getCustomerDataByComplaintId = _shopNowDbContext.Complaint.Include(a => a.ProductOrder).ThenInclude(b => b.Customer).Where(c => c.IsDeleted == false).ToList();
 
-        //        }
-        //        else
-        //        {
-        //            return new List<RatingModel>();
-        //        }
+        //        if (getCustomerDataByComplaintId != null)
+
+        //            return getCustomerDataByComplaintId;
+
+        //        else return null;
         //    }
         //    catch (Exception ex)
         //    {

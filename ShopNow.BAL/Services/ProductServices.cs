@@ -131,6 +131,18 @@ namespace ShopNow.BAL.Services
             }
         }
 
+        public List<RatingModel> GetRatingsByProductOrderId(Guid Id)
+        {
+            try
+            {
+                return _newproductRepository.GetRatingsByProductOrderId(Id);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         //public List<RatingModel> GetProductsByRating(int rating)
         //{
         //    try

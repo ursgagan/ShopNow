@@ -17,8 +17,8 @@ namespace ShopNow.DAL.Entities
         public DateTime? UpdatedOn { get; set; } 
         public Guid? CreatedBy { get; set; }
         public Guid? UpdatedBy { get; set; }
-
         public Guid? ProductOrderId { get; set; }
         public virtual ProductOrder? ProductOrder { get; set; }  
+        public string? Status { get; set; } 
     }
 }

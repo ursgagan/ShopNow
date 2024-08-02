@@ -11,7 +11,7 @@ namespace ShopNow.DAL.Entities
     public class Review
     {
         public Guid Id { get; set; }
-        public Guid? ProductOrderId { get; set; }     
+        public Guid ProductOrderId { get; set; }     
         public string? ReviewText { get; set; }
         public bool? IsDeleted { get; set; }
         public DateTime? CreatedOn { get; set; }
@@ -22,5 +22,7 @@ namespace ShopNow.DAL.Entities
         [NotMapped]
         public virtual List<RatingModel> Ratings { get; set; }  
         public virtual ProductOrder ProductOrder { get; set; }
+
+
     }
 }

@@ -51,6 +51,8 @@ namespace ShopNow.DAL.Repositories
                                                        where r.IsDeleted == false && r.CustomerId == customerId
                                                        join p in _shopNowDbContext.Product on r.ProductId equals p.Id into productJoin
                                                        from product in productJoin.DefaultIfEmpty()
+                                                       join ra in _shopNowDbContext.Rating on r.Id equals ra.ProductOrderId into ratingJoin
+                                                       from rating in ratingJoin.DefaultIfEmpty()
 
                                                        select new ProductOrderModel
                                                        {
@@ -80,8 +82,19 @@ namespace ShopNow.DAL.Repositories
                                                                ProductDescription = product.ProductDescription,
                                                            } : null,
 
-                                                           Customer = _shopNowDbContext.Customer.FirstOrDefault(c => c.Id == r.CustomerId)
+                                                           Customer = _shopNowDbContext.Customer.FirstOrDefault(c => c.Id == r.CustomerId),
 
+                                                           Rating = rating != null ? new Rating
+                                                           {
+                                                               Id = rating.Id,
+                                                               ProductOrderId = rating.ProductOrderId,
+                                                               Rate = rating.Rate,
+                                                               IsDeleted = rating.IsDeleted,
+                                                               CreatedOn = rating.CreatedOn,
+                                                               UpdatedOn = rating.UpdatedOn,
+                                                               CreatedBy = rating.CreatedBy,
+                                                               UpdatedBy = rating.UpdatedBy,
+                                                           } : null
                                                        });
 
                     return getMyOrdersDataByCustomerId.ToList();
@@ -93,23 +106,9 @@ namespace ShopNow.DAL.Repositories
             }
             catch (Exception ex)
             {
-
+                // Log the exception (ex) if needed
                 throw;
             }
-            //try
-            //{
-            //    var getMyOrdersDataByCustomerId = _shopNowDbContext.ProductOrder.Include(a => a.Product).Where(x => x.CustomerId == customerId && x.IsDeleted == false);
-
-            //    if (getMyOrdersDataByCustomerId != null)
-
-            //        return getMyOrdersDataByCustomerId;
-
-            //    else return null;
-            //}
-            //catch (Exception)
-            //{
-            //    throw;
-            //}
         }
 
         public ProductOrder GetProductOrderByProductId(Guid productId)

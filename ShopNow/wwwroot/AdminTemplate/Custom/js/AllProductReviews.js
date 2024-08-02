@@ -13,7 +13,7 @@ function getProductReviewList() {
                 let tblProductReviewData = "";
 
                 $.each(response, function (i, value) {
-                 
+                    debugger;
                     if (value.productOrder != null) {
 
                         tblProductReviewData += `
@@ -22,7 +22,7 @@ function getProductReviewList() {
                    <td>${value.productOrder?.product.productDescription != null ? value.productOrder?.product.productDescription : ' '}</td>
                
                    <td>${value.reviewText != null ? value.reviewText : ' '}</td>
-                   <td>${value.ratings?.rate != null ? value.rating.rate : ' '}</td>
+                   <td>${value.ratings.rate != null ? value.ratings.rate : ' '}</td>   
                    `
                     }
                 })

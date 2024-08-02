@@ -12,7 +12,7 @@ namespace ShopNow.DAL.Interfaces
     {
        public PaginationModel GetAllByPagination(int pageNumber);
        public List<RatingModel> GetRatingsByProductId(Guid Id);
-
+        public List<RatingModel> GetRatingsByProductOrderId(Guid Id);
        // public List<RatingModel> GetProductsByRating(int rating);
     }
 }

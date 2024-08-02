@@ -53,5 +53,30 @@ namespace ShopNow.BAL.Services
                 throw;
             }
         }
+
+        public bool UpdateComplaintStatus(string complaintId, string complaintStatus)
+        {
+            try
+            {
+                if (complaintId != null)
+                {
+                    var complaintData = _complaintRepository.GetById(new Guid(complaintId));
+                    if (complaintData != null)
+                    {
+                        complaintData.Status = complaintStatus;
+
+                        _complaintRepository.UpdateComplaintStatus(complaintData);
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return false;
+        }
+
     }
 }

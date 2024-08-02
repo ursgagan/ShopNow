@@ -22,13 +22,17 @@ $("#submitProductComplaintBtn").click(function () {
             dataType: 'json',
             success: function (response) {
                 debugger;
-                if (response) {
+                if (response.complaintDescription != null && response.complaintHeadLine != null) { 
                     debugger;
                     showSuccessMessage("Complaint Added", "Product Complaint Added Successfully");
                 }
+                else {
+                    showErrorMessage("Invalid Complaint", "Please enter Product Complaint");
+                }
                 setTimeout(function () {
                     window.location.href = "/Customer/MyOrders";
-                }, 7000);
+
+               }, 7000);
             }
         });
 

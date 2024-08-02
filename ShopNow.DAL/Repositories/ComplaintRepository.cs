@@ -2,6 +2,7 @@
 using ShopNow.DAL.Data;
 using ShopNow.DAL.Entities;
 using ShopNow.DAL.Interfaces;
+using ShopNow.DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,7 @@ namespace ShopNow.DAL.Repositories
         {
             try
             {
-                if (productComplaint != null)
+                if (productComplaint.ComplaintHeadLine != null && productComplaint.ComplaintDescription != null)
                 {
                     var addComplaint = _shopNowDbContext.Add<Complaint>(productComplaint);
                     await _shopNowDbContext.SaveChangesAsync();
@@ -60,6 +61,43 @@ namespace ShopNow.DAL.Repositories
             }
         }
 
-
+        public Complaint GetById(Guid complaintId)
+        {
+            try
+            {
+                if (complaintId != null)
+                {
+                    var getComplaintById = _shopNowDbContext.Complaint.Where(a => a.Id == complaintId).FirstOrDefault();
+                    if (getComplaintById != null) return getComplaintById;
+                    else return null;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public bool UpdateComplaintStatus(Complaint complaint)
+        {
+            try
+            {
+                if (complaint.Id != null)
+                {
+                    var complaintData = _shopNowDbContext.Update(complaint);
+                    if (complaintData != null) _shopNowDbContext.SaveChanges();
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+    
     }
 }

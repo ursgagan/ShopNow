@@ -25,7 +25,6 @@
         paginationData += `  <li class="page-item"><a class="page-link" onClick="getProductList(${pagination.currentPage + 1})" href="#">Next</a></li> `
     }
 
-
     if (pagination.currentPage != pagination.totalPages) {
 
         paginationData += ` <li class="page-item"><a class="page-link" onClick="getProductList(${pagination.endPage})" href="#">Last Page</a></li> `
@@ -39,6 +38,14 @@
 
 function showSuccessMessage(title, message) {
     iziToast.success({
+        title: title,
+        message: message,
+        position: 'topRight'
+    });
+}
+
+function showErrorMessage(title, message) {
+    iziToast.warning({
         title: title,
         message: message,
         position: 'topRight'

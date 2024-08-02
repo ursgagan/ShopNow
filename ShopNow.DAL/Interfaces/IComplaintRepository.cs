@@ -10,7 +10,9 @@ namespace ShopNow.DAL.Interfaces
     public interface IComplaintRepository
     {
         public Task<Complaint> AddComplaint(Complaint productComplaint);
-
         public IEnumerable<Complaint> GetAll();
+        public Complaint GetById(Guid complaintId);
+        public bool UpdateComplaintStatus(Complaint complaint);
+       
     }
 }

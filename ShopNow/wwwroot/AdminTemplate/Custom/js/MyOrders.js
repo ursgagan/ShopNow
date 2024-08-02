@@ -13,7 +13,6 @@ function bindMyOrderByCustomerId() {
             debugger;
             if (response) {
                 let tblMyOrderDataByCustomerId = "";
-                
                 $.each(response, function (i, value) {
                     debugger;
                     tblMyOrderDataByCustomerId += `
@@ -24,14 +23,23 @@ function bindMyOrderByCustomerId() {
                         <td class="align-middle">${value.product?.name}</td>
                         <td class="align-middle"> ${value.product?.price}</td>
                   
-                             <td class="align-middle">
-                             <div class="input-group quantity mx-auto" style="width: 100px;">      
+                        <td class="align-middle">
+                             <div class="input-group quantity mx-auto" style="width: 100px;">       
                                  
                               <input id="quantityInput_${value.id}" type="text" class="form-control form-control-sm bg-secondary border-0 text-center" value="${value.quantity}">
                             </div>
-                        </td>
-                         <td class="align-middle"><button class="btn btn-sm btn-success" onClick="rateAndReviewProduct('${value.productId}')"> Rate & Review Product </button></td>
-                        <td class="align-middle"><button class="btn btn-sm btn-success" onClick="addToCart('${value.id}')"> Order Again</button></td>
+                        </td>`
+
+                    if (value.rating != null) {
+                        tblMyOrderDataByCustomerId += ` <td class="align-middle"><button class="btn btn-
+                        .primary" style="
+                            width: 155px; onClick="rateAndReviewProduct('${value.productId}')" disabled> Reviewed </button></td>`
+                    }
+                    else {
+                        tblMyOrderDataByCustomerId += ` <td class="align-middle"><button class="btn btn-sm btn-success" onClick="rateAndReviewProduct('${value.productId}')"> Rate & Review Product </button></td>`
+
+                    }
+                    tblMyOrderDataByCustomerId += `<td class="align-middle"><button class="btn btn-sm btn-success" onClick="addToCart('${value.id}')"> Buy Again</button></td>
                         <td class="align-middle"><button class="btn btn-sm btn-danger" onClick="AddProductComplaint('${value.productId}')">Add a Complaint</button></td>
                
                         </tr>`

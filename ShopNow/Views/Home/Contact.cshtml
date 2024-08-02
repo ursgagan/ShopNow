@@ -1,8 +1,7 @@
 ﻿@{
-    Layout = "_Layout";
+    Layout = "_layout";
 }
 
-@model ShopNow.DAL.Entities.Contact
 
 <!-- Contact Start -->
 <div class="container-fluid">
@@ -11,40 +10,35 @@
         <div class="col-lg-7 mb-5">
             <div class="contact-form bg-light p-30">
                 <div id="success"></div>
-                <form name="sentMessage" id="contactForm" novalidate="novalidate" action="/Home/Contact" method="post">
-                    <input type="hidden" id="hdnTempData" value="@TempData["SuccessMessage"]" />
-
-                    <div class="control-group">
-                        <input type="text" class="form-control" id="FirstName" name="FirstName" placeholder="First Name"
+                <form action="#">
+                    <div class="control-group"> 
+                        <input type="text" class="form-control" id="FirstName" name="FirstName"  placeholder="First Name"
                                required="required" data-validation-required-message="Please enter your First Name" />
                         <p class="help-block text-danger"></p>
                     </div>
                     <div class="control-group">
-                        <input type="text" class="form-control" id="lastName" placeholder="Last Name" name="LastName"
+                        <input type="text" class="form-control" id="LastName" placeholder="Last Name"  name="LastName"
                                required="required" data-validation-required-message="Please enter your Last Name" />
                         <p class="help-block text-danger"></p>
                     </div>
                     <div class="control-group">
-                        <input type="Email" class="form-control" id="Email" name="EmailId" placeholder="EmailId"
+                        <input type="Email" class="form-control" id="Email" name="EmailId"  placeholder="EmailId"
                                required="required" data-validation-required-message="Please enter your email" />
                         <p class="help-block text-danger"></p>
                     </div>
                     <div class="control-group">
-                        <input type="text" class="form-control" id="PhoneNumber" name="PhoneNumber" placeholder="Phone Number"
+                        <input type="text" class="form-control" id="PhoneNumber" name="PhoneNumber"  placeholder="Phone Number"
                                required="required" data-validation-required-message="Please enter your PhoneNumber" />
                         <p class="help-block text-danger"></p>
                     </div>
                     <div class="control-group">
-                        <input type="text" class="form-control" id="Message" name="Message" placeholder="Message"
+                        <input type="text" class="form-control" id="Message" name="Message"  placeholder="Message"
                                required="required" data-validation-required-message="Please enter a Message" />
                         <p class="help-block text-danger"></p>
                     </div>
-
-
                     <div>
-                        <button class="btn btn-primary py-2 px-4" type="submit" id="sendMessageButton">
-                            Send
-                            Message
+                        <button class="btn btn-primary py-2 px-4" type="button" id="submitContactButton">
+                            Submit     
                         </button>
                     </div>
                 </form>
@@ -65,11 +59,8 @@
     </div>
 </div>
 <!-- Contact End -->
+
+
 <script src="~/admintemplate/js/jquery-3.6.4.min.js"></script>
 <script src="~/admintemplate/custom/js/common.js"></script>
-<script>
-
-        if ($("#hdnTempData").val() != null && $("#hdnTempData").val() != '') {
-            showSuccessMessage("Contact Added", "Contact Added Successfully")
-        }
-</script>
+<script src="~/admintemplate/custom/js/contact.js"></script>

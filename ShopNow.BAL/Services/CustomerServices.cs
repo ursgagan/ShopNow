@@ -38,12 +38,10 @@ namespace ShopNow.BAL.Services
                 throw;
             }
         }
-
         public Customer isUserExist(string email)
         {
             return _customerRepository.GetUserByEmail(email);
         }
-
         public Customer GetCustomerById(Guid user)
         {
             try
@@ -112,11 +110,12 @@ namespace ShopNow.BAL.Services
             }
         }
 
-        //public List<Customer> GetCustomerByProductOrderId(Guid Id)
+
+        //public Customer GetCustomerDataByProductComplaint(Guid Id)
         //{
         //    try
         //    {
-        //        return _customerRepository.GetCustomerByProductOrderId(Id);
+        //        return _customerRepository.GetCustomerDataByProductComplaint(Id);
         //    }
         //    catch (Exception)
         //    {

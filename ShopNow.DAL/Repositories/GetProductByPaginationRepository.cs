@@ -94,7 +94,43 @@ namespace ShopNow.DAL.Repositories
             }
         }
 
-       
+        public List<RatingModel> GetRatingsByProductOrderId(Guid productOrderId)
+        {
+            try
+            {
+                if (productOrderId != Guid.Empty)
+                {
+                    var ratingList = (from r in _shopNowDbContext.Rating
+                                      where r.IsDeleted == false
+                                      join p in _shopNowDbContext.ProductOrder on r.ProductOrderId equals p.Id into p2
+                                      from p in p2.DefaultIfEmpty()
+                                      where p.Id == productOrderId
+                                      select new RatingModel
+                                      {
+                                          Id = r.Id,
+                                          Rate = r.Rate,
+                                          ProductOrderId = r.ProductOrderId,
+                                          IsDeleted = r.IsDeleted,
+                                          UpdatedBy = r.UpdatedBy,
+                                          CreatedBy = r.CreatedBy,
+                                          UpdatedOn = r.UpdatedOn,
+                                          CreatedOn = r.CreatedOn,
+                                      });
+
+                    return ratingList.ToList();
+                }
+                else
+                {
+                    return new List<RatingModel>();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
 
         //public List<RatingModel> GetProductsByRating(int rating)
         //{

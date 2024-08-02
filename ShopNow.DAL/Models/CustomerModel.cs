@@ -20,5 +20,6 @@ namespace ShopNow.DAL.Models
         public string? Password { get; set; }
         public string? ResetCode { get; set; }
         public virtual Address Address { get; set; }
+
     }
 }

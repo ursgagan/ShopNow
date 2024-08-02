@@ -44,7 +44,7 @@ $("#btnSaveProduct").click(function () {
             position: 'topRight'
         });
         $("#ProductName").focus();
-        isValid = false;
+        isValid = false;+
         return false;
     }
 
