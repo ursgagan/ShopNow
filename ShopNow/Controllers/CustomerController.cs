@@ -97,7 +97,6 @@ namespace ShopNow.Controllers
 
                 string filePath = @"EmailTemplate";
 
-
                 string emailBody = System.IO.File.ReadAllText(Path.Combine(folderPath, fileName));
 
                 emailBody = emailBody.Replace("[UserName]", userName);

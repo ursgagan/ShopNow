@@ -55,6 +55,8 @@ builder.Services.AddScoped<IRatingRepository, RatingRepository>();
 builder.Services.AddScoped<ComplaintServices>();
 builder.Services.AddScoped<IComplaintRepository, ComplaintRepository>();
 
+builder.Services.AddScoped<AdminServices>();
+builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 
 builder.Services.AddAuthentication(options =>
 {

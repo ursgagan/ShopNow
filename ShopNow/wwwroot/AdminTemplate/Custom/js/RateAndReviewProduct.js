@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
     stars.forEach(function (star, index) {
         star.addEventListener("click", function () {
             const rating = parseInt(this.getAttribute("data-rating"));
-            currentRating = rating; // Update the current rating
+            currentRating = rating; 
             updateRatingStars(rating);
         });
 
@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         star.addEventListener("mouseout", function () {
-            updateRatingStars(currentRating); // Revert to the current rating on mouseout
+            updateRatingStars(currentRating); 
         });
     });
 
@@ -51,8 +51,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function submitReview(rating, reviewText) {
     debugger;
+    var orderId = document.getElementById("hdnOrderId").value;
 
-    var orderId = document.getElementById("hdnOrderId").value; 
     var reviewModel = {
         Rating: {
             Rate: rating

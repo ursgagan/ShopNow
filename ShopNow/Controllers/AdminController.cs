@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
 using ShopNow.BAL.Services;
 using ShopNow.DAL.Entities;
 using ShopNow.Helpers;
+using System.Security.Claims;
 using System.Transactions;
 
 namespace ShopNow.Controllers
@@ -16,8 +19,18 @@ namespace ShopNow.Controllers
         private readonly ReviewServices _reviewServices;
         private readonly ComplaintServices _complaintServices;
         private readonly CustomerServices _customerServices;
+        private readonly AdminServices _adminServices;
 
-        public AdminController(ProductCategoryServices productCategoryServices, ProductServices productServices, ImageServices imageServices, ProductImageServices productImageServices, ProductOrderServices productOrderServices, ReviewServices reviewServices, ComplaintServices complaintServices, CustomerServices customerServices)
+        public AdminController(
+            ProductCategoryServices productCategoryServices, 
+            ProductServices productServices,
+            ImageServices imageServices,
+            ProductImageServices productImageServices,
+            ProductOrderServices productOrderServices,
+            ReviewServices reviewServices,
+            ComplaintServices complaintServices,
+            CustomerServices customerServices,
+            AdminServices adminServices)
         {
             _productCategoryServices = productCategoryServices;
             _productServices = productServices;
@@ -27,12 +40,12 @@ namespace ShopNow.Controllers
             _reviewServices = reviewServices;
             _complaintServices = complaintServices;
             _customerServices = customerServices;
+            _adminServices = adminServices;
         }
         public IActionResult Index()
         {
             return View();
         }
-
         public IActionResult AddProductCategory(string productCategoryId)
         {
             ProductCategory productType = new ProductCategory();
@@ -349,6 +362,52 @@ namespace ShopNow.Controllers
             var updateComplaintStatus = _complaintServices.UpdateComplaintStatus(complaintId, complaintStatus);
 
             return Json(updateComplaintStatus);
+        }
+
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AdminLogin(Admin admin)
+        {
+            {
+                var user = _adminServices.isUserExist(admin.EmailId);
+
+                if (user != null)
+                {
+                    if (PasswordHasher.VerifyPassword(admin.Password, user.Password))
+                    {
+                        var claims = new List<Claim>
+                        {
+                            new Claim(ClaimTypes.Name, (user.Id.ToString())),
+                            new Claim(ClaimTypes.Email, user.EmailId),
+                        };
+
+                        var userIdentity = new ClaimsIdentity("Custom");
+                        userIdentity.AddClaims(claims);
+
+                        var principal = new ClaimsPrincipal(userIdentity);
+                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(userIdentity), new AuthenticationProperties() { IsPersistent = true });
+                        return Json(true);
+                    }
+                    else
+                    {
+                        return Json(false);
+                    }
+                }
+                else
+                {
+                    return Json(false);
+                }
+            }
+            return Json(false);
+        }
+
+        public IActionResult Dashboard()
+        {
+            return View();
         }
     }
 }
