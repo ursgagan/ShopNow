@@ -23,15 +23,14 @@
     if (isValid) {
         $.ajax({
             type: 'POST',
-            url: '/Customer/CustomerLogin',
+            url: '/Admin/AdminLogin',
             data: { customer: customer }, 
             dataType: 'json',
             success: function (data) {
+                debugger;
                 if (data) {
                     debugger;
-                    showSuccessMessage("Login", "Login Successfully");
-
-                    window.Location.href("DashBoard","Admin");
+                    window.location.href = "/Admin/Dashboard";
                 }
                 else {
                     showErrorMessage("Invalid Login", "Login Unsuccessfully");

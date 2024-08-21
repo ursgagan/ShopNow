@@ -10,7 +10,7 @@ namespace ShopNow.DAL.Entities
     {
        public Guid Id { get; set; }
        public Guid? CustomerId { get; set; }
-       public string? RoleId { get; set; }
+       public Guid? RoleId { get; set; }
 
     }
 }

@@ -42,9 +42,8 @@ $('#btnCustomerLogin').click(function () {
             dataType: 'json',
             success: function (data) {
                 if (data) {
-                    showSuccessMessage("Login", "Login Successfully");
-
-                    window.Location.href("Index", "Home");
+                    debugger;
+                    window.Location.href = "/Home/Index";
                 }
                 else {
                     showErrorMessage("Invalid Login", "Login Unsuccessfully");

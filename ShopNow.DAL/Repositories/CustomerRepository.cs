@@ -40,69 +40,23 @@ namespace ShopNow.DAL.Repositories
             }
         }
 
-        public CustomerModel GetUserByEmail(string email)
+        public Customer GetUserByEmail(string email)
         {
             try
             {
-                if (email == null)
+                if (email != null)
+                {
+                    var customer = _shopNowDbContext.Customer.Include(a => a.Address).Where(x => x.EmailId == email).FirstOrDefault();
+                    if (customer != null) return customer;
+                    else return null;
+                }
+                else
                 {
                     return null;
                 }
-
-                var customer = (from r in _shopNowDbContext.Customer
-                                where r.IsDeleted == false && r.EmailId == email
-                                join p in _shopNowDbContext.Address on r.AddressId equals p.Id
-                                select new
-                                {
-                                    Customer = r,
-                                    Address = p
-                                })
-                                .FirstOrDefault();
-
-                if (customer == null)
-                {
-                    return null;
-                }
-
-                // Map the results to CustomerModel
-                var customerModel = new CustomerModel
-                {
-                    Id = customer.Customer.Id,
-                    FirstName = customer.Customer.FirstName,
-                    LastName = customer.Customer.LastName,
-                    EmailId = customer.Customer.EmailId,
-                    IsDeleted = customer.Customer.IsDeleted,
-                    AddressId = customer.Customer.AddressId,
-                    UpdatedOn = customer.Customer.UpdatedOn,
-                    CreatedOn = customer.Customer.CreatedOn,
-                    CreatedBy = customer.Customer.CreatedBy,
-                    // Exclude UpdatedBy if it's not present in the database
-
-                    Address = new Address
-                    {
-                        Id = customer.Address.Id,
-                        PhoneNumber = customer.Address.PhoneNumber,
-                        Address1 = customer.Address.Address1,
-                        Address2 = customer.Address.Address2,
-                        Country = customer.Address.Country,
-                        City = customer.Address.City,
-                        State = customer.Address.State,
-                        ZipCode = customer.Address.ZipCode,
-                        IsDeleted = customer.Address.IsDeleted,
-
-                        UpdatedOn = customer.Address.UpdatedOn,
-                        CreatedOn = customer.Address.CreatedOn,
-                    }
-
-
-                };
-
-
-                return customerModel;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                // Log the exception (ex) if needed
                 throw;
             }
         }
@@ -187,7 +141,7 @@ namespace ShopNow.DAL.Repositories
             }
         }
 
-        public IEnumerable<Customer>GetAll()
+        public IEnumerable<Customer> GetAll()
         {
             try
             {

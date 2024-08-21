@@ -370,14 +370,14 @@ namespace ShopNow.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AdminLogin(Admin admin)
+        public async Task<IActionResult> AdminLogin(Customer customer)
         {
             {
-                var user = _adminServices.isUserExist(admin.EmailId);
+                var user = _adminServices.isUserExist(customer.EmailId);
 
-                if (user != null)
+                if (user.UserRoles != null)
                 {
-                    if (PasswordHasher.VerifyPassword(admin.Password, user.Password))
+                    if (PasswordHasher.VerifyPassword(customer.Password, user.Password))
                     {
                         var claims = new List<Claim>
                         {

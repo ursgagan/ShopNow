@@ -38,7 +38,7 @@ namespace ShopNow.BAL.Services
                 throw;
             }
         }
-        public CustomerModel isUserExist(string email)
+        public Customer isUserExist(string email)
         {
             return _customerRepository.GetUserByEmail(email);
         }

@@ -1,5 +1,6 @@
 ﻿using ShopNow.DAL.Entities;
 using ShopNow.DAL.Interfaces;
+using ShopNow.DAL.Models;
 using ShopNow.DAL.Repositories;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace ShopNow.BAL.Services
             _adminRepository = adminRepository;
         }
 
-        public Admin isUserExist(string email)
+        public CustomerModel isUserExist(string email)
         {
             return _adminRepository.GetUserByEmail(email);
         }
