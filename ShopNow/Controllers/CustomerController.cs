@@ -148,44 +148,44 @@ namespace ShopNow.Controllers
 
                 var existingCustomer = _customerServices.isUserExist(emailId);
 
-                if (existingCustomer != null)
-                {
-                    var generatedOTP = GenerateOTP();
-                    existingCustomer.ResetCode = generatedOTP;
+                //if (existingCustomer != null)
+                //{
+                //    var generatedOTP = GenerateOTP();
+                //    existingCustomer.ResetCode = generatedOTP;
 
-                    _customerServices.UpdateCustomer(existingCustomer);
+                //    _customerServices.UpdateCustomer(existingCustomer);
 
-                    string firstName = existingCustomer.FirstName;
+                //    string firstName = existingCustomer.FirstName;
 
-                    var forgotPasswordURL = "https://localhost:44377/Customer/ForgotPassword?resetCode=" + generatedOTP;
+                //    var forgotPasswordURL = "https://localhost:44377/Customer/ForgotPassword?resetCode=" + generatedOTP;
 
-                    string emailBody = System.IO.File.ReadAllText(Path.Combine(folderPath, fileName));
+                //    string emailBody = System.IO.File.ReadAllText(Path.Combine(folderPath, fileName));
 
-                    emailBody = emailBody.Replace("[UserName]", firstName).Replace("[ForgotPasswordURL]", forgotPasswordURL);
+                //    emailBody = emailBody.Replace("[UserName]", firstName).Replace("[ForgotPasswordURL]", forgotPasswordURL);
 
 
-                    using (var client = new SmtpClient("smtp.gmail.com"))
-                    {
-                        client.UseDefaultCredentials = false;
-                        client.Credentials = new NetworkCredential("deepsinghh46@gmail.com", "iztv umyi eruq qbqc");
-                        client.EnableSsl = true;
-                        client.Port = 587;
+                //    using (var client = new SmtpClient("smtp.gmail.com"))
+                //    {
+                //        client.UseDefaultCredentials = false;
+                //        client.Credentials = new NetworkCredential("deepsinghh46@gmail.com", "iztv umyi eruq qbqc");
+                //        client.EnableSsl = true;
+                //        client.Port = 587;
 
-                        var message = new MailMessage
-                        {
-                            From = new MailAddress("deepsinghh46@gmail.com"),
+                //        var message = new MailMessage
+                //        {
+                //            From = new MailAddress("deepsinghh46@gmail.com"),
 
-                            Subject = "Forgotten Password",
-                            Body = emailBody,
-                            IsBodyHtml = true,
-                        };
+                //            Subject = "Forgotten Password",
+                //            Body = emailBody,
+                //            IsBodyHtml = true,
+                //        };
 
-                        message.To.Add(emailId);
+                //        message.To.Add(emailId);
 
-                        await client.SendMailAsync(message);
-                        return Json(true);
-                    }
-                }
+                //        await client.SendMailAsync(message);
+                //        return Json(true);
+                //    }
+                //}
                 return Json(false);
             }
             catch (Exception ex)
@@ -245,21 +245,19 @@ namespace ShopNow.Controllers
                         var principal = new ClaimsPrincipal(userIdentity);
                         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(userIdentity), new AuthenticationProperties() { IsPersistent = true });
 
-                        TempData["SuccessMessage"] = "Login Successfully";
-                        return RedirectToAction("Index", "Home");
+                        return Json(true);
                     }
                     else
                     {
-                        TempData["PasswordIncorrectMessage"] = "Login Failed";
-                        return View();
+                        return Json(false);
                     }
                 }
                 else
                 {
-                    return View();
+                    return Json(false);
                 }
             }
-            return View();
+            return Json(false);
         }
 
         private CustomerModel GetLoggedUser()
@@ -275,7 +273,7 @@ namespace ShopNow.Controllers
             {
                 var emailAddress = emailClaim.Value;
 
-                customer = _customerServices.isUserExist(emailAddress);
+                customerModel = _customerServices.isUserExist(emailAddress);
 
                 if (customer != null)
                 {

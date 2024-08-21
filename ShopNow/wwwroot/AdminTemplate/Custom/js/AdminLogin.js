@@ -15,20 +15,23 @@
         return false;
     }
     else {
-    var admin = {};
+        var customer = {};
 
-        admin.emailId = emailId;
-        admin.password = password;
+        customer.emailId = emailId;
+        customer.password = password;
     }
     if (isValid) {
         $.ajax({
             type: 'POST',
-            url: '/Admin/AdminLogin',
-            data: { admin: admin }, 
+            url: '/Customer/CustomerLogin',
+            data: { customer: customer }, 
             dataType: 'json',
             success: function (data) {
                 if (data) {
+                    debugger;
                     showSuccessMessage("Login", "Login Successfully");
+
+                    window.Location.href("DashBoard","Admin");
                 }
                 else {
                     showErrorMessage("Invalid Login", "Login Unsuccessfully");

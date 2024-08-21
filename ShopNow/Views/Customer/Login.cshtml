@@ -13,12 +13,12 @@
                         </h4>
                     </div>
                     <div class="card-body">
-                        <form action="/Customer/CustomerLogin" method="post">
+                        <form action="#" method="post">
                             @*  <input id="Id" class="form-control" name="Id" value="@Model.Id" type="hidden" autofocus> *@
-                            <input type="hidden" id="hdnTempData" value="@TempData["SuccessMessage"]" />
+                            @* <input type="hidden" id="hdnTempData" value="@TempData["SuccessMessage"]" />
                             <input type="hidden" id="hdnResetPwdData" value="@TempData["PasswordResetMessage"]" />
                             <input type="hidden" id="hdnIncorrectPwd" value="@TempData["PasswordIncorrectMessage"]" />
-
+ *@
                             <div class="row">
                                 <div class="form-group col-6">
                                     <label for="EmailId">Email Id</label>
@@ -34,11 +34,9 @@
 
                             <div class="form-group">
                                 <div class="card">
-
-
                                     <div class="card-body" style="text-align: left;">
                                         <div class="row" style="display: inline-flex; align-items: center;">
-                                            <button type="submit" class="btn btn-primary btn-block" style="flex: 1;">
+                                            <button type="submit" id="btnCustomerLogin" class="btn btn-primary btn-block" style="flex: 1;">
                                                 Login
                                             </button>
                                             <span style="margin-left: 10px;">

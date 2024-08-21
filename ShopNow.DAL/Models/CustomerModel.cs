@@ -1,6 +1,7 @@
 ﻿using ShopNow.DAL.Entities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +21,12 @@ namespace ShopNow.DAL.Models
         public string? Password { get; set; }
         public string? ResetCode { get; set; }
         public virtual Address Address { get; set; }
+
+        public Guid? CreatedBy { get; set; }
+        public Guid? UpdatedBy { get; set; }
+
+        [NotMapped]
+        public virtual UserRoles UserRoles { get; set; }
 
     }
 }

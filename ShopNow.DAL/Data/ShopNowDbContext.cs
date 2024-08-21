@@ -35,5 +35,7 @@ namespace ShopNow.DAL.Data
         public DbSet<Rating> Rating { get; set; }
         public DbSet<Complaint> Complaint { get; set; }
         public DbSet<Admin> Admin { get; set; }
+
+        public DbSet<UserRoles> UserRoles { get; set; }
     }
 }

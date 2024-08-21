@@ -59,7 +59,7 @@ namespace ShopNow.DAL.Repositories
                                                            Id = r.Id,
                                                            CustomerId = r.CustomerId,
                                                            ProductId = r.ProductId,
-                                                           Quantity = r.Quantity,
+                                                           Quantity = r.Quantity,  
                                                            TotalPrice = r.TotalPrice,
                                                            IsDeleted = r.IsDeleted,
                                                            UpdatedBy = r.UpdatedBy,
