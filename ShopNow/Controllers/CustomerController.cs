@@ -237,6 +237,7 @@ namespace ShopNow.Controllers
                         {
                             new Claim(ClaimTypes.Name, (user.Id.ToString())),
                             new Claim(ClaimTypes.Email, user.EmailId),
+                             new Claim(ClaimTypes.Role, "Customer"),
                         };
 
                         var userIdentity = new ClaimsIdentity("Custom");

@@ -61,9 +61,29 @@ builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-}).AddCookie(options =>
+})
+.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
 {
-    options.LoginPath = "/Customer/Login";
+    options.LoginPath = "/Customer/Login"; 
+    options.Events.OnRedirectToLogin = context =>
+    {
+        if (context.Request.Path.StartsWithSegments("/Admin"))
+        {
+            context.Response.Redirect("/Admin/Login");
+        }
+        else
+        {
+            context.Response.Redirect("/Customer/Login");
+        }
+        return Task.CompletedTask;
+    };
+});
+
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("UserOnly", policy => policy.RequireRole("User"));
 });
 
 var connectionString = builder.Configuration.GetConnectionString("ConnStr");

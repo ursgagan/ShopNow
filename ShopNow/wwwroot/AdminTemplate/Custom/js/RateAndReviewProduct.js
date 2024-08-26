@@ -21,17 +21,17 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    const submitReviewBtn = document.getElementById("submitReviewBtn");
-    if (submitReviewBtn) {
-        submitReviewBtn.addEventListener("click", function () {
-            if (currentRating !== 0) {
-                const reviewText = document.getElementById("reviewdescription").value;
-                submitReview(currentRating, reviewText);
-            } else {
-                alert("Please select a rating before submitting your review.");
-            }
-        });
-    }
+    $("#submitReviewBtn").click(function () {
+        debugger;
+        const reviewText = $('#reviewdescription').val();
+        debugger;
+        if (currentRating !== 0) {
+                    debugger;
+                    submitReview(currentRating, reviewText);
+                } else {
+                    showErrorMessage("Invalid Rating", "Rating should not be Empty");
+                }
+    });
 
     function updateRatingStars(rating) {
         const feedbackEnd = document.getElementById("myRatingCustomFeedbackStart");

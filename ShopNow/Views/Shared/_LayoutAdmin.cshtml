@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -237,7 +238,7 @@
                     <li class="dropdown">
                         <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
                             <img alt="image" src="~/admintemplate/fonts/img/avatar/avatar-1.png" class="rounded-circle mr-1">
-                            <div class="d-sm-none d-lg-inline-block">Hi, Ujang Maman</div>
+                            <div id="adminProfileName" class="d-sm-none d-lg-inline-block"></div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <div class="dropdown-title">Logged in 5 min ago</div>
@@ -251,7 +252,7 @@
                                 <i class="fas fa-cog"></i> Settings
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item has-icon text-danger">
+                            <a href="/Admin/AdminLogout" class="dropdown-item has-icon text-danger">
                                 <i class="fas fa-sign-out-alt"></i> Logout
                             </a>
                         </div>
@@ -334,5 +335,22 @@
     <!-- Template JS File -->
     <script src="~/admintemplate/js/scripts.js"></script>
     <script src="~/admintemplate/js/custom.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            debugger;
+            $.ajax({
+                url: '/Admin/GetAdminData', 
+                type: 'GET',
+                success: function (response) {
+                    debugger;
+                    if (response) {
+                        $('#adminProfileName').text(response.firstName);
+                    }
+                }
+            })
+        });
+    </script>
 </body>
 </html>

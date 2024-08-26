@@ -6,6 +6,8 @@ using ShopNow.DAL.Entities;
 using ShopNow.Helpers;
 using System.Security.Claims;
 using System.Transactions;
+using Microsoft.AspNetCore.Authorization;
+using ShopNow.DAL.Models;
 
 namespace ShopNow.Controllers
 {
@@ -58,7 +60,6 @@ namespace ShopNow.Controllers
             return View(productType);
         }
 
-
         [HttpPost]
         public async Task<IActionResult> AddProductCategory(ProductCategory productCategory)
         {
@@ -78,9 +79,9 @@ namespace ShopNow.Controllers
             {
                 return Json(false);
             }
-
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult ProductCategoryList()
         {
             return View();
@@ -88,8 +89,16 @@ namespace ShopNow.Controllers
 
         public IActionResult GetProductCategoryList()
         {
-            var getProductCategoryList = _productCategoryServices.GetAllProductCategories().ToList();
-            return Json(getProductCategoryList);
+            var adminIdClaim = HttpContext.User.FindFirst(ClaimTypes.Name);
+
+            if (adminIdClaim != null)
+            {
+                Guid adminId = new Guid(adminIdClaim.Value);
+
+                var getProductCategoryList = _productCategoryServices.GetAllProductCategories().ToList();
+                return Json(getProductCategoryList);
+            }
+            return Json(false);
         }
         public IActionResult DeleteProductCategory(Guid productCategoryId)
         {
@@ -170,6 +179,7 @@ namespace ShopNow.Controllers
                 }
             }
         }
+        [Authorize(Roles = "Admin")]
         public IActionResult ProductList()
         {
             return View();
@@ -177,8 +187,16 @@ namespace ShopNow.Controllers
 
         public IActionResult GetProductList()
         {
-            var getProductList = _productServices.GetAllProduct().ToList();
-            return Json(getProductList);
+            var adminIdClaim = HttpContext.User.FindFirst(ClaimTypes.Name);
+
+            if (adminIdClaim != null)
+            {
+                Guid adminId = new Guid(adminIdClaim.Value);
+
+                var getProductList = _productServices.GetAllProduct().ToList();
+                return Json(getProductList);
+            }
+            return Json(false);
         }
 
         public IActionResult GetProductListByPagination(int pageNumber)
@@ -308,6 +326,7 @@ namespace ShopNow.Controllers
             return Json(getProductWithImageList);
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult OrderList()
         {
             return View();
@@ -341,6 +360,7 @@ namespace ShopNow.Controllers
             return Json(getProductReviewList);
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult AllProductComplaints()
         {
             return View();
@@ -383,6 +403,7 @@ namespace ShopNow.Controllers
                         {
                             new Claim(ClaimTypes.Name, (user.Id.ToString())),
                             new Claim(ClaimTypes.Email, user.EmailId),
+                            new Claim(ClaimTypes.Role, "Admin"),
                         };
 
                         var userIdentity = new ClaimsIdentity("Custom");
@@ -409,5 +430,56 @@ namespace ShopNow.Controllers
         {
             return View();
         }
+
+        [Authorize]
+        public async Task<IActionResult> AdminLogout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login", "Admin");
+        }
+
+        private CustomerModel GetLoggedAdmin()
+        {
+            CustomerModel customerModel = new CustomerModel();
+            Customer admin = new Customer();
+            var adminClaims = ((ClaimsIdentity)User.Identity).Claims;
+
+            // Find the claim with the email address
+            var emailClaim = adminClaims.FirstOrDefault(c => c.Type == ClaimTypes.Email || c.Type == "email");
+
+            if (emailClaim != null)
+            {
+                var emailAddress = emailClaim.Value;
+
+                admin = _customerServices.isUserExist(emailAddress);
+
+                if (admin != null)
+                {
+
+                    customerModel.Id = admin.Id;
+                    customerModel.FirstName = admin.FirstName;
+                    customerModel.LastName = admin.LastName;
+                    customerModel.EmailId = admin.EmailId; 
+                    customerModel.IsDeleted = admin.IsDeleted;
+                    customerModel.CreatedOn = admin.CreatedOn;
+                    customerModel.UpdatedOn = admin.UpdatedOn;
+                    customerModel.ResetCode = admin.ResetCode;
+
+                    customerModel.Password = admin.Password;
+
+
+                    return customerModel;
+                }
+            }
+            return customerModel;
+        }
+
+        public IActionResult GetAdminData()
+        {
+            var getAdminData = GetLoggedAdmin();
+
+            return Json(getAdminData);
+        }
+
     }
 }
