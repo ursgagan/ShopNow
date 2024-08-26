@@ -1,4 +1,10 @@
-﻿<link rel="stylesheet" href="~/admintemplate/modules/toastr/build/toastr.min.css" />
+﻿@{
+    Layout = "_Layout";
+}
+
+
+<link rel="stylesheet" href="~/admintemplate/modules/toastr/build/toastr.min.css" />
+
 <section class="section">
     <div class="container mt-5">
         <div class="row">
@@ -36,15 +42,15 @@
                                 <div class="card">
                                     <div class="card-body" style="text-align: left;">
                                         <div class="row" style="display: inline-flex; align-items: center;">
-                                            <button type="submit" id="btnCustomerLogin" class="btn btn-primary btn-block" style="flex: 1;">
+                                            <button type="button" id="btnCustomerLogin" class="btn btn-primary btn-block" style="flex: 1;">
                                                 Login
                                             </button>
                                             <span style="margin-left: 10px;">
                                                 <a href="/Customer/ResetPassword" class="cta-button"> Forgot Password? </a>
                                             </span>
                                         </div>
-
                                     </div>
+
                                 </div>
                             </div>
                             <script src="~/admintemplate/js/jquery-3.6.4.min.js"></script>

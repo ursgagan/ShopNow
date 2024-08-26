@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html> 
+﻿<!DOCTYPE html>
 <html lang="en">
 
 @using Microsoft.AspNetCore.Http
@@ -288,7 +288,7 @@
                 success: function (response) {
                     if (response) {
                         let productCategoriesData = "";
-                        $.each(response, function (index, category) {       
+                        $.each(response, function (index, category) {
                             productCategoriesData +=
 
                                 `<a href="/Home/Shop?productCategoryId=${category.id}" class="nav-item nav-link">${category.categoryName}</a>`

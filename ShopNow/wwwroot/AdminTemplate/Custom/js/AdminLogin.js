@@ -30,6 +30,7 @@
                 debugger;
                 if (data) {
                     debugger;
+
                     window.location.href = "/Admin/Dashboard";
                 }
                 else {

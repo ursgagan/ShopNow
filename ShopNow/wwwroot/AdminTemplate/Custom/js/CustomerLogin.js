@@ -1,18 +1,4 @@
-﻿//$(document).ready(function () {
-//    debugger;
-//    if ($("#hdnResetPwdData").val() != null && $("#hdnResetPwdData").val() != '') {
-//        debugger;
-//        toastr.success("Password Reset", "Password Reset Succcessfull");
-//    }
-
-//    if ($("#hdnIncorrectPwd").val() != null && $("#hdnIncorrectPwd").val() != '') {
-//        debugger;
-//        toastr.error("Password is Incorrect", "Login Failed");
-//    }
-//}
-//);
-
-$('#btnCustomerLogin').click(function () {
+﻿$('#btnCustomerLogin').click(function () {
     debugger;
     var emailId = $('#EmailId').val();
     var password = $('#Password').val();
@@ -43,7 +29,8 @@ $('#btnCustomerLogin').click(function () {
             success: function (data) {
                 if (data) {
                     debugger;
-                    window.Location.href = "/Home/Index";
+
+                    window.location.href = "/Home/Index";
                 }
                 else {
                     showErrorMessage("Invalid Login", "Login Unsuccessfully");
