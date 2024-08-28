@@ -48,6 +48,8 @@ namespace ShopNow.Controllers
         {
             return View();
         }
+
+        [Authorize(Roles = "Admin")]
         public IActionResult AddProductCategory(string productCategoryId)
         {
             ProductCategory productType = new ProductCategory();
@@ -61,13 +63,13 @@ namespace ShopNow.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddProductCategory(ProductCategory productCategory)
+        public async Task<IActionResult> AddProductCategory(ProductCategory productCategory, List<IFormFile> imageFile)
         {
             try
             {
                 if (productCategory.Id != null && productCategory.Id != Guid.Empty)
                 {
-                    _productCategoryServices.UpdateProductCategory(productCategory);
+                    _productCategoryServices.UpdateProductCategory(productCategory)                     ;
                 }
                 else
                 {
@@ -99,6 +101,7 @@ namespace ShopNow.Controllers
             return RedirectToAction("ProductCategoryList", "Admin");
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Product(string productId)
         {
             Product product = new Product();

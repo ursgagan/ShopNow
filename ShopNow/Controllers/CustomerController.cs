@@ -33,6 +33,8 @@ namespace ShopNow.Controllers
             _productOrderServices = productOrderServices;
             _reviewServices = reviewServices;
         }
+
+        [Authorize(Roles = "User")]
         public IActionResult SignUp(string customerId)
         {
             Customer customer = new Customer();
@@ -131,6 +133,7 @@ namespace ShopNow.Controllers
             }
         }
 
+        [Authorize(Roles = "User")]
         public IActionResult ResetPassword()
         {
             return View();
@@ -195,6 +198,7 @@ namespace ShopNow.Controllers
 
         }
 
+        [Authorize(Roles = "User")]
         [HttpGet]
         public IActionResult ForgotPassword(string resetCode)
         {
@@ -217,6 +221,7 @@ namespace ShopNow.Controllers
             }
             return Json(false);
         }
+
 
         public IActionResult Login()
         {
@@ -312,6 +317,7 @@ namespace ShopNow.Controllers
             return RedirectToAction("Login", "Customer");
         }
 
+        [Authorize(Roles = "User")]
         public IActionResult MyProfile()
         {
             var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.Name);
@@ -347,6 +353,7 @@ namespace ShopNow.Controllers
             }
         }
 
+        [Authorize(Roles = "User")]
         public IActionResult ShoppingCart()
         {
             return View();
@@ -414,6 +421,7 @@ namespace ShopNow.Controllers
             return Json(isDeleted);
         }
 
+        [Authorize(Roles = "User")]
         public IActionResult CheckOut()
         {
             Customer customer1 = new Customer();
@@ -482,6 +490,7 @@ namespace ShopNow.Controllers
             return Json(false);
         }
 
+        [Authorize(Roles = "User")]
         public IActionResult WishList()
         {
             return View();
@@ -534,11 +543,12 @@ namespace ShopNow.Controllers
             return Json(isDeleted);
         }
 
+        [Authorize(Roles = "User")]
         public IActionResult PlaceOrder()
         {
             return View();
         }
-
+        [Authorize(Roles = "User")]
         public IActionResult MyOrders()
         {
             return View();
@@ -557,6 +567,7 @@ namespace ShopNow.Controllers
             return Json(false);
         }
 
+        [Authorize(Roles = "User")]
         public IActionResult RateAndReviewProduct(string productId)
         {
             ProductOrder productOrder = new ProductOrder();

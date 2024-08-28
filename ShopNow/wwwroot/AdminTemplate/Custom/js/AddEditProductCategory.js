@@ -20,15 +20,27 @@
     if (isValid) {
         debugger;
         event.preventDefault();
-        var productCategory = {};
+        var productCategory = new FormData();
 
-        productCategory.CategoryName = $("#ProductCategory").val();
-        productCategory.Id = $("#hdnProductCategoryId").val();
+        productCategory.append('CategoryName', $("#ProductCategory").val());
+        productCategory.append('Id', $("#hdnProductCategoryId").val());
+
+        var fileInput = $('#CImage')[0];
+        if (fileInput.files.length > 0) {
+            for (var i = 0; i < fileInput.files.length; i++) {
+                var file = fileInput.files[i];
+                productCategory.append('imageFile', file);
+            }
+        } else {
+            console.error('No file selected.');
+        }
 
         $.ajax({
             url: '/Admin/AddProductCategory',
             type: 'POST',
-            data: productCategory, 
+            data: productCategory,
+            processData: false, // Important for FormData
+            contentType: false, // Important for FormData
             success: function (data) {
                 debugger;
                 if (data = true) {

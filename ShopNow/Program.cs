@@ -58,6 +58,11 @@ builder.Services.AddScoped<IComplaintRepository, ComplaintRepository>();
 builder.Services.AddScoped<AdminServices>();
 builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 
+
+//builder.Services.AddScoped<ProductCategoryImageServices>();
+//builder.Services.AddScoped<IRepository<ProductCategoryImage>, ProductCategoryImageRepository>();
+
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;

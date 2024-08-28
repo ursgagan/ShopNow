@@ -10,6 +10,6 @@
         public Guid? CreatedBy { get; set; }
         public Guid? UpdatedBy { get; set; }
 
-
+        public virtual ProductCategoryImage ProductCategoryImage { get; set; }
     }
 }
