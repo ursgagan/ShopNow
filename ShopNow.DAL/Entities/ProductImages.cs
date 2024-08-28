@@ -20,3 +20,4 @@ namespace ShopNow.DAL.Entities
         public virtual Image Image { get; set; }
     }
 }
+   

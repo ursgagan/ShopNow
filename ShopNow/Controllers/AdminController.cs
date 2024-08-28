@@ -88,17 +88,9 @@ namespace ShopNow.Controllers
         }
 
         public IActionResult GetProductCategoryList()
-        {
-            var adminIdClaim = HttpContext.User.FindFirst(ClaimTypes.Name);
-
-            if (adminIdClaim != null)
-            {
-                Guid adminId = new Guid(adminIdClaim.Value);
-
-                var getProductCategoryList = _productCategoryServices.GetAllProductCategories().ToList();
-                return Json(getProductCategoryList);
-            }
-            return Json(false);
+        { 
+             var getProductCategoryList = _productCategoryServices.GetAllProductCategories().ToList();
+              return Json(getProductCategoryList); 
         }
         public IActionResult DeleteProductCategory(Guid productCategoryId)
         {
@@ -359,7 +351,7 @@ namespace ShopNow.Controllers
             }
             return Json(getProductReviewList);
         }
-
+          
         [Authorize(Roles = "Admin")]
         public IActionResult AllProductComplaints()
         {

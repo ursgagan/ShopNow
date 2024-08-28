@@ -91,7 +91,7 @@
         </div>
         <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
             <div class="col-lg-4">
-                <a href="" class="text-decoration-none">
+                <a href="/Home/Index" class="text-decoration-none">
                     <span class="h1 text-uppercase text-primary bg-dark px-2">Multi</span>
                     <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Shop</span>
                 </a>
@@ -142,6 +142,9 @@
                         <div class="navbar-nav mr-auto py-0">
                             <a href="/Home/Index" class="nav-item nav-link active">Home</a>
                             <a href="/Home/Shop" class="nav-item nav-link">Shop</a>
+
+                            @if (isAuthenticated)
+                            {
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Your Orders <i class="fa fa-angle-down mt-1"></i></a>
                                 <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
@@ -151,6 +154,7 @@
                                     <a href="/Customer/MyOrders" class="dropdown-item">Orders</a>
                                 </div>
                             </div>
+                            }
                             <a href="/Home/Contact" class="nav-item nav-link">Contact</a>
                             <a href="#" class="nav-item nav-link">Help</a>
                         </div>
@@ -282,13 +286,17 @@
         }
 
         function bindProductCategoriesDropdown() {
+            debugger; 
             $.ajax({
-                url: '/Admin/GetProductCategoryList',
+                url: '/Admin/GetProductCategoryList',                        
                 type: 'GET',
                 success: function (response) {
                     if (response) {
                         let productCategoriesData = "";
                         $.each(response, function (index, category) {
+                            debugger;
+
+
                             productCategoriesData +=
 
                                 `<a href="/Home/Shop?productCategoryId=${category.id}" class="nav-item nav-link">${category.categoryName}</a>`

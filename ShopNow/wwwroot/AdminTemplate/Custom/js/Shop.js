@@ -10,11 +10,9 @@ function getProductList(rating) {
     debugger;
     let filterProductModel = {};
 
-    filterProductModel.ProductCategoryId = $("#hdnProductCategoryId").val();
+    filterProductModel.ProductCategoryId = $("#hdnProductCategoryId").val();                       
     
     filterProductModel.Rating = rating;
-    //filterProductModel.color = applyColorFilter(selectedColors);
-
     let colorString = arrSelectedColors.join(', ');
     debugger;
     filterProductModel.Color = colorString;

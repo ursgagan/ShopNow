@@ -1,5 +1,6 @@
 ﻿$(document).ready(function () {
     getProductList();
+    bindProductCategories();
 });
 
 function getProductList() {
@@ -17,7 +18,7 @@ function getProductList() {
                     if (value.productImages != null && value.productImages.length > 0) {
                         tblProductData += `
             <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
-                <div class="product-item bg-light mb-4">
+                <div class="product-item bg-light mb-4"> 
                    <div class="product-img position-relative overflow-hidden" style="cursor: pointer;">
                     
                             <img class="img-fluid w-100 product-image" style="width: 150px; height: 200px;" src="data:image/png;base64,${value.productImages[0].image.imageData}">
@@ -102,4 +103,45 @@ function ProductDetail(productId) {
     var productDetailsUrl = "/Home/ProductDetails?productId=" + productId;
     // Redirect the page to the product details URL
     window.location.href = productDetailsUrl;
+}
+
+
+function bindProductCategories() {
+    debugger;
+    $.ajax({
+        url: '/Admin/GetProductCategoryList',
+        type: 'GET', 
+        success: function (response) {
+            if (response) {
+                debugger;
+                let productCategoriesData = "";
+                $.each(response, function (index, category) {
+                    debugger;
+                 
+
+                    productCategoriesData +=
+
+                        ` <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+            <a class="text-decoration-none" href="/Home/Shop?productCategoryId=${category.id}">
+                <div class="cat-item d-flex align-items-center mb-4">
+                    <div class="overflow-hidden" style="width: 100px; height: 100px;">
+                        <img class="img-fluid" src="~/maintemplate/img/cat-1.jpg" alt="">
+                    </div>
+                    <div class="flex-fill pl-3">
+                        <h6>${category.categoryName}</h6>
+                        <small class="text-body">100 Products</small>
+                    </div>
+                </div>
+            </a>
+        </div>`
+                });
+
+
+                $("#tblProductCategoryList").html(productCategoriesData);
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
 }
