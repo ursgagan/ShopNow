@@ -82,16 +82,16 @@ namespace ShopNow.BAL.Services
             }
         }
 
-        public void UpdateProductCategory(ProductCategory productType)
+        public void UpdateProductCategory(ProductCategory productCategory)
         {
             try
             {
-                if (productType.Id != null || productType.Id != Guid.Empty)
+                if (productCategory.Id != null || productCategory.Id != Guid.Empty)
                 {
-                    var obj = _productCategoryRepository.GetAll().Where(x => x.Id == productType.Id).FirstOrDefault();
+                    var obj = _productCategoryRepository.GetAll().Where(x => x.Id == productCategory.Id).FirstOrDefault();
                     if (obj != null)
                     {
-                        obj.CategoryName = productType.CategoryName;
+                        obj.CategoryName = productCategory.CategoryName;
                         obj.UpdatedOn = DateTime.Now;
                         _productCategoryRepository.Update(obj);
                     }

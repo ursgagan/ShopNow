@@ -37,5 +37,7 @@ namespace ShopNow.DAL.Data
         public DbSet<Admin> Admin { get; set; }
 
         public DbSet<UserRoles> UserRoles { get; set; }
+        public DbSet<ProductCategoryImage> ProductCategoryImage { get; set; }
+        public DbSet<CImage> CImage { get; set; }
     }
 }

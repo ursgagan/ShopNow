@@ -22,9 +22,10 @@ namespace ShopNow.Controllers
         private readonly ComplaintServices _complaintServices;
         private readonly CustomerServices _customerServices;
         private readonly AdminServices _adminServices;
-
+        private readonly ProductCategoryImageServices _productCategoryImageServices;
+        private readonly CImageService _categoryImageService;
         public AdminController(
-            ProductCategoryServices productCategoryServices, 
+            ProductCategoryServices productCategoryServices,
             ProductServices productServices,
             ImageServices imageServices,
             ProductImageServices productImageServices,
@@ -32,7 +33,9 @@ namespace ShopNow.Controllers
             ReviewServices reviewServices,
             ComplaintServices complaintServices,
             CustomerServices customerServices,
-            AdminServices adminServices)
+            AdminServices adminServices,
+            ProductCategoryImageServices productCategoryImageServices,
+            CImageService categoryImageService)
         {
             _productCategoryServices = productCategoryServices;
             _productServices = productServices;
@@ -43,6 +46,8 @@ namespace ShopNow.Controllers
             _complaintServices = complaintServices;
             _customerServices = customerServices;
             _adminServices = adminServices;
+            _productCategoryImageServices = productCategoryImageServices;
+            _categoryImageService = categoryImageService;
         }
         public IActionResult Index()
         {
@@ -65,21 +70,59 @@ namespace ShopNow.Controllers
         [HttpPost]
         public async Task<IActionResult> AddProductCategory(ProductCategory productCategory, List<IFormFile> imageFile)
         {
-            try
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                if (productCategory.Id != null && productCategory.Id != Guid.Empty)
+                try
                 {
-                    _productCategoryServices.UpdateProductCategory(productCategory)                     ;
+                    if (productCategory.Id != null && productCategory.Id != Guid.Empty)
+                    {
+                        _productCategoryServices.UpdateProductCategory(productCategory);
+                    }
+                    else
+                    {
+                        await _productCategoryServices.AddProductCategory(productCategory);
+                    }
+                    List<CImage> addedImages = new List<CImage>();
+                    List<CImage> CategoryImageList = new List<CImage>();
+
+                    if (imageFile.Count > 0)
+                    {
+                        foreach (var file in imageFile)
+                        {
+                            if (file != null && file.Length > 0)
+                            {
+                                CImage imageData = await Common.SaveCategoryImage(file);
+                                CategoryImageList.Add(imageData);
+                            } 
+                        } 
+                    }
+
+                    if (CategoryImageList.Count > 0)
+                    {
+                        addedImages = await _categoryImageService.AddMultipleImages(CategoryImageList);
+                    }
+
+                    if (addedImages != null)
+                    {
+                        List<ProductCategoryImage> productCategoryImageList = new List<ProductCategoryImage>();
+
+                        foreach (var addedProductCategoryImages in addedImages)
+                        {
+
+                            ProductCategoryImage productImages = new ProductCategoryImage();
+                            productImages.ProductCategoryId = productCategory.Id;
+                            productImages.ImageId = addedProductCategoryImages.Id;
+                            productCategoryImageList.Add(productImages);
+                        }
+                         _productCategoryImageServices.AddProductCategoryImage(productCategoryImageList);
+                    }
+                    scope.Complete();
+                    return Json(true);
                 }
-                else
+                catch (Exception ex)
                 {
-                    await _productCategoryServices.AddProductCategory(productCategory);
+                    return Json(false);
                 }
-                return Json(true);
-            }
-            catch (Exception ex)
-            {
-                return Json(false);
             }
         }
 
@@ -90,9 +133,9 @@ namespace ShopNow.Controllers
         }
 
         public IActionResult GetProductCategoryList()
-        { 
-             var getProductCategoryList = _productCategoryServices.GetAllProductCategories().ToList();
-              return Json(getProductCategoryList); 
+        {
+            var getProductCategoryList = _productCategoryServices.GetAllProductCategories().ToList();
+            return Json(getProductCategoryList);
         }
         public IActionResult DeleteProductCategory(Guid productCategoryId)
         {
@@ -109,7 +152,7 @@ namespace ShopNow.Controllers
             if (productId != null)
             {
                 var pId = new Guid(productId);
-                product = _productServices.GetProductById(pId); 
+                product = _productServices.GetProductById(pId);
 
             }
             return View(product);
@@ -332,7 +375,7 @@ namespace ShopNow.Controllers
 
             return Json(getMyOrderList);
         }
-        
+
         public async Task<IActionResult> UpdateProductOrderStatus(string orderId, string orderStatus)
         {
             var updateProductOrderStatus = _productOrderServices.updateProductOrderStatus(orderId, orderStatus);
@@ -348,13 +391,13 @@ namespace ShopNow.Controllers
         {
             var getProductReviewList = _reviewServices.GetAllProductReviews().ToList();
 
-            foreach(var productReview in getProductReviewList)
+            foreach (var productReview in getProductReviewList)
             {
                 productReview.Ratings = _productServices.GetRatingsByProductOrderId(productReview.ProductOrderId);
             }
             return Json(getProductReviewList);
         }
-          
+
         [Authorize(Roles = "Admin")]
         public IActionResult AllProductComplaints()
         {
@@ -362,12 +405,12 @@ namespace ShopNow.Controllers
         }
 
         public IActionResult getProductComplaints()
-         {
+        {
             var getProductComplaintList = _complaintServices.GetAllProductComplaints().ToList();
 
-            foreach(var productComplaint in getProductComplaintList)
+            foreach (var productComplaint in getProductComplaintList)
             {
-                  //productComplaint.ProductOrder.Customer = _customerServices.GetCustomerDataByProductComplaint(productComplaint.Id);
+                //productComplaint.ProductOrder.Customer = _customerServices.GetCustomerDataByProductComplaint(productComplaint.Id);
             }
             return Json(getProductComplaintList);
         }
@@ -381,7 +424,7 @@ namespace ShopNow.Controllers
 
         public IActionResult Login()
         {
-            return View();          
+            return View();
         }
 
         [HttpPost]
@@ -454,7 +497,7 @@ namespace ShopNow.Controllers
                     customerModel.Id = admin.Id;
                     customerModel.FirstName = admin.FirstName;
                     customerModel.LastName = admin.LastName;
-                    customerModel.EmailId = admin.EmailId; 
+                    customerModel.EmailId = admin.EmailId;
                     customerModel.IsDeleted = admin.IsDeleted;
                     customerModel.CreatedOn = admin.CreatedOn;
                     customerModel.UpdatedOn = admin.UpdatedOn;

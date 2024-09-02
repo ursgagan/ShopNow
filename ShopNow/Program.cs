@@ -59,8 +59,8 @@ builder.Services.AddScoped<AdminServices>();
 builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 
 
-//builder.Services.AddScoped<ProductCategoryImageServices>();
-//builder.Services.AddScoped<IRepository<ProductCategoryImage>, ProductCategoryImageRepository>();
+builder.Services.AddScoped<ProductCategoryImageServices>();
+builder.Services.AddScoped<IProductCategoryImageRepository, ProductCategoryImageRepository>();
 
 
 builder.Services.AddAuthentication(options =>

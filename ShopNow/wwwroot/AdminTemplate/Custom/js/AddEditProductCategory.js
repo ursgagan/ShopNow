@@ -39,8 +39,8 @@
             url: '/Admin/AddProductCategory',
             type: 'POST',
             data: productCategory,
-            processData: false, // Important for FormData
-            contentType: false, // Important for FormData
+            processData: false, 
+            contentType: false, 
             success: function (data) {
                 debugger;
                 if (data = true) {
