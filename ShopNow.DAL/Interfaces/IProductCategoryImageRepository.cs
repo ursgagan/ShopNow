@@ -14,5 +14,7 @@ namespace ShopNow.DAL.Interfaces
         public ProductCategoryImage GetById(Guid Id);
         public void Update(ProductCategoryImage productCategoryImage);    
         public void Delete(ProductCategoryImage productCategoryImage);
+        public Task<List<ProductCategoryImage>> AddMultipleProductCategoryImages(List<ProductCategoryImage> productCategoryImage);
+
     }
 }

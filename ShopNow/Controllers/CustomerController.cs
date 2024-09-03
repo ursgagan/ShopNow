@@ -317,7 +317,7 @@ namespace ShopNow.Controllers
             return RedirectToAction("Login", "Customer");
         }
 
-        [Authorize(Roles = "User")]
+     
         public IActionResult MyProfile()
         {
             var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.Name);

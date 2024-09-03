@@ -105,7 +105,7 @@ namespace ShopNow.DAL.Repositories
             }
         }
 
-        public async Task<List<ProductCategoryImage>> AddMultipleProductImages(List<ProductCategoryImage> productCategoryImages)
+        public async Task<List<ProductCategoryImage>> AddMultipleProductCategoryImages(List<ProductCategoryImage> productCategoryImages)
         {
             try
             {

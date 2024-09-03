@@ -99,31 +99,31 @@ namespace ShopNow.BAL.Services
             }
         }
 
-        //public async Task<List<ProductCategoryImage>> AddMultipleProductCategoryImages(List<ProductCategoryImage> productCategoryImage)
-        //{
-        //    try
-        //    {
-        //        if (productCategoryImage == null)
-        //        {
-        //            throw new ArgumentNullException(nameof(productCategoryImage));
-        //        }
-        //        else
-        //        {
-        //            foreach (var imageItem in productCategoryImage)
-        //            {
+        public async Task<List<ProductCategoryImage>> AddMultipleProductCategoryImages(List<ProductCategoryImage> productCategoryImage)
+        {
+            try
+            {
+                if (productCategoryImage == null)
+                {
+                    throw new ArgumentNullException(nameof(productCategoryImage));
+                }
+                else
+                {
+                    foreach (var imageItem in productCategoryImage)
+                    {
 
-        //                imageItem.IsDeleted = false;
-        //                imageItem.CreatedOn = DateTime.Now;
-        //                imageItem.UpdatedOn = DateTime.Now;
-        //            }
-        //            return await _productCategoryImageRepository.AddMultipleProductImages(productCategoryImage);
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
-        //        throw;
-        //    }
-        //}
+                        imageItem.IsDeleted = false;
+                        imageItem.CreatedOn = DateTime.Now;
+                        imageItem.UpdatedOn = DateTime.Now;
+                    }
+                    return await _productCategoryImageRepository.AddMultipleProductCategoryImages(productCategoryImage);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
     }
 }

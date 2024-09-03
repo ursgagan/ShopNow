@@ -1,4 +1,6 @@
-﻿namespace ShopNow.DAL.Entities
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace ShopNow.DAL.Entities
 {
     public class ProductCategory
     {
@@ -9,7 +11,9 @@
         public DateTime? UpdatedOn { get; set; }
         public Guid? CreatedBy { get; set; }
         public Guid? UpdatedBy { get; set; }
+        public Guid? ImageId { get; set; }
 
-        public virtual ProductCategoryImage ProductCategoryImage { get; set; }
+        public virtual Image Image { get; set; }    
+        
     }
 }

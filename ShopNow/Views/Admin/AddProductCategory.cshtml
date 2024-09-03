@@ -41,22 +41,22 @@
 
                                     <div class="form-group col-4">
                                         <label for="Image">Choose Image</label>
-                                        <input id="CImage" type="file" class="form-control" name="CImage" accept="image/*" multiple>
+                                        <input id="Image" type="file" class="form-control" name="Image" accept="image/*" multiple>
                                     </div>
 
                                     <div class="form-group col-8">
                                         <div class="gallery gallery-fw" style="display: flex; flex-wrap: nowrap;" data-item-height="100">
-                                         @*    @if (Model.ProductCategoryImage != null)
+                                            @if (Model.Image != null)
                                             {
-                                                @foreach (var productCategoryImageData in Model.ProductCategoryImage)
-                                                {
+                                                @* @foreach (var productCategoryImageData in Model.Image)
+                                                { *@
                                                     <div class="gallery-item-wrapper">
-                                                        <a href="#" id="@productCategoryImageData?.Id" class="btn btn-icon btn-danger remove-photo" onclick="showDeleteProductImageModal(this.id)"><i class="fas fa-times"></i></a>
-
-                                                        <img class="gallery-item" id="productImage-@productCategoryImageData?.Id" src="data:image/png;base64,@productImageData?.Image.ImageData" alt="Product Image" style="width: 170px; height: 170px; padding-left:50px;">
+                                                    <a href="#" id="@Model.Image?.Id" class="btn btn-icon btn-danger remove-photo" onclick="showDeleteProductCategoryImageModal(this.id)"><i class="fas fa-times"></i></a>
+ 
+                                                    <img class="gallery-item" id="productCategoryImage-@Model.Image?.Id" src="data:image/png;base64,@Model.Image?.ImageData" alt="Product Image" style="width: 170px; height: 170px; padding-left:50px;">
                                                     </div>
-                                                }
-                                            } *@
+                                                @* } *@
+                                            }
                                         </div>
 
                                     </div>
@@ -83,6 +83,27 @@
     </section>
 </div>
 
+
+<div class="modal fade show" tabindex="-1" role="dialog" id="Delete-ProductCategoryImage-Modal" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Are you sure?</h5>
+
+            </div>
+            <div class="modal-body"> Do you want to Delete this Product Category Image?</div>
+            <input id="hdnProductCategoryImageId" type="hidden">
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-shadow" id="" onclick="DeleteProductCategoryImage()">Yes</button>
+
+                <button type="button" class="btn btn-secondary" id="" onclick="CloseModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="~/admintemplate/js/jquery-3.6.4.min.js"></script>
 <script src="~/admintemplate/custom/js/addeditproductcategory.js"></script>
+<script src="~/admintemplate/custom/js/common.js"></script>

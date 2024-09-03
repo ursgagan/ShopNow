@@ -1,4 +1,5 @@
-﻿using ShopNow.DAL.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using ShopNow.DAL.Data;
 using ShopNow.DAL.Entities;
 using ShopNow.DAL.Interfaces;
 using System;
@@ -53,15 +54,17 @@ namespace ShopNow.DAL.Repositories
             }
         }
 
-        public ProductCategory GetById(Guid productTypeId)
+        public ProductCategory GetById(Guid productCategoryId)
         {
             try
             {
-                if (productTypeId != null)
+                if (productCategoryId != null)
                 {
-                    var delProductCategory = _shopNowDbContext.ProductCategory.FirstOrDefault(x => x.Id == productTypeId);
-                    if (delProductCategory != null) return delProductCategory;
-                    else return null;
+                    var productCategory = _shopNowDbContext.ProductCategory
+                                  .Include(pc => pc.Image) 
+                                  .Where(pc => pc.Id == productCategoryId).FirstOrDefault();
+
+                    return productCategory;
                 }
                 else
                 {

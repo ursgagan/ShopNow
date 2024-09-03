@@ -130,7 +130,6 @@ function DeleteProductImage() {
 
             $("#productImage-" + productImageId).remove();
 
-
             jQuery('#Delete-ProductImage-Modal').hide();
         },
     });

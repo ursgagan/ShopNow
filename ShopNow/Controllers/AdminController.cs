@@ -57,14 +57,14 @@ namespace ShopNow.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult AddProductCategory(string productCategoryId)
         {
-            ProductCategory productType = new ProductCategory();
+            ProductCategory productCategory = new ProductCategory();
 
             if (productCategoryId != null)
             {
                 var pId = new Guid(productCategoryId);
-                productType = _productCategoryServices.GetProductCategoryById(pId);
+                productCategory = _productCategoryServices.GetProductCategoryById(pId);
             }
-            return View(productType);
+            return View(productCategory);
         }
 
         [HttpPost]
@@ -74,16 +74,7 @@ namespace ShopNow.Controllers
             {
                 try
                 {
-                    if (productCategory.Id != null && productCategory.Id != Guid.Empty)
-                    {
-                        _productCategoryServices.UpdateProductCategory(productCategory);
-                    }
-                    else
-                    {
-                        await _productCategoryServices.AddProductCategory(productCategory);
-                    }
-                    List<CImage> addedImages = new List<CImage>();
-                    List<CImage> CategoryImageList = new List<CImage>();
+                    Guid imageId = Guid.Empty;
 
                     if (imageFile.Count > 0)
                     {
@@ -91,31 +82,43 @@ namespace ShopNow.Controllers
                         {
                             if (file != null && file.Length > 0)
                             {
-                                CImage imageData = await Common.SaveCategoryImage(file);
-                                CategoryImageList.Add(imageData);
-                            } 
-                        } 
-                    }
+                                Image imageData = await Common.SaveImage(file);
+                                var addedImages = await _imageServices.AddImage(imageData);
 
-                    if (CategoryImageList.Count > 0)
-                    {
-                        addedImages = await _categoryImageService.AddMultipleImages(CategoryImageList);
-                    }
-
-                    if (addedImages != null)
-                    {
-                        List<ProductCategoryImage> productCategoryImageList = new List<ProductCategoryImage>();
-
-                        foreach (var addedProductCategoryImages in addedImages)
-                        {
-
-                            ProductCategoryImage productImages = new ProductCategoryImage();
-                            productImages.ProductCategoryId = productCategory.Id;
-                            productImages.ImageId = addedProductCategoryImages.Id;
-                            productCategoryImageList.Add(productImages);
+                                imageId = addedImages.Id;
+                            }
                         }
-                         _productCategoryImageServices.AddProductCategoryImage(productCategoryImageList);
                     }
+
+                    productCategory.ImageId = imageId;
+
+                    if (productCategory.Id != null && productCategory.Id != Guid.Empty)
+                    {
+                        productCategory.ImageId = imageId;
+                        _productCategoryServices.UpdateProductCategory(productCategory);
+                    }
+                    else
+                    {
+                        productCategory.ImageId = imageId;
+                        await _productCategoryServices.AddProductCategory(productCategory);
+                    }
+
+
+
+                    //if (addedImages != null)
+                    //{
+                    //    List<ProductCategoryImage> productCategoryImageList = new List<ProductCategoryImage>();
+
+                    //    foreach (var addedProductCategoryImages in addedImages)
+                    //    {
+
+                    //        ProductCategoryImage productImages = new ProductCategoryImage();
+                    //        productImages.ProductCategoryId = productCategory.Id;
+                    //        productImages.CImageId = addedProductCategoryImages.Id;
+                    //        productCategoryImageList.Add(productImages);
+                    //    }
+                    //     _productCategoryImageServices.AddMultipleProductCategoryImages(productCategoryImageList);
+                    //}
                     scope.Complete();
                     return Json(true);
                 }
@@ -519,5 +522,10 @@ namespace ShopNow.Controllers
             return Json(getAdminData);
         }
 
+        public IActionResult DeleteProductCategoryImage(Guid productCategoryImageId)
+        {
+            _imageServices.DeleteImage(productCategoryImageId);
+            return Json(true);
+        }
     }
 }
